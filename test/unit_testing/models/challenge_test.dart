@@ -7,7 +7,7 @@ void main() {
       final json = {
         'id': '1',
         'name': 'Test Challenge',
-        'startDate': '2022-01-01',
+        'startDate': DateTime(2022, 1, 1).toIso8601String(),
         'duration': const Duration(seconds: 10).inMicroseconds,
         'points': 100,
         'description': 'Test Description',
@@ -18,7 +18,7 @@ void main() {
       expect(challenge, isA<Challenge>());
       expect(challenge.id, '1');
       expect(challenge.name, 'Test Challenge');
-      expect(challenge.startDate, '2022-01-01');
+      expect(challenge.startDate, DateTime(2022, 1, 1));
       expect(challenge.duration, const Duration(seconds: 10));
       expect(challenge.points, 100);
       expect(challenge.description, 'Test Description');
@@ -28,7 +28,7 @@ void main() {
       final challenge = Challenge(
         id: '1',
         name: 'Test Challenge',
-        startDate: '2022-01-01',
+        startDate: DateTime(2022, 1, 1),
         duration: const Duration(seconds: 10),
         points: 100,
         description: 'Test Description',
@@ -39,7 +39,7 @@ void main() {
       expect(json, isA<Map<String, dynamic>>());
       expect(json['id'], '1');
       expect(json['name'], 'Test Challenge');
-      expect(json['startDate'], '2022-01-01');
+      expect(json['startDate'], DateTime(2022, 1, 1).toIso8601String());
       expect(json['duration'], const Duration(seconds: 10).inMicroseconds);
       expect(json['points'], 100);
       expect(json['description'], 'Test Description');
@@ -50,7 +50,7 @@ void main() {
         () => Challenge(
           id: '1',
           name: 'Test Challenge',
-          startDate: '2022-01-01',
+          startDate: DateTime(2022, 1, 1),
           duration: Duration.zero,
           points: 100,
           description: 'Test Description',
@@ -64,7 +64,7 @@ void main() {
         () => Challenge(
           id: '1',
           name: 'Test Challenge',
-          startDate: '2022-01-01',
+          startDate: DateTime(2022, 1, 1),
           duration: const Duration(seconds: 10),
           points: -1,
           description: 'Test Description',

@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rehabox/src/models/Model/model.dart';
 
 part 'timer_activity.g.dart';
 
 @JsonSerializable()
-class TimerActivity {
+class TimerActivity implements Model {
   TimerActivity({
     required this.id,
     required this.userId,
@@ -14,7 +15,8 @@ class TimerActivity {
   })  : expectedDuration = expectedDuration == Duration.zero ||
                 expectedDuration < Duration.zero ||
                 (actualDuration != null && actualDuration > expectedDuration)
-            ? throw ArgumentError('Expected duration must be greater than 0 and greater or equal to actual duration')
+            ? throw ArgumentError(
+                'Expected duration must be greater than 0 and greater or equal to actual duration')
             : expectedDuration,
         actualDuration = actualDuration == Duration.zero ||
                 (actualDuration != null && actualDuration > expectedDuration)
@@ -25,9 +27,11 @@ class TimerActivity {
   factory TimerActivity.fromJson(Map<String, dynamic> json) =>
       _$TimerActivityFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$TimerActivityToJson(this);
 
   @JsonKey(required: true)
+  @override
   final String id;
   @JsonKey(required: true)
   final String userId;
@@ -37,4 +41,27 @@ class TimerActivity {
   final Duration expectedDuration;
   final Duration? actualDuration;
   final String? couponAppliedId;
+
+  @override
+  String toString() {
+    return 'TimerActivity(id: $id, userId: $userId, startAt: $startAt, expectedDuration: $expectedDuration, actualDuration: $actualDuration, couponAppliedId: $couponAppliedId)';
+  }
+
+  @override
+  TimerActivity copyWith({
+    String? id,
+    String? userId,
+    DateTime? startAt,
+    Duration? expectedDuration,
+    Duration? actualDuration,
+    String? couponAppliedId,
+  }) =>
+      TimerActivity(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        startAt: startAt ?? this.startAt,
+        expectedDuration: expectedDuration ?? this.expectedDuration,
+        actualDuration: actualDuration ?? this.actualDuration,
+        couponAppliedId: couponAppliedId ?? this.couponAppliedId,
+      );
 }

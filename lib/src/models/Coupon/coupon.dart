@@ -1,11 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rehabox/src/models/Model/model.dart';
 
 part 'coupon.g.dart';
 
 enum CouponType { streak, timer }
 
 @JsonSerializable()
-class Coupon {
+class Coupon implements Model {
   Coupon({
     required this.id,
     required this.name,
@@ -24,9 +25,11 @@ class Coupon {
 
   factory Coupon.fromJson(Map<String, dynamic> json) => _$CouponFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$CouponToJson(this);
 
   @JsonKey(required: true)
+  @override
   final String id;
   @JsonKey(required: true)
   final String name;
@@ -41,4 +44,31 @@ class Coupon {
   @JsonKey(required: true)
   final DateTime expiredAt;
   final String? description;
+
+  @override
+  String toString() {
+    return 'Coupon(id: $id, name: $name, type: $type, isApplied: $isApplied, duration: $duration, price: $price, expiredAt: $expiredAt, description: $description)';
+  }
+
+  @override
+  Coupon copyWith({
+    String? id,
+    String? name,
+    CouponType? type,
+    bool? isApplied,
+    Duration? duration,
+    double? price,
+    DateTime? expiredAt,
+    String? description,
+  }) =>
+      Coupon(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        type: type ?? this.type,
+        isApplied: isApplied ?? this.isApplied,
+        duration: duration ?? this.duration,
+        price: price ?? this.price,
+        expiredAt: expiredAt ?? this.expiredAt,
+        description: description ?? this.description,
+      );
 }

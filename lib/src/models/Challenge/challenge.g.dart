@@ -14,7 +14,7 @@ Challenge _$ChallengeFromJson(Map<String, dynamic> json) {
   return Challenge(
     id: json['id'] as String,
     name: json['name'] as String,
-    startDate: json['startDate'] as String,
+    startDate: DateTime.parse(json['startDate'] as String),
     duration: Duration(microseconds: json['duration'] as int),
     points: json['points'] as int? ?? 0,
     description: json['description'] as String?,
@@ -24,7 +24,7 @@ Challenge _$ChallengeFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ChallengeToJson(Challenge instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'startDate': instance.startDate,
+      'startDate': instance.startDate.toIso8601String(),
       'duration': instance.duration.inMicroseconds,
       'points': instance.points,
       'description': instance.description,
