@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:rehabox/src/data_sources/interfaces/data_source_crud.dart';
 import 'package:rehabox/src/models/Model/model.dart';
 import 'package:rehabox/src/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,30 +11,26 @@ const modelKeys = {
 
 /// A mock data sources for development purposes
 /// [SharedPreferences] is used as a database
-/// 
+///
 /// Please note that every model must implement [Model] interface
 /// in order to be stored in the local data source
-class LocalDataSource
-    implements ChallengeDataSource, CouponDataSource, TimerActivityDataSource {
+class LocalDataSource {
   LocalDataSource(this.sharedPreferences);
 
   final SharedPreferences sharedPreferences;
 
-  @override
   Future<Challenge> createChallenge(Challenge challenge) => _create<Challenge>(
         modelKeys["Challenge"] as String,
         (json) => Challenge.fromJson(json),
         challenge,
       );
 
-  @override
   Future<Coupon> createCoupon(Coupon coupon) => _create<Coupon>(
         modelKeys["Coupon"] as String,
         (json) => Coupon.fromJson(json),
         coupon,
       );
 
-  @override
   Future<TimerActivity> createTimerActivity(TimerActivity timerActivity) =>
       _create<TimerActivity>(
         modelKeys["TimerActivity"] as String,
@@ -43,21 +38,18 @@ class LocalDataSource
         timerActivity,
       );
 
-  @override
   Future<Challenge> deleteChallenge(String id) => _delete<Challenge>(
         modelKeys["Challenge"] as String,
         (json) => Challenge.fromJson(json),
         id,
       );
 
-  @override
   Future<Coupon> deleteCoupon(String id) => _delete<Coupon>(
         modelKeys["Coupon"] as String,
         (json) => Coupon.fromJson(json),
         id,
       );
 
-  @override
   Future<TimerActivity> deleteTimerActivity(String id) =>
       _delete<TimerActivity>(
         modelKeys["TimerActivity"] as String,
@@ -65,42 +57,36 @@ class LocalDataSource
         id,
       );
 
-  @override
   Future<Challenge?> readChallenge(String id) => _read<Challenge>(
         modelKeys["Challenge"] as String,
         (json) => Challenge.fromJson(json),
         id,
       );
 
-  @override
   Future<Coupon?> readCoupon(String id) => _read<Coupon>(
         modelKeys["Coupon"] as String,
         (json) => Coupon.fromJson(json),
         id,
       );
 
-  @override
   Future<TimerActivity?> readTimerActivity(String id) => _read<TimerActivity>(
         modelKeys["TimerActivity"] as String,
         (json) => TimerActivity.fromJson(json),
         id,
       );
 
-  @override
   Future<Challenge> updateChallenge(Challenge challenge) => _update<Challenge>(
         modelKeys["Challenge"] as String,
         (json) => Challenge.fromJson(json),
         challenge,
       );
 
-  @override
   Future<Coupon> updateCoupon(Coupon coupon) => _update<Coupon>(
         modelKeys["Coupon"] as String,
         (json) => Coupon.fromJson(json),
         coupon,
       );
 
-  @override
   Future<TimerActivity> updateTimerActivity(TimerActivity timerActivity) =>
       _update<TimerActivity>(
         modelKeys["TimerActivity"] as String,
@@ -108,19 +94,16 @@ class LocalDataSource
         timerActivity,
       );
 
-  @override
   Future<List<Challenge>> readAllChallenges() => _readAll<Challenge>(
         modelKeys["Challenge"] as String,
         (json) => Challenge.fromJson(json),
       );
 
-  @override
   Future<List<Coupon>> readAllCoupons() => _readAll<Coupon>(
         modelKeys["Coupon"] as String,
         (json) => Coupon.fromJson(json),
       );
 
-  @override
   Future<List<TimerActivity>> readAllTimerActivities() =>
       _readAll<TimerActivity>(
         modelKeys["TimerActivity"] as String,
