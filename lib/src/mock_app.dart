@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
+import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
+import 'package:rehabox/src/screens/timers/timers_screen.dart';
 
 class MockApp extends StatelessWidget {
   const MockApp({super.key});
@@ -49,6 +52,9 @@ class MockApp extends StatelessWidget {
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),
         DevicesSettingScreen.routeName: (context) => const DevicesSettingScreen(),
+        CouponsScreen.routeName: (context) => const CouponsScreen(),
+        ChallengesScreen.routeName: (context) => const ChallengesScreen(),
+        TimersScreen.routeName: (context) => const TimersScreen(),
       },
       initialRoute: ProfileScreen.routeName,
     );

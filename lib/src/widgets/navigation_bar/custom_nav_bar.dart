@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
+import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
+import 'package:rehabox/src/screens/timers/timers_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 
@@ -62,10 +65,19 @@ class CustomNavigationBar extends StatelessWidget {
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
             currentIndex:
-                // TODO: Add filter for home, search, main, more, profile
-                ModalRoute.of(context)?.settings.name == ProfileScreen.routeName
-                    ? 4
-                    : 0,
+                ModalRoute.of(context)?.settings.name ==
+                        ChallengesScreen.routeName
+                    ? 1
+                    : ModalRoute.of(context)?.settings.name ==
+                            TimersScreen.routeName
+                        ? 2
+                        : ModalRoute.of(context)?.settings.name ==
+                                CouponsScreen.routeName
+                            ? 3
+                            : ModalRoute.of(context)?.settings.name ==
+                                    ProfileScreen.routeName
+                                ? 4
+                                : 0,
             items: const [
               BottomNavigationBarItem(
                 icon: SvgIcon(iconString: homeSvgString),
