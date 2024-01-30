@@ -21,9 +21,16 @@ class SettingsScreen extends StatelessWidget {
         appBarHeight: 72,
         title: Row(
           children: [
-            CustomIconButton(
-              onPressed: (context) => Navigator.pop(context),
-              icon: SvgPicture.string(backSvgString),
+            Hero(
+              tag: 'settings',
+              
+              child: Material(
+                color: Colors.transparent,
+                child: CustomIconButton(
+                  onPressed: (context) => Navigator.pop(context),
+                  icon: SvgPicture.string(backSvgString),
+                ),
+              ),
             ),
             const SizedBox(width: 8),
             Text(

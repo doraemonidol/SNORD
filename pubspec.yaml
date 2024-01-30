@@ -13,6 +13,7 @@ dependencies:
   build_runner: ^2.4.8
   flutter:
     sdk: flutter
+  flutter_blue_plus: ^1.31.12
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.9

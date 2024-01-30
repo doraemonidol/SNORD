@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
@@ -25,6 +26,8 @@ void main() async {
   final userRepository = LocalUserRepository(
     localDataSource: localDataSource,
   );
+
+  FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the

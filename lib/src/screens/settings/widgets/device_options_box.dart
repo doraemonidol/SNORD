@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/settings/devices/controllers/devices_provider.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 
 class DeviceOption extends StatelessWidget {
@@ -75,34 +78,52 @@ class DeviceOptionsBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(
-        context.widthPercent(0.03),
-      ),
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+    return Selector<DevicesProvider, List<ScanResult>>(
+      selector: (BuildContext context, DevicesProvider controller) =>
+          controller.devices,
+      builder: (BuildContext context, List<ScanResult> value, Widget? child) {
+        if (value.isEmpty) {
+          return child!;
+        }
+        return Container(
+          padding: EdgeInsets.all(
+            context.widthPercent(0.03),
+          ),
+          clipBehavior: Clip.antiAlias,
+          decoration: ShapeDecoration(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+          ),
+          child: Column(
+            children: value
+                .map(
+                  (device) => Selector<DevicesProvider, String?>(
+                    builder:
+                        (BuildContext context, String? value, Widget? child) =>
+                            DeviceOption(
+                      device: device.device.platformName,
+                      isSelected: device.device.remoteId.str == value,
+                    ),
+                    selector:
+                        (BuildContext context, DevicesProvider controller) =>
+                            controller.connectedDeviceId,
+                  ),
+                )
+                .toList(),
+          ),
+        );
+      },
+      child: Center(
+        child: Text(
+          'No devices found',
+          style: TextStyle(
+            color: const Color(0xFF040415),
+            fontSize: context.textScaleFactor(16),
+            fontWeight: FontWeight.w600,
+          ),
         ),
-      ),
-      child: const Column(
-        children: [
-          DeviceOption(
-            device: 'iPhone 12 Pro Max',
-            isSelected: true,
-          ),
-          // const SizedBox(height: 8),
-          DeviceOption(
-            device: 'iPhone 12 Pro',
-            isSelected: false,
-          ),
-          // const SizedBox(height: 8),
-          DeviceOption(
-            device: 'iPhone 12',
-            isSelected: false,
-          ),
-        ],
       ),
     );
   }

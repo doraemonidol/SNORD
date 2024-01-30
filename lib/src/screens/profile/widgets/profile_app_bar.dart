@@ -32,17 +32,21 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: context.widthPercent(0.03),
-          ),
-          child: CustomIconButton(
-            onPressed: (context) => Navigator.pushNamed(
-              context,
-              SettingsScreen.routeName,
+        Hero(
+          tag: 'settings',
+          child: Material(
+            color: Colors.transparent,
+            child: CustomIconButton(
+              onPressed: (context) => Navigator.pushNamed(
+                context,
+                SettingsScreen.routeName,
+              ),
+              icon: const SvgIcon(iconString: settingSvgString),
             ),
-            icon: const SvgIcon(iconString: settingSvgString),
           ),
+        ),
+        SizedBox(
+          width: context.widthPercent(0.03),
         ),
       ],
       bottom: PreferredSize(

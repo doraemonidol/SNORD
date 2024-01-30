@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rehabox/src/screens/navigation/router_manager.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
+import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
+import 'package:rehabox/src/screens/settings/settings_screen.dart';
 
 class MockApp extends StatelessWidget {
   const MockApp({super.key});
@@ -44,26 +45,11 @@ class MockApp extends StatelessWidget {
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
       // themeMode: settingsController.themeMode,
-
-      // Define a function to handle named routes in order to support
-      // Flutter web url navigation and deep linking.
-      // onGenerateRoute: (RouteSettings routeSettings) {
-      //   return MaterialPageRoute<void>(
-      //     settings: routeSettings,
-      //     builder: (BuildContext context) {
-      //       switch (routeSettings.name) {
-      //         case SettingsView.routeName:
-      //           return SettingsView(controller: settingsController);
-      //         case SampleItemDetailsView.routeName:
-      //           return const SampleItemDetailsView();
-      //         case SampleItemListView.routeName:
-      //         default:
-      //           return const SampleItemListView();
-      //       }
-      //     },
-      //   );
-      // },
-      onGenerateRoute: RouteManager.onGenerateRoute,
+      routes: {
+        ProfileScreen.routeName: (context) => const ProfileScreen(),
+        SettingsScreen.routeName: (context) => const SettingsScreen(),
+        DevicesSettingScreen.routeName: (context) => const DevicesSettingScreen(),
+      },
       initialRoute: ProfileScreen.routeName,
     );
   }

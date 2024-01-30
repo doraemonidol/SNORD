@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 
@@ -27,13 +28,44 @@ class CustomNavigationBar extends StatelessWidget {
             Radius.circular(64),
           ),
           child: BottomNavigationBar(
-            onTap: (int index) {},
+            onTap: (int index) {
+              switch (index) {
+                case 0:
+                  Navigator.pushNamed(context, '/');
+                  break;
+                case 1:
+                  Navigator.pushNamed(context, '/search');
+                  break;
+                case 2:
+                  Navigator.pushNamed(context, '/main');
+                  break;
+                case 3:
+                  Navigator.pushNamed(context, '/more');
+                  break;
+                case 4:
+                  if (ModalRoute.of(context)?.settings.name !=
+                      ProfileScreen.routeName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      ProfileScreen.routeName,
+                      (route) => route.settings.name == '/login',
+                    );
+                  }
+                  break;
+                default:
+                  Navigator.pushNamed(context, '/');
+              }
+            },
             landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
-            currentIndex: 0,
+            currentIndex:
+                // TODO: Add filter for home, search, main, more, profile
+                ModalRoute.of(context)?.settings.name == ProfileScreen.routeName
+                    ? 4
+                    : 0,
             items: const [
               BottomNavigationBarItem(
                 icon: SvgIcon(iconString: homeSvgString),
