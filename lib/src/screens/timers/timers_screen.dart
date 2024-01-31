@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CustomNavigationBar extends StatelessWidget {
-  const CustomNavigationBar({super.key});
+class TimersScreen extends StatelessWidget {
+  const TimersScreen({super.key});
+
+  static const routeName = '/timers';
 
   @override
   Widget build(BuildContext context) {
