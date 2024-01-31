@@ -38,3 +38,66 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+
+  fonts:
+    - family: SFProDisplay
+      fonts:
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Ultralight.otf
+          weight: 100
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Thin.otf
+          weight: 200
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Light.otf
+          weight: 300
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Semibold.otf
+          weight: 600
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Bold.otf
+          weight: 700
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Heavy.otf
+          weight: 800
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-Black.otf
+          weight: 900
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-UltralightItalic.otf
+          style: italic
+          weight: 100
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-ThinItalic.otf
+          style: italic
+          weight: 200
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-LightItalic.otf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-RegularItalic.otf
+          style: italic
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-MediumItalic.otf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-SemiboldItalic.otf
+          style: italic
+          weight: 600
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-BoldItalic.otf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-HeavyItalic.otf
+          style: italic
+          weight: 800
+        - asset: assets/fonts/SF-Pro-Display/SF-Pro-Display-BlackItalic.otf
+          style: italic
+          weight: 900
+    - family: AirbnbCereal
+      fonts:
+        - asset: assets/fonts/Airbnb-Cereal/Airbnb-Cereal-App-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Airbnb-Cereal/Airbnb-Cereal-App-Book.ttf
+          weight: 400
+        - asset: assets/fonts/Airbnb-Cereal/Airbnb-Cereal-App-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Airbnb-Cereal/Airbnb-Cereal-App-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Airbnb-Cereal/Airbnb-Cereal-App-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Airbnb-Cereal/Airbnb-Cereal-App-Black.ttf
+          weight: 900
