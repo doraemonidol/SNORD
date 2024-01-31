@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
+import 'package:rehabox/src/utils/mock_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/settings/settings_controller.dart';
@@ -19,8 +22,14 @@ void main() async {
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
 
+  final SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
+
+  // Mock coupons
+  sharedPreferences.setStringList("coupons", coupons.map((e) => jsonEncode(e.toJson())).toList());
+
   final localDataSource = LocalDataSource(
-    await SharedPreferences.getInstance(),
+    sharedPreferences,
   );
 
   final userRepository = LocalUserRepository(

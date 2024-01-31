@@ -23,7 +23,6 @@ class SettingsScreen extends StatelessWidget {
           children: [
             Hero(
               tag: 'settings',
-              
               child: Material(
                 color: Colors.transparent,
                 child: CustomIconButton(

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
-import 'package:rehabox/src/widgets/svg_icon.dart';
 
-class AchieveItem extends StatelessWidget {
-  const AchieveItem({
+class CustomItemWidget extends StatelessWidget {
+  const CustomItemWidget({
     required this.title,
     required this.subtitle,
     this.leading,
     this.trailing,
+    this.bottom,
     super.key,
   });
 
@@ -16,9 +17,35 @@ class AchieveItem extends StatelessWidget {
   final Widget title;
   final Widget subtitle;
   final Widget? trailing;
+  final Widget? bottom;
 
   @override
   Widget build(BuildContext context) {
+    final innerChild = Row(
+        children: [
+          if (leading != null) ...[
+            leading!,
+            const SizedBox(width: 16),
+          ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                title,
+                const SizedBox(height: 4),
+                subtitle,
+              ],
+            ),
+          ),
+          if (trailing != null) ...[
+            trailing!,
+          ],
+        ],
+      );
+    final child = bottom != null ? Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [innerChild, bottom!],
+    ) : innerChild;
     return Container(
       decoration: ShapeDecoration(
         color: Colors.white,
@@ -39,34 +66,14 @@ class AchieveItem extends StatelessWidget {
         horizontal: context.widthPercent(0.04),
         vertical: context.heightPercent(0.02),
       ),
-      child: Row(
-        children: [
-          if (leading != null) ...[
-            leading!,
-            const SizedBox(width: 16),
-          ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                title,
-                const SizedBox(height: 4),
-                subtitle,
-              ],
-            ),
-          ),
-          if (trailing != null) ...[
-            trailing!,
-          ],
-        ],
-      ),
+      child: child,
     );
   }
 }
 
 class _CustomIconButton extends StatelessWidget {
   const _CustomIconButton({
-    required this.iconString,
+    required this.icon,
     this.shape,
     this.backgroundColor,
     this.onPressed,
@@ -74,7 +81,7 @@ class _CustomIconButton extends StatelessWidget {
 
   final void Function(BuildContext context)? onPressed;
 
-  final String iconString;
+  final Widget icon;
 
   final OutlinedBorder? shape;
 
@@ -108,9 +115,7 @@ class _CustomIconButton extends StatelessWidget {
           ),
         ),
       ),
-      icon: SvgIcon(
-        iconString: iconString,
-      ),
+      icon: icon,
     );
   }
 }
@@ -126,7 +131,7 @@ class ActivityFilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CustomIconButton(
-      iconString: filterActivitySvgString,
+      icon: SvgPicture.string(filterActivitySvgString),
       onPressed: onPressed,
     );
   }
@@ -137,19 +142,19 @@ class PointsEarnedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _CustomIconButton(
-      iconString: pointsEarnedSvgString,
+    return _CustomIconButton(
+      icon: SvgPicture.string(pointsEarnedSvgString),
     );
   }
 }
 
-class PointsDeducedButton extends StatelessWidget {
-  const PointsDeducedButton({super.key});
+class PointsDeductedButton extends StatelessWidget {
+  const PointsDeductedButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const _CustomIconButton(
-      iconString: pointsDeducedSvgString,
+    return _CustomIconButton(
+      icon: SvgPicture.string(pointsDeducedSvgString),
     );
   }
 }
@@ -159,8 +164,8 @@ class ChallengeCompletedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _CustomIconButton(
-      iconString: challengeCompletedSvgString,
+    return _CustomIconButton(
+      icon: SvgPicture.string(challengeCompletedSvgString),
     );
   }
 }
@@ -171,7 +176,15 @@ class RunningAchievementButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const _CustomIconButton(
-      iconString: runningAchievementSvgString,
+      icon: Text(
+        '🏃🏻‍♂️',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Color(0xFF040415),
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       shape: OvalBorder(),
       backgroundColor: Color(0xFFDDF2FC),
     );
@@ -184,7 +197,15 @@ class GoldMedalAchievementButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const _CustomIconButton(
-      iconString: goldMedalAchievementSvgString,
+      icon: Text(
+        '🥇',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Color(0xFF040415),
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       shape: OvalBorder(),
       backgroundColor: Color(0xFFFFF3DA),
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rehabox/src/screens/profile/widgets/achieve_item.dart';
+import 'package:rehabox/src/widgets/custom_item_widget.dart';
 import 'package:rehabox/src/screens/profile/widgets/achieve_item_list.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
+import 'package:rehabox/src/widgets/shimmer_items_list.dart';
 import 'package:shimmer/shimmer.dart';
 
 class _BodyTemplate extends StatelessWidget {
@@ -45,7 +46,7 @@ class _BodyTemplate extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const ShimmerAchieveItemLists(),
+          const ShimmerItemsList(),
         ],
       );
     }

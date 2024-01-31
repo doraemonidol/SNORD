@@ -37,13 +37,27 @@ class CustomNavigationBar extends StatelessWidget {
                   Navigator.pushNamed(context, '/');
                   break;
                 case 1:
-                  Navigator.pushNamed(context, '/search');
+                  if (ModalRoute.of(context)?.settings.name !=
+                      ChallengesScreen.routeName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      ChallengesScreen.routeName,
+                      (route) => route.settings.name == '/login',
+                    );
+                  }
                   break;
                 case 2:
                   Navigator.pushNamed(context, '/main');
                   break;
                 case 3:
-                  Navigator.pushNamed(context, '/more');
+                  if (ModalRoute.of(context)?.settings.name !=
+                      CouponsScreen.routeName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      CouponsScreen.routeName,
+                      (route) => route.settings.name == '/login',
+                    );
+                  }
                   break;
                 case 4:
                   if (ModalRoute.of(context)?.settings.name !=

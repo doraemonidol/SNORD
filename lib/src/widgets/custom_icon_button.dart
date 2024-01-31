@@ -4,12 +4,15 @@ class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
     required this.icon,
     this.onPressed,
+    this.color,
     super.key,
   });
 
   final void Function(BuildContext context)? onPressed;
 
   final Widget icon;
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class CustomIconButton extends StatelessWidget {
           ),
         ),
         backgroundColor: MaterialStateProperty.all(
-          Colors.transparent,
+          color ?? Colors.transparent,
         ),
         shape: MaterialStateProperty.all(
           const RoundedRectangleBorder(

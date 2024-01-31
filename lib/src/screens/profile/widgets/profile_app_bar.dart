@@ -46,14 +46,14 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         SizedBox(
-          width: context.widthPercent(0.03),
+          width: context.widthPercent(0.03) + 8,
         ),
       ],
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(context.heightPercent(0.1)),
         child: Container(
           margin: EdgeInsets.symmetric(
-            horizontal: context.widthPercent(0.03),
+            horizontal: context.widthPercent(0.03) + 8,
             vertical: context.heightPercent(0.02),
           ),
           child: Column(
