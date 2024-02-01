@@ -23,13 +23,8 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
     // debugPrint('ProfileAppBar.build');
     return CustomAppBar(
       appBarHeight: appBarHeight,
-      title: Text(
+      title: const Text(
         'Your Profile',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: context.textScaleFactor(24),
-        ),
       ),
       actions: [
         Hero(

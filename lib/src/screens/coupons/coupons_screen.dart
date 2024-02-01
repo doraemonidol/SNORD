@@ -22,15 +22,10 @@ class CouponsScreen extends StatelessWidget {
         userRepository: context.read<UserRepositoryInterface>(),
       )..getAvailableCoupons(),
       child: Scaffold(
-        appBar: CustomAppBar(
+        appBar: const CustomAppBar(
           appBarHeight: 72,
           title: Text(
             'Coupons',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: context.textScaleFactor(24),
-            ),
           ),
         ),
         body: Consumer<CouponsControllers>(

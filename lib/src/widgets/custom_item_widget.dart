@@ -10,6 +10,7 @@ class CustomItemWidget extends StatelessWidget {
     this.leading,
     this.trailing,
     this.bottom,
+    this.onPressed,
     super.key,
   });
 
@@ -18,55 +19,63 @@ class CustomItemWidget extends StatelessWidget {
   final Widget subtitle;
   final Widget? trailing;
   final Widget? bottom;
+  final void Function(BuildContext context)? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final innerChild = Row(
-        children: [
-          if (leading != null) ...[
-            leading!,
-            const SizedBox(width: 16),
-          ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                title,
-                const SizedBox(height: 4),
-                subtitle,
-              ],
-            ),
+      children: [
+        if (leading != null) ...[
+          leading!,
+          const SizedBox(width: 16),
+        ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title,
+              const SizedBox(height: 4),
+              subtitle,
+            ],
           ),
-          if (trailing != null) ...[
-            trailing!,
-          ],
-        ],
-      );
-    final child = bottom != null ? Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [innerChild, bottom!],
-    ) : innerChild;
-    return Container(
-      decoration: ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(width: 1, color: Color(0xFFEAECF0)),
-          borderRadius: BorderRadius.circular(16),
         ),
-        shadows: const [
-          BoxShadow(
-            color: Color(0x0F222C5C),
-            blurRadius: 68,
-            offset: Offset(58, 26),
-            spreadRadius: 0,
-          )
+        if (trailing != null) ...[
+          trailing!,
         ],
+      ],
+    );
+    final child = bottom != null
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [innerChild, const SizedBox(height: 8), bottom!],
+          )
+        : innerChild;
+    return InkWell(
+      onTap: onPressed != null ? () => onPressed!(context) : null,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: Container(
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 1, color: Color(0xFFEAECF0)),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          shadows: const [
+            BoxShadow(
+              color: Color(0x0F222C5C),
+              blurRadius: 68,
+              offset: Offset(58, 26),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: context.widthPercent(0.04),
+          vertical: context.heightPercent(0.02),
+        ),
+        child: child,
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: context.widthPercent(0.04),
-        vertical: context.heightPercent(0.02),
-      ),
-      child: child,
     );
   }
 }

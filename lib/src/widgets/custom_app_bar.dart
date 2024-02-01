@@ -33,7 +33,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: title,
+          child: DefaultTextStyle.merge(
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: context.textScaleFactor(28),
+            ),
+            child: title,
+          ),
         ),
       ),
       actions: actions,
