@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
@@ -72,7 +73,21 @@ class MockApp extends StatelessWidget {
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
       },
-      initialRoute: SignupForm.routeName,
+      home: const AuthWrapper(),
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
+    if (firebaseUser != null) {
+      return const OnboardingScreen();
+    }
+    return const ProfileScreen();
   }
 }

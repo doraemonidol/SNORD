@@ -78,10 +78,7 @@ class OnboardingScreen extends StatelessWidget {
                       kCustomBottomNavigationBarHeightPercent / 3),
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      debugPrint('Hello');
-                      Dialog(
-                        child: Text('Hello'),
-                      );
+                      Navigator.pushNamed(context, '/login');
                     },
                     icon: const SvgIcon(
                       iconString: loginSvgString,
