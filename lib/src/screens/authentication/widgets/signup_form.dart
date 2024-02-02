@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
+import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
@@ -11,7 +13,7 @@ import 'package:rehabox/src/widgets/svg_icon.dart';
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
 
-  static const String routeName = '/sign-up';
+  static const String routeName = '/signup';
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -38,6 +40,14 @@ class _SignupFormState extends State<SignupForm> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void signUpUser() async {
+    context.read<FirebaseAuthMethods>().signUpWithEmail(
+          email: _emailController.text,
+          password: _passwordController.text,
+          context: context,
+        );
   }
 
   @override
@@ -302,7 +312,7 @@ class _SignupFormState extends State<SignupForm> {
                         _loginFormKey.currentState?.save();
                         if (_loginFormKey.currentState != null &&
                             _loginFormKey.currentState!.validate()) {
-                          debugPrint('Hello');
+                          signUpUser();
                         }
                       },
                       style: ButtonStyle(

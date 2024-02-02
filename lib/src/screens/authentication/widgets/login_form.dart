@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
+import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
@@ -11,7 +13,7 @@ import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
-  static const String routeName = '/log-in';
+  static const String routeName = '/login';
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -22,6 +24,14 @@ class _LoginFormState extends State<LoginForm> {
   final _loginFormKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+
+  void loginUser() {
+    context.read<FirebaseAuthMethods>().loginWithEmail(
+          email: _emailController.text,
+          password: _passwordController.text,
+          context: context,
+        );
+  }
 
   @override
   void initState() {
@@ -226,7 +236,8 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, SignupForm.routeName);
+                      Navigator.pushReplacementNamed(
+                          context, SignupForm.routeName);
                     },
                     style: ButtonStyle(
                       overlayColor:
@@ -251,7 +262,7 @@ class _LoginFormState extends State<LoginForm> {
                         _loginFormKey.currentState?.save();
                         if (_loginFormKey.currentState != null &&
                             _loginFormKey.currentState!.validate()) {
-                          debugPrint('Hello');
+                          loginUser();
                         }
                       },
                       style: ButtonStyle(
