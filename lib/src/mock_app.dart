@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
+import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
+import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
@@ -55,16 +58,21 @@ class MockApp extends StatelessWidget {
       routes: {
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),
-        DevicesSettingScreen.routeName: (context) => const DevicesSettingScreen(),
+        DevicesSettingScreen.routeName: (context) =>
+            const DevicesSettingScreen(),
         CouponsScreen.routeName: (context) => const CouponsScreen(),
         ChallengesScreen.routeName: (context) => const ChallengesScreen(),
         ChallengeViewScreen.routeName: (context) {
-          final challenge = ModalRoute.of(context)!.settings.arguments as Challenge;
+          final challenge =
+              ModalRoute.of(context)!.settings.arguments as Challenge;
           return ChallengeViewScreen(challenge: challenge);
         },
         TimersScreen.routeName: (context) => const TimersScreen(),
+        OnboardingScreen.routeName: (context) => const OnboardingScreen(),
+        LoginForm.routeName: (context) => const LoginForm(),
+        SignupForm.routeName: (context) => const SignupForm(),
       },
-      initialRoute: ProfileScreen.routeName,
+      initialRoute: SignupForm.routeName,
     );
   }
 }
