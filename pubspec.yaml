@@ -20,6 +20,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.9
+  google_sign_in: ^6.2.1
   http: ^1.2.0
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
