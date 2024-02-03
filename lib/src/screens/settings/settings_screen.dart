@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/settings/config.dart';
 import 'package:rehabox/src/screens/settings/widgets/options_group.dart';
+import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
@@ -79,6 +82,13 @@ class SettingsScreen extends StatelessWidget {
                     title: 'Devices',
                   ),
                 ),
+                OptionItem(
+                    svgIconString: logoutSvgString,
+                    title: 'Log out',
+                    onTap: (context) {
+                      context.read<FirebaseAuthMethods>().signOut(context);
+                      Navigator.pop(context);
+                    }),
               ],
             ),
             const SizedBox(height: 8),

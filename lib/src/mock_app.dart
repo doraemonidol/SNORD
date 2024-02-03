@@ -13,6 +13,7 @@ import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
 import 'package:rehabox/src/screens/timers/timers_screen.dart';
 import 'package:rehabox/src/theme/themedata.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 import 'models/models.dart';
 
@@ -83,9 +84,10 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User?>();
+    final firebaseUser = context.watch<auth.User?>();
+    debugPrint('firebaseUser: $firebaseUser');
 
-    if (firebaseUser != null) {
+    if (firebaseUser == null) {
       return const OnboardingScreen();
     }
     return const ProfileScreen();

@@ -33,6 +33,7 @@ class FirebaseAuthMethods {
         password: password,
       );
       // await sendEmailVerification(context);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
@@ -61,6 +62,7 @@ class FirebaseAuthMethods {
         // restrict access to certain things using provider
         // transition to another page instead of home screen
       }
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
