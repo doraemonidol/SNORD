@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/service/firebase_auth_methods.dart';
+import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:rehabox/src/screens/onboard/widgets/config.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
   static const String routeName = '/onboarding';
 
   @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  int _currentPage = 0;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -25,41 +35,75 @@ class OnboardingScreen extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Container(
-          child: CarouselSlider(
-            items: [
-              Container(
-                child: Center(
-                  child: Text('Text 1'),
+        body: Column(
+          children: [
+            CarouselSlider(
+              items: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.red,
+                  ),
+                  child: const Center(
+                    child: Text('Text 1'),
+                  ),
                 ),
-              ),
-              Container(
-                child: Center(
-                  child: Text('Text 2'),
+                Container(
+                  child: const Center(
+                    child: Text('Text 2'),
+                  ),
                 ),
-              ),
-              Container(
-                child: Center(
-                  child: Text('Text 3'),
+                Container(
+                  child: const Center(
+                    child: Text('Text 3'),
+                  ),
                 ),
+              ],
+              options: CarouselOptions(
+                height: context.heightPercent(
+                        1 - kCustomBottomNavigationBarHeightPercent) -
+                    50,
+                aspectRatio: 16 / 9,
+                viewportFraction: 1,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
               ),
-            ],
-            options: CarouselOptions(
-              height: context
-                  .heightPercent(1 - kCustomBottomNavigationBarHeightPercent),
-              aspectRatio: 16 / 9,
-              viewportFraction: 0.8,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              scrollDirection: Axis.horizontal,
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 24,
+                left: 24,
+                right: 24,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  AnimatedSmoothIndicator(
+                    activeIndex: _currentPage,
+                    count: 3,
+                    effect: const ExpandingDotsEffect(
+                      dotWidth: 8,
+                      dotHeight: 8,
+                      spacing: 16,
+                      dotColor: Color(0xFF888EFF),
+                      activeDotColor: Color(0xFFFFFFFF),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         extendBody: true,
         bottomNavigationBar: SizedBox(
@@ -84,7 +128,7 @@ class OnboardingScreen extends StatelessWidget {
                       iconString: loginSvgString,
                       size: 20,
                     ),
-                    label: Text(
+                    label: const Text(
                       'Continue with E-mail',
                       style: TextStyle(
                         fontSize: 14,
@@ -94,11 +138,11 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFFFFFFF)),
+                          MaterialStateProperty.all(const Color(0xFFFFFFFF)),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 SizedBox(
@@ -106,12 +150,16 @@ class OnboardingScreen extends StatelessWidget {
                   height: context.heightPercent(
                       kCustomBottomNavigationBarHeightPercent / 3),
                   child: ElevatedButton.icon(
-                    onPressed: null,
+                    onPressed: () {
+                      context
+                          .read<FirebaseAuthMethods>()
+                          .signInWithGoogle(context);
+                    },
                     icon: const SvgIcon(
                       iconString: googleSvgString,
                       size: 20,
                     ),
-                    label: Text(
+                    label: const Text(
                       'Continue with Google',
                       style: TextStyle(
                         fontSize: 14,
@@ -121,14 +169,14 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFFFFFFF)),
+                          MaterialStateProperty.all(const Color(0xFFFFFFFF)),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
-                Text(
+                const Text(
                   "By continuing you agree Terms of Services & Privacy Policy ",
                   style: TextStyle(
                     fontSize: 12,
