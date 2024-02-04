@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/utils/showSnackbar.dart';
 
 class FirebaseAuthMethods {
@@ -82,6 +86,7 @@ class FirebaseAuthMethods {
 
   // GOOGLE SIGN IN
   Future<void> signInWithGoogle(BuildContext context) async {
+    initializeBluetooth();
     try {
       if (kIsWeb) {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();

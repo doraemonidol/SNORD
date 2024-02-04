@@ -12,11 +12,12 @@ environment:
 dependencies:
   build_runner: ^2.4.8
   carousel_slider: ^4.2.1
+  device_info_plus: ^9.1.2
   firebase_auth: ^4.17.2
   firebase_core: ^2.25.2
   flutter:
     sdk: flutter
-  flutter_blue_plus: ^1.31.12
+  flutter_blue_plus: ^1.31.13
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.9
@@ -26,9 +27,11 @@ dependencies:
   json_serializable: ^6.7.1
   matcher: ^0.12.16
   mockito: ^5.4.4
+  permission_handler: ^11.2.0
   provider: ^6.1.1
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
+  sleek_circular_slider: ^2.0.1
   smooth_page_indicator: ^1.1.0
   test: ^1.24.9
 
@@ -47,6 +50,7 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/gif/
 
   fonts:
     - family: SFProDisplay

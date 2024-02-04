@@ -7,6 +7,8 @@ import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/grant_access_screen.dart';
 import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
@@ -73,6 +75,8 @@ class MockApp extends StatelessWidget {
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
+        GrantAccessScreen.routeName: (context) => const GrantAccessScreen(),
+        DeviceScreen.routeName: (context) => const DeviceScreen(),
       },
       home: const AuthWrapper(),
     );
@@ -90,6 +94,6 @@ class AuthWrapper extends StatelessWidget {
     if (firebaseUser == null) {
       return const OnboardingScreen();
     }
-    return const ProfileScreen();
+    return const GrantAccessScreen();
   }
 }
