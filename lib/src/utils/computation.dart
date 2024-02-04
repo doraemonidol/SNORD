@@ -65,3 +65,29 @@ String getTimeline(DateTime startDate, Duration duration) {
   final end = startDate.add(duration);
   return '${mapMonth(startDate.month)} ${startDate.day} to ${mapMonth(end.month)} ${end.day}';
 }
+
+String formatSeconds(int seconds) {
+  final hours = (seconds / 3600).floor();
+  final minutes = (seconds - hours * 3600) ~/ 60;
+  final remainingSeconds = seconds - hours * 3600 - minutes * 60;
+
+  String hoursString = hours == 0
+      ? ''
+      : hours < 10
+          ? '0$hours'
+          : hours.toString();
+
+  String minutesString = minutes == 0
+      ? '00'
+      : minutes < 10
+          ? '0$minutes'
+          : minutes.toString();
+
+  String remainingSecondsString = remainingSeconds < 10
+      ? '0$remainingSeconds'
+      : remainingSeconds.toString();
+
+  return hoursString.isEmpty
+      ? '$minutesString:$remainingSecondsString'
+      : '$hoursString:$minutesString:$remainingSecondsString';
+}

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
@@ -62,9 +63,10 @@ class MockApp extends StatelessWidget {
           final challenge = ModalRoute.of(context)!.settings.arguments as Challenge;
           return ChallengeViewScreen(challenge: challenge);
         },
+        HomeScreen.routeName: (context) => const HomeScreen(),
         TimersScreen.routeName: (context) => const TimersScreen(),
       },
-      initialRoute: ProfileScreen.routeName,
+      initialRoute: HomeScreen.routeName,
     );
   }
 }
