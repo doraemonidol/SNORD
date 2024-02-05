@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
+import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
 import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
@@ -53,7 +56,7 @@ class _CountdownClockState extends State<CountdownClock>
         setState(() {});
       });
 
-    controller.addStatusListener((status) {
+    controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         setState(() {
           done = true;
@@ -70,9 +73,16 @@ class _CountdownClockState extends State<CountdownClock>
             ),
           );
         });
-      }
-      if (status == AnimationStatus.dismissed) {
-        // Animation dismissed, you can perform any actions here
+        await Navigator.of(context)
+            .pushNamed(
+          CongratulationScreen.routeName,
+        )
+            .then((value) {
+          context.read<TimerControllers>().updateExceedExpectedDuration(true);
+          if (value == true) {
+            // await context.read<TimerControllers>().claimAndCloseTimer();
+          }
+        });
       }
     });
   }
@@ -200,11 +210,11 @@ class CountdownPainter extends CustomPainter {
     double sweepAngle = 360 * sweepPercentage;
 
     Color borderColor = CountdownPainter.borderColor;
-    if (sweepPercentage >= 0.95) {
+    if (sweepPercentage >= 0.99) {
       borderColor = const Color(0XFF4AC443);
     }
     Color remainingColor = CountdownPainter.remainingColor;
-    if (sweepPercentage >= 0.95) {
+    if (sweepPercentage >= 0.99) {
       remainingColor = const Color(0XFF4AC443);
     }
     Paint paint = Paint()

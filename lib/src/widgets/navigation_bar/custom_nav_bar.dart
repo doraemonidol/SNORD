@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
-import 'package:rehabox/src/screens/timers/timers_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 
@@ -47,7 +47,14 @@ class CustomNavigationBar extends StatelessWidget {
                   }
                   break;
                 case 2:
-                  Navigator.pushNamed(context, '/main');
+                  if (ModalRoute.of(context)?.settings.name !=
+                      TimerScreen.routeName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      TimerScreen.routeName,
+                      (route) => route.settings.name == '/login',
+                    );
+                  }
                   break;
                 case 3:
                   if (ModalRoute.of(context)?.settings.name !=
@@ -78,20 +85,18 @@ class CustomNavigationBar extends StatelessWidget {
             showUnselectedLabels: false,
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
-            currentIndex:
-                ModalRoute.of(context)?.settings.name ==
-                        ChallengesScreen.routeName
-                    ? 1
+            currentIndex: ModalRoute.of(context)?.settings.name ==
+                    ChallengesScreen.routeName
+                ? 1
+                : ModalRoute.of(context)?.settings.name == TimerScreen.routeName
+                    ? 2
                     : ModalRoute.of(context)?.settings.name ==
-                            TimersScreen.routeName
-                        ? 2
+                            CouponsScreen.routeName
+                        ? 3
                         : ModalRoute.of(context)?.settings.name ==
-                                CouponsScreen.routeName
-                            ? 3
-                            : ModalRoute.of(context)?.settings.name ==
-                                    ProfileScreen.routeName
-                                ? 4
-                                : 0,
+                                ProfileScreen.routeName
+                            ? 4
+                            : 0,
             items: const [
               BottomNavigationBarItem(
                 icon: SvgIcon(iconString: homeSvgString),

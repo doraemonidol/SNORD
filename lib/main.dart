@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
+import 'package:rehabox/src/repositories/timer_activity_repository/local_timer_activity_repository.dart';
+import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
 import 'package:rehabox/src/utils/mock_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +28,8 @@ void main() async {
       await SharedPreferences.getInstance();
 
   // Mock coupons
-  sharedPreferences.setStringList("coupons", coupons.map((e) => jsonEncode(e.toJson())).toList());
+  sharedPreferences.setStringList(
+      "coupons", coupons.map((e) => jsonEncode(e.toJson())).toList());
 
   final localDataSource = LocalDataSource(
     sharedPreferences,
@@ -46,6 +49,9 @@ void main() async {
     MultiProvider(
       providers: [
         Provider<UserRepositoryInterface>(create: (_) => userRepository),
+        Provider<TimerActivityRepositoryInterface>(
+          create: (_) => LocalTimerActivityRepository(),
+        ),
       ],
       child: const MockApp(),
     ),
