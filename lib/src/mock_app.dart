@@ -73,23 +73,49 @@ class MockApp extends StatelessWidget {
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
+        AuthWrapper.routeName: (context) => const AuthWrapper(),
       },
       home: const AuthWrapper(),
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute<void>(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: Text(AppLocalizations.of(context)!.appTitle),
+            ),
+            body: Center(
+              child: Text('No route defined for ${settings.name}'),
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({Key? key}) : super(key: key);
+  static const routeName = '/auth-wrapper';
 
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<auth.User?>();
-    debugPrint('firebaseUser: $firebaseUser');
+    debugPrint('AuthWrapper.build');
 
-    if (firebaseUser == null) {
-      return const OnboardingScreen();
-    }
-    return const ProfileScreen();
+    return StreamBuilder<auth.User?>(
+      stream: auth.FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final user = snapshot.data;
+          if (user == null) {
+            return const OnboardingScreen();
+          }
+          return const CouponsScreen();
+        }
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
 }
