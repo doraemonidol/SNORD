@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/profile/controllers/user_profile_provider.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_header.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
-import 'package:rehabox/src/screens/profile/widgets/profile_tabs.dart';
+import 'package:rehabox/src/widgets/profile_tabs.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -63,7 +65,26 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                 height: 16,
               ),
               if (!isLoading)
-                const ProfileTabs()
+                Selector<UserProfileProvider, ProfileBodyType>(
+                  selector:
+                      (BuildContext context, UserProfileProvider controller) =>
+                          controller.state.profileBodyType,
+                  builder: (BuildContext context, ProfileBodyType value,
+                          Widget? child) =>
+                      SwitchingTabs(
+                    tabs: const [
+                      'Activity',
+                      'Achievements',
+                    ],
+                    onTabChange: (context, index) => context
+                        .read<UserProfileProvider>()
+                        .changeProfileBodyType(
+                          index == 0
+                              ? ProfileBodyType.activity
+                              : ProfileBodyType.achievement,
+                        ),
+                  ),
+                )
               else
                 const ShimmerProfileTabs()
             ],

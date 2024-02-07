@@ -5,6 +5,7 @@ import 'package:rehabox/src/repositories/repositories.dart';
 import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
 import 'package:rehabox/src/screens/timer/config.dart';
 import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
+import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/timer_shimmer_screen.dart';
 import 'package:rehabox/src/screens/timer/widgets/set_new_goal_button.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
@@ -77,7 +78,21 @@ class TimerScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (value)
-                      const SetNewGoalButton()
+                      SetNewGoalButton(
+                        onPressed: (context) async {
+                          await context
+                              .read<TimerControllers>()
+                              .claimAndCloseTimer()
+                              .then(
+                            (value) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                SetTimerScreen.routeName,
+                              );
+                            },
+                          );
+                        },
+                      )
                     else
                       const ChangeTimerButton(),
                     const CustomNavigationBar(),

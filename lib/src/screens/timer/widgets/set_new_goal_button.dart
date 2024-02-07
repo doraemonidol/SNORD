@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
-import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 
 class SetNewGoalButton extends StatelessWidget {
-  const SetNewGoalButton({super.key});
+  const SetNewGoalButton({
+    required this.onPressed,
+    super.key,
+  });
+
+  final Future<void> Function(BuildContext) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        await context.read<TimerControllers>().claimAndCloseTimer().then(
-          (value) {
-            Navigator.pushReplacementNamed(
-              context,
-              SetTimerScreen.routeName,
-            );
-          },
-        );
+        await onPressed(context);
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
@@ -78,10 +73,12 @@ class SetNewGoalButton extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text('Click here to set new goal',
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.primary,
-                    )),
+                Text(
+                  'Click here to set new goal',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.primary,
+                  ),
+                ),
               ],
             ),
           )

@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       shadowColor: Colors.black.withOpacity(0.4),
       surfaceTintColor: Colors.white,
       backgroundColor: Colors.white,
-      leadingWidth: 200,
+      leadingWidth: context.widthPercent(0.75),
       leading: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: context.widthPercent(0.03) + 8,

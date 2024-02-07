@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
@@ -55,17 +56,21 @@ class MockApp extends StatelessWidget {
       darkTheme: ThemeData.dark(),
       // themeMode: settingsController.themeMode,
       routes: {
+        HomeScreen.routeName: (context) => const HomeScreen(),
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),
-        DevicesSettingScreen.routeName: (context) => const DevicesSettingScreen(),
+        DevicesSettingScreen.routeName: (context) =>
+            const DevicesSettingScreen(),
         CouponsScreen.routeName: (context) => const CouponsScreen(),
         ChallengesScreen.routeName: (context) => const ChallengesScreen(),
         ChallengeViewScreen.routeName: (context) {
-          final challenge = ModalRoute.of(context)!.settings.arguments as Challenge;
+          final challenge =
+              ModalRoute.of(context)!.settings.arguments as Challenge;
           return ChallengeViewScreen(challenge: challenge);
         },
         TimerScreen.routeName: (context) => const TimerScreen(),
-        CongratulationScreen.routeName: (context) => const CongratulationScreen(),
+        CongratulationScreen.routeName: (context) =>
+            const CongratulationScreen(),
         SetTimerScreen.routeName: (context) => const SetTimerScreen(),
       },
       initialRoute: TimerScreen.routeName,

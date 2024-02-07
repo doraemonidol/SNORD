@@ -91,3 +91,30 @@ String formatSeconds(int seconds) {
       ? '$minutesString:$remainingSecondsString'
       : '$hoursString:$minutesString:$remainingSecondsString';
 }
+
+String getDayOfWeek(DateTime date) {
+  switch (date.weekday) {
+    case 1:
+      return 'Monday';
+    case 2:
+      return 'Tuesday';
+    case 3:
+      return 'Wednesday';
+    case 4:
+      return 'Thursday';
+    case 5:
+      return 'Friday';
+    case 6:
+      return 'Saturday';
+    case 7:
+      return 'Sunday';
+    default:
+      return '';
+  }
+}
+
+bool matchDate(DateTime date1, DateTime date2) {
+  return date1.day == date2.day &&
+      date1.month == date2.month &&
+      date1.year == date2.year;
+}
