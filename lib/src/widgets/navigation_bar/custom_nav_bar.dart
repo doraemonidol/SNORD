@@ -97,7 +97,7 @@ class CustomNavigationBar extends StatelessWidget {
                     ChallengesScreen.routeName
                 ? 1
                 : ModalRoute.of(context)?.settings.name ==
-                        TimersScreen.routeName
+                        TimerScreen.routeName
                     ? 2
                     : ModalRoute.of(context)?.settings.name ==
                             CouponsScreen.routeName

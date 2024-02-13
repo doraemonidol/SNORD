@@ -73,14 +73,13 @@ class MockApp extends StatelessWidget {
               ModalRoute.of(context)!.settings.arguments as Challenge;
           return ChallengeViewScreen(challenge: challenge);
         },
-        TimersScreen.routeName: (context) => const TimersScreen(),
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
         AuthWrapper.routeName: (context) => const AuthWrapper(),
-        TimerScreen.routeName: (context) => const TimerScreen(),
         CongratulationScreen.routeName: (context) =>
             const CongratulationScreen(),
+        TimerScreen.routeName: (context) => const TimerScreen(),
         SetTimerScreen.routeName: (context) => const SetTimerScreen(),
       },
       home: const AuthWrapper(),
@@ -116,7 +115,7 @@ class AuthWrapper extends StatelessWidget {
           if (user == null) {
             return const OnboardingScreen();
           }
-          return const CouponsScreen();
+          return const HomeScreen();
         }
         return const Scaffold(
           body: Center(
