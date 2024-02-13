@@ -50,7 +50,7 @@ class CustomNavigationBar extends StatelessWidget {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       ChallengesScreen.routeName,
-                      (route) => route.settings.name == '/login',
+                      (route) => route.settings.name == '/',
                     );
                   }
                   break;
@@ -70,7 +70,7 @@ class CustomNavigationBar extends StatelessWidget {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       CouponsScreen.routeName,
-                      (route) => route.settings.name == '/login',
+                      (route) => route.settings.name == '/',
                     );
                   }
                   break;
@@ -80,7 +80,7 @@ class CustomNavigationBar extends StatelessWidget {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       ProfileScreen.routeName,
-                      (route) => route.settings.name == '/login',
+                      (route) => route.settings.name == '/',
                     );
                   }
                   break;
@@ -96,7 +96,8 @@ class CustomNavigationBar extends StatelessWidget {
             currentIndex: ModalRoute.of(context)?.settings.name ==
                     ChallengesScreen.routeName
                 ? 1
-                : ModalRoute.of(context)?.settings.name == TimerScreen.routeName
+                : ModalRoute.of(context)?.settings.name ==
+                        TimersScreen.routeName
                     ? 2
                     : ModalRoute.of(context)?.settings.name ==
                             CouponsScreen.routeName

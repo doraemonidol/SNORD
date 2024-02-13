@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/firebase_options.dart';
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
+import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/repositories/timer_activity_repository/local_timer_activity_repository.dart';
 import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
 import 'package:rehabox/src/utils/mock_data.dart';
@@ -16,6 +20,9 @@ import 'src/settings/settings_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());
@@ -48,6 +55,13 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<FirebaseAuthMethods>(
+          create: (_) => FirebaseAuthMethods(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<FirebaseAuthMethods>().authState,
+          initialData: null,
+        ),
         Provider<UserRepositoryInterface>(create: (_) => userRepository),
         Provider<TimerActivityRepositoryInterface>(
           create: (_) => LocalTimerActivityRepository(),

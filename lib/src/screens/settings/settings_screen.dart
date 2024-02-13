@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/mock_app.dart';
+import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/settings/config.dart';
 import 'package:rehabox/src/screens/settings/widgets/options_group.dart';
+import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
@@ -16,6 +20,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint current route
+    debugPrint('current route: ${ModalRoute.of(context)?.settings.name}');
     return Scaffold(
       appBar: CustomAppBar(
         appBarHeight: 72,
@@ -71,7 +77,7 @@ class SettingsScreen extends StatelessWidget {
                 Hero(
                   tag: 'devices',
                   child: OptionItem(
-                    onTap: (context) => Navigator.pushNamed(
+                    onTap: (context) => Navigator.pushNamed(  
                       context,
                       DevicesSettingScreen.routeName,
                     ),
@@ -79,6 +85,13 @@ class SettingsScreen extends StatelessWidget {
                     title: 'Devices',
                   ),
                 ),
+                OptionItem(
+                    svgIconString: logoutSvgString,
+                    title: 'Log out',
+                    onTap: (context) {
+                      context.read<FirebaseAuthMethods>().signOut(context);
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    }),
               ],
             ),
             const SizedBox(height: 8),
