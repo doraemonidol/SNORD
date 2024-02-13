@@ -8,10 +8,13 @@ import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
 import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
-import 'package:rehabox/src/screens/timers/timers_screen.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
@@ -58,6 +61,7 @@ class MockApp extends StatelessWidget {
       darkTheme: ThemeData.dark(),
       // themeMode: settingsController.themeMode,
       routes: {
+        HomeScreen.routeName: (context) => const HomeScreen(),
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),
         DevicesSettingScreen.routeName: (context) =>
@@ -74,6 +78,10 @@ class MockApp extends StatelessWidget {
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
         AuthWrapper.routeName: (context) => const AuthWrapper(),
+        TimerScreen.routeName: (context) => const TimerScreen(),
+        CongratulationScreen.routeName: (context) =>
+            const CongratulationScreen(),
+        SetTimerScreen.routeName: (context) => const SetTimerScreen(),
       },
       home: const AuthWrapper(),
       onUnknownRoute: (settings) {

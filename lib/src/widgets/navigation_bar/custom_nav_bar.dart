@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
-import 'package:rehabox/src/screens/timers/timers_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 
@@ -34,7 +35,14 @@ class CustomNavigationBar extends StatelessWidget {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  Navigator.pushNamed(context, '/');
+                  if (ModalRoute.of(context)?.settings.name !=
+                      HomeScreen.routeName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      HomeScreen.routeName,
+                      (route) => route.settings.name == '/login',
+                    );
+                  }
                   break;
                 case 1:
                   if (ModalRoute.of(context)?.settings.name !=
@@ -47,7 +55,14 @@ class CustomNavigationBar extends StatelessWidget {
                   }
                   break;
                 case 2:
-                  Navigator.pushNamed(context, '/main');
+                  if (ModalRoute.of(context)?.settings.name !=
+                      TimerScreen.routeName) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      TimerScreen.routeName,
+                      (route) => route.settings.name == '/login',
+                    );
+                  }
                   break;
                 case 3:
                   if (ModalRoute.of(context)?.settings.name !=
