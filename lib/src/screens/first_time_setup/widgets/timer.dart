@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/timer_tabs.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:rehabox/src/widgets/sleek_circular_slider/appearance.dart';
+import 'package:rehabox/src/widgets/sleek_circular_slider/circular_slider.dart';
 
 enum GoalType { hour, day, month }
 
 class GoalCategory {
   final String time;
-  final int min;
-  final int max;
+  final double min;
+  final double max;
   final GoalType type;
 
   GoalCategory({
@@ -20,32 +21,32 @@ class GoalCategory {
   static List<GoalCategory> get goalCategories => [
         GoalCategory(
           time: 'hour',
-          min: 1,
+          min: 0.1,
           max: 24,
           type: GoalType.hour,
         ),
         GoalCategory(
           time: 'day',
-          min: 1,
+          min: 0.1,
           max: 30,
           type: GoalType.day,
         ),
         GoalCategory(
           time: 'month',
-          min: 1,
+          min: 0.1,
           max: 12,
           type: GoalType.month,
         ),
       ];
 }
 
-class TimerSetting extends StatefulWidget {
-  final double initialValue;
+class TimerSetter extends StatefulWidget {
+  double initialValue;
   final GoalType goalType;
   final Duration recommendedTime;
   final Function(int) onChanged;
 
-  TimerSetting({
+  TimerSetter({
     required this.initialValue,
     required this.goalType,
     required this.onChanged,
@@ -53,29 +54,50 @@ class TimerSetting extends StatefulWidget {
   });
 
   @override
-  State<TimerSetting> createState() => _TimerSettingState();
+  State<TimerSetter> createState() => _TimerSetterState();
 }
 
-class _TimerSettingState extends State<TimerSetting>
+class _TimerSetterState extends State<TimerSetter>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController = TabController(
     length: 3,
     vsync: this,
   );
+  List<double> initialValue = [1, 1, 1, 1];
+  Key sliderKey = UniqueKey();
 
   String printDuration(Duration duration) {
+    String ans = '';
     if (duration.inDays > 30) {
-      return '${duration.inDays ~/ 30} months';
+      ans = '${duration.inDays ~/ 30} month';
+      if (duration.inDays > 60) ans += 's';
     } else if (duration.inDays > 0) {
-      return '${duration.inDays} days';
+      ans = '${duration.inDays} day';
+      if (duration.inDays > 1) ans += 's';
     } else {
-      return '${duration.inHours} hours';
+      ans = '${duration.inHours} hour';
+      if (duration.inHours > 1) ans += 's';
     }
+
+    return ans;
   }
+
+  // double changeValue(double value, int current, int next) {
+  //   debugPrint('Change Value: $value from $current to $next');
+  //   double currentAngle = value / GoalCategory.goalCategories[current].max;
+  //   double nextAngle = currentAngle * GoalCategory.goalCategories[next].max;
+  //   debugPrint('Next Angle: $nextAngle');
+  //   return nextAngle < 1
+  //       ? 1
+  //       : nextAngle > GoalCategory.goalCategories[next].max
+  //           ? GoalCategory.goalCategories[next].max
+  //           : nextAngle;
+  // }
 
   @override
   void initState() {
     _tabController.index = widget.goalType.index;
+    initialValue = [1, 1, 1, 1];
     super.initState();
   }
 
@@ -118,7 +140,12 @@ class _TimerSettingState extends State<TimerSetting>
                     vertical: 2,
                   ),
                   onTap: (int index) {
+                    // firstSet = true;
+                    widget.initialValue = initialValue[index];
+                    widget.onChanged(initialValue[index].toInt());
                     _tabController.index = index;
+                    debugPrint('Start Switching');
+
                     setState(() {});
                   },
                   splashBorderRadius: BorderRadius.circular(16),
@@ -149,8 +176,14 @@ class _TimerSettingState extends State<TimerSetting>
               ),
               const SizedBox(height: 32),
               SleekCircularSlider(
+                key: sliderKey,
                 onChangeStart: (double value) {},
                 onChangeEnd: (double value) {},
+                onChange: (double value) {
+                  debugPrint('Onchanged Value: $value');
+                  initialValue[_tabController.index] = value;
+                  widget.onChanged(value.toInt());
+                },
                 appearance: CircularSliderAppearance(
                     customWidths: CustomSliderWidths(
                       trackWidth: 45,
@@ -185,17 +218,13 @@ class _TimerSettingState extends State<TimerSetting>
                         ),
                         modifier: (double value) {
                           int time = value.round();
-                          widget.onChanged(time);
                           return '$time';
                         }),
                     startAngle: 270,
                     angleRange: 359,
                     size: 270.0),
-                min: GoalCategory.goalCategories[_tabController.index].min
-                    .toDouble(),
-                max: GoalCategory.goalCategories[_tabController.index].max
-                        .toDouble() +
-                    1,
+                min: GoalCategory.goalCategories[_tabController.index].min,
+                max: GoalCategory.goalCategories[_tabController.index].max,
                 initialValue: widget.initialValue,
               ),
               ...(widget.recommendedTime.inHours > 0
@@ -221,7 +250,26 @@ class _TimerSettingState extends State<TimerSetting>
                           ),
                           Spacer(),
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (widget.recommendedTime.inDays > 30) {
+                                widget.initialValue =
+                                    widget.recommendedTime.inDays / 30;
+                                _tabController.index = 2;
+                              } else if (widget.recommendedTime.inDays > 0) {
+                                widget.initialValue =
+                                    widget.recommendedTime.inDays.toDouble();
+                                _tabController.index = 1;
+                              } else {
+                                widget.initialValue =
+                                    widget.recommendedTime.inHours.toDouble();
+                                _tabController.index = 0;
+                              }
+                              initialValue[_tabController.index] =
+                                  widget.initialValue;
+                              widget.onChanged(widget.initialValue.toInt());
+                              // sliderKey = UniqueKey();
+                              setState(() {});
+                            },
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 32,
