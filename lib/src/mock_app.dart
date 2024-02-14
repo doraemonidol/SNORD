@@ -19,6 +19,7 @@ import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 
 import 'models/models.dart';
 
@@ -119,7 +120,7 @@ class AuthWrapper extends StatelessWidget {
           if (user == null) {
             return const OnboardingScreen();
           }
-          return const HomeScreen();
+          return const GrantAccessScreen();
         }
         return const Scaffold(
           body: Center(

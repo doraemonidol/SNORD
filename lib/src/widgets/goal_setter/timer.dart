@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rehabox/src/screens/first_time_setup/widgets/timer_tabs.dart';
+import 'package:rehabox/src/widgets/goal_setter/timer_tabs.dart';
 import 'package:rehabox/src/widgets/sleek_circular_slider/appearance.dart';
 import 'package:rehabox/src/widgets/sleek_circular_slider/circular_slider.dart';
 

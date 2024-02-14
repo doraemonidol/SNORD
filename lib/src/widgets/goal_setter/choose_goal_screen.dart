@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rehabox/src/screens/first_time_setup/widgets/timer.dart';
-import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
+import 'package:rehabox/src/widgets/goal_setter/timer.dart';
 
 class ChooseGoalScreen extends StatefulWidget {
   final String title;
@@ -88,7 +88,7 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
               Spacer(),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, ProfileScreen.routeName);
+                  Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 style: ButtonStyle(
                   padding: MaterialStatePropertyAll(

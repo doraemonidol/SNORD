@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/screens/first_time_setup/widgets/choose_goal_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/controllers/devices_provider.dart';
 import 'package:rehabox/src/screens/settings/widgets/device_options_box.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
-import 'package:rehabox/src/widgets/custom_app_bar.dart';
-import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
+import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 
 class DeviceScreen extends StatefulWidget {
@@ -37,15 +34,26 @@ class _DeviceScreenState extends State<DeviceScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    CircularProgressIndicator(
+                    const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        const Color(0xFF3843FF),
+                        Color(0xFF3843FF),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    ElevatedButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ChooseGoalScreen(title: "Set your first milestone", recommendedTime: Duration(hours: 1),),),);
-                    }, child: Text('Grant Access'),),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChooseGoalScreen(
+                              title: "Set your first milestone",
+                              recommendedTime: Duration(hours: 1),
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('Grant Access'),
+                    ),
                   ],
                 ),
               ),

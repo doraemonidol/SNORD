@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rehabox/src/screens/profile/controllers/user_profile_provider.dart';
-import 'package:rehabox/src/screens/profile/widgets/config.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TabItem extends StatelessWidget {
   const TabItem({
