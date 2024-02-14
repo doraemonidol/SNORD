@@ -10,10 +10,13 @@ import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/grant_access_screen.dart';
 import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
-import 'package:rehabox/src/screens/timers/timers_screen.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
@@ -60,6 +63,7 @@ class MockApp extends StatelessWidget {
       darkTheme: ThemeData.dark(),
       // themeMode: settingsController.themeMode,
       routes: {
+        HomeScreen.routeName: (context) => const HomeScreen(),
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         SettingsScreen.routeName: (context) => const SettingsScreen(),
         DevicesSettingScreen.routeName: (context) =>
@@ -71,29 +75,58 @@ class MockApp extends StatelessWidget {
               ModalRoute.of(context)!.settings.arguments as Challenge;
           return ChallengeViewScreen(challenge: challenge);
         },
-        TimersScreen.routeName: (context) => const TimersScreen(),
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
         GrantAccessScreen.routeName: (context) => const GrantAccessScreen(),
         DeviceScreen.routeName: (context) => const DeviceScreen(),
+        AuthWrapper.routeName: (context) => const AuthWrapper(),
+        CongratulationScreen.routeName: (context) =>
+            const CongratulationScreen(),
+        TimerScreen.routeName: (context) => const TimerScreen(),
+        SetTimerScreen.routeName: (context) => const SetTimerScreen(),
       },
       home: const AuthWrapper(),
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute<void>(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: Text(AppLocalizations.of(context)!.appTitle),
+            ),
+            body: Center(
+              child: Text('No route defined for ${settings.name}'),
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({Key? key}) : super(key: key);
+  static const routeName = '/auth-wrapper';
 
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<auth.User?>();
-    debugPrint('firebaseUser: $firebaseUser');
+    debugPrint('AuthWrapper.build');
 
-    if (firebaseUser == null) {
-      return const OnboardingScreen();
-    }
-    return const GrantAccessScreen();
+    return StreamBuilder<auth.User?>(
+      stream: auth.FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final user = snapshot.data;
+          if (user == null) {
+            return const OnboardingScreen();
+          }
+          return const HomeScreen();
+        }
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
 }

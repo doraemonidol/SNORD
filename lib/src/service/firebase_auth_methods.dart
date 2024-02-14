@@ -43,9 +43,9 @@ class FirebaseAuthMethods {
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        debugPrint('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        debugPrint('The account already exists for that email.');
       }
       showSnackBar(
           context, e.message!); // Displaying the usual firebase error message

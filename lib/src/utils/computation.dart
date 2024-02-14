@@ -65,3 +65,56 @@ String getTimeline(DateTime startDate, Duration duration) {
   final end = startDate.add(duration);
   return '${mapMonth(startDate.month)} ${startDate.day} to ${mapMonth(end.month)} ${end.day}';
 }
+
+String formatSeconds(int seconds) {
+  final hours = (seconds / 3600).floor();
+  final minutes = (seconds - hours * 3600) ~/ 60;
+  final remainingSeconds = seconds - hours * 3600 - minutes * 60;
+
+  String hoursString = hours == 0
+      ? ''
+      : hours < 10
+          ? '0$hours'
+          : hours.toString();
+
+  String minutesString = minutes == 0
+      ? '00'
+      : minutes < 10
+          ? '0$minutes'
+          : minutes.toString();
+
+  String remainingSecondsString = remainingSeconds < 10
+      ? '0$remainingSeconds'
+      : remainingSeconds.toString();
+
+  return hoursString.isEmpty
+      ? '$minutesString:$remainingSecondsString'
+      : '$hoursString:$minutesString:$remainingSecondsString';
+}
+
+String getDayOfWeek(DateTime date) {
+  switch (date.weekday) {
+    case 1:
+      return 'Monday';
+    case 2:
+      return 'Tuesday';
+    case 3:
+      return 'Wednesday';
+    case 4:
+      return 'Thursday';
+    case 5:
+      return 'Friday';
+    case 6:
+      return 'Saturday';
+    case 7:
+      return 'Sunday';
+    default:
+      return '';
+  }
+}
+
+bool matchDate(DateTime date1, DateTime date2) {
+  return date1.day == date2.day &&
+      date1.month == date2.month &&
+      date1.year == date2.year;
+}

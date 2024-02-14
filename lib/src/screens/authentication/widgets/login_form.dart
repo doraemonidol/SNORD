@@ -86,7 +86,7 @@ class _LoginFormState extends State<LoginForm> {
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: context.textScaleFactor(24),
+                          fontSize: context.textScaleFactor(28),
                         ),
                       ),
                     ),
