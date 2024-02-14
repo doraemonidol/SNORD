@@ -8,6 +8,7 @@ class ChooseGoalScreen extends StatefulWidget {
   final String description;
   final Duration recommendedTime;
   final Duration currentTime;
+  final bool canBack;
 
   const ChooseGoalScreen({
     Key? key,
@@ -16,6 +17,7 @@ class ChooseGoalScreen extends StatefulWidget {
         'You are restricted from consuming nicotine until the timer expires.',
     this.currentTime = const Duration(hours: 1),
     this.recommendedTime = const Duration(hours: 0),
+    this.canBack = false,
   }) : super(key: key);
 
   @override
@@ -28,12 +30,33 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: widget.canBack
+            ? IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.abc),
+              )
+            : null,
+        automaticallyImplyLeading: false,
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: context.textScaleFactor(18),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
             left: 24,
             right: 24,
-            top: 32,
             bottom: 20,
           ),
           child: Column(
@@ -41,15 +64,6 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
                   Text(
                     widget.description,
                     style: const TextStyle(
@@ -62,13 +76,14 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              TimerSetting(
+              TimerSetter(
                 initialValue: 1,
                 goalType: GoalType.hour,
                 onChanged: (value) {
                   goalValue = value;
+                  debugPrint('goalValue: $goalValue');
                 },
-                recommendedTime: Duration(hours: 1),
+                recommendedTime: Duration(hours: 2),
               ),
               Spacer(),
               TextButton(
