@@ -63,14 +63,16 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     'Weekly',
                     'Monthly',
                   ],
-                  onTabChange: (context, index) =>
-                      context.read<HomeControllers>().changeTabState(
-                            index == 0
-                                ? TabState.daily
-                                : index == 1
-                                    ? TabState.weekly
-                                    : TabState.monthly,
-                          ),
+                  onTabChange: (context, index) {
+                    context.read<HomeControllers>().changeTabState(
+                          index == 0
+                              ? TabState.daily
+                              : index == 1
+                                  ? TabState.weekly
+                                  : TabState.monthly,
+                        );
+                    context.read<HomeControllers>().fetchData();
+                  },
                 ),
               ),
               const SizedBox(
@@ -107,14 +109,16 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                   CustomIconButton(
-                    onPressed: (context) => context.read<HomeControllers>().previousWeek(),
+                    onPressed: (context) =>
+                        context.read<HomeControllers>().previousWeek(),
                     icon: const Icon(Icons.navigate_before_rounded),
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   CustomIconButton(
-                    onPressed: (context) => context.read<HomeControllers>().nextWeek(),
+                    onPressed: (context) =>
+                        context.read<HomeControllers>().nextWeek(),
                     icon: const Icon(Icons.navigate_next_rounded),
                   ),
                 ],

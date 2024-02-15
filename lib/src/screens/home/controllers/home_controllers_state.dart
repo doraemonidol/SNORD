@@ -9,6 +9,8 @@ class HomeControllersState {
     required this.endDate,
     this.selectedDate,
     this.errorMessage,
+    this.indicatedValue,
+    this.data,
   }) : startDate = endDate.subtract(
           const Duration(
             days: 7,
@@ -21,6 +23,8 @@ class HomeControllersState {
   final DateTime endDate;
   final ControllersStatus status;
   final String? errorMessage;
+  final double? indicatedValue;
+  final List<double>? data;
 
   HomeControllersState copyWith({
     TabState? tabState,
@@ -28,6 +32,8 @@ class HomeControllersState {
     ControllersStatus? status,
     String? errorMessage,
     DateTime? endDate,
+    double? indicatedValue,
+    List<double>? data,
   }) {
     return HomeControllersState(
       tabState: tabState ?? this.tabState,
@@ -35,6 +41,8 @@ class HomeControllersState {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       endDate: endDate ?? this.endDate,
+      indicatedValue: indicatedValue?? this.data?.last,
+      data: data ?? this.data,
     );
   }
 }

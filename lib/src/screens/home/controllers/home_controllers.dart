@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehabox/src/screens/home/widgets/config.dart';
 import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/utils/controllers_status.dart';
 
@@ -11,6 +12,28 @@ class HomeControllers extends ChangeNotifier
   );
 
   HomeControllersState get state => _state;
+
+  Future<void> fetchData() async {
+    _state = _state.copyWith(
+      status: ControllersStatus.loading,
+      data: null,
+    );
+    notifyListeners();
+    try {
+      // final data = await Computation().fetchData();
+      await Future.delayed(const Duration(seconds: 2));
+      _state = _state.copyWith(
+        status: ControllersStatus.loaded,
+        data: mockData,
+      );
+    } catch (e) {
+      _state = _state.copyWith(
+        status: ControllersStatus.error,
+        errorMessage: e.toString(),
+      );
+    }
+    notifyListeners();
+  }
 
   void changeTabState(TabState tabState) {
     _state = _state.copyWith(tabState: tabState);
@@ -42,16 +65,33 @@ class HomeControllers extends ChangeNotifier
     notifyListeners();
   }
 
-  void selectDate(DateTime date) {
-    if (_state.selectedDate != null && matchDate(date, _state.selectedDate!)) {
-      _state = HomeControllersState(
-        tabState: _state.tabState,
-        endDate: _state.endDate,
-        selectedDate: null,
+  Future<void> selectDate(DateTime date) async {
+    try {
+      if (_state.selectedDate == null ||
+          !matchDate(date, _state.selectedDate!)) {
+        _state = HomeControllersState(
+          tabState: _state.tabState,
+          endDate: _state.endDate,
+          selectedDate: date,
+        );
+      } else {
+        _state = HomeControllersState(
+          tabState: _state.tabState,
+          endDate: _state.endDate,
+          selectedDate: null,
+        );
+      }
+    } catch (e) {
+      _state = _state.copyWith(
+        status: ControllersStatus.error,
+        errorMessage: e.toString(),
       );
-    } else {
-      _state = _state.copyWith(selectedDate: date);
     }
+    notifyListeners();
+  }
+
+  void changeIndicatedValue(double? value) {
+    _state = _state.copyWith(indicatedValue: value);
     notifyListeners();
   }
 

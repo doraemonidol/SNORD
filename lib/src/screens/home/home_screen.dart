@@ -19,18 +19,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final numbers = List.generate(
-      24 * 60,
-      (index) => Random().nextDouble() - Random().nextDouble(),
-    );
-    final cummulative = <double>[];
-    double sum = 0;
-    for (var i = 0; i < numbers.length; i++) {
-      sum += numbers[i];
-      cummulative.add(sum);
-    }
     return ChangeNotifierProvider(
-      create: (BuildContext context) => HomeControllers(),
+      create: (BuildContext context) => HomeControllers()..fetchData(),
       child: Consumer<HomeControllers>(
         builder: conditionalRenderManager<HomeControllers>(
           onInitial: (BuildContext context) => Scaffold(
@@ -63,9 +53,14 @@ class HomeScreen extends StatelessWidget {
                                 matchDate(date, selectedDate);
                             return DateButton(
                               date: date,
-                              onTap: (context) => context
-                                  .read<HomeControllers>()
-                                  .selectDate(date),
+                              onTap: (context) {
+                                context
+                                    .read<HomeControllers>()
+                                    .selectDate(date);
+                                context
+                                    .read<HomeControllers>()
+                                    .fetchData();
+                              },
                               isSelected: isSelected,
                             );
                           },
@@ -79,19 +74,30 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  Selector<HomeControllers, TabState>(
-                    selector: (context, controller) =>
-                        controller.state.tabState,
-                    builder: (context, tabState, child) {
-                      switch (tabState) {
-                        case TabState.daily:
-                          return const DailyChart();
-                        case TabState.weekly:
-                          return const WeeklyChart();
-                        case TabState.monthly:
-                          return Container();
+                  Selector<HomeControllers, DateTime?>(
+                    builder:
+                        (BuildContext context, DateTime? value, Widget? child) {
+                      if (value == null) {
+                        return const SizedBox();
                       }
+                      return Selector<HomeControllers, TabState>(
+                        selector: (context, controller) =>
+                            controller.state.tabState,
+                        builder: (context, tabState, child) {
+                          switch (tabState) {
+                            case TabState.daily:
+                              return const DailyChart();
+                            case TabState.weekly:
+                              return const WeeklyChart();
+                            case TabState.monthly:
+                              return Container();
+                          }
+                        },
+                      );
                     },
+                    selector:
+                        (BuildContext context, HomeControllers controller) =>
+                            controller.state.selectedDate,
                   ),
                 ],
               ),
