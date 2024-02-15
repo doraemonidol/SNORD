@@ -77,15 +77,14 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
               ),
               const SizedBox(height: 20),
               TimerSetter(
-                initialValue: 1,
                 goalType: GoalType.hour,
                 onChanged: (value) {
                   goalValue = value;
                   debugPrint('goalValue: $goalValue');
                 },
-                recommendedTime: Duration(hours: 2),
+                recommendedTime: const Duration(hours: 2),
               ),
-              Spacer(),
+              const Spacer(),
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, HomeScreen.routeName);

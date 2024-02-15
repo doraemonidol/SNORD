@@ -87,7 +87,10 @@ class MockApp extends StatelessWidget {
               timeLeft: Duration(seconds: 10),
             ),
       },
-      home: const AuthWrapper(),
+      // home: const AuthWrapper(),
+      // phatalways-sleeping: I commented this out to use initialRoute instead,
+      // avoiding the need to use a const AuthWrapper() as the home route since we have a named route for it.
+      initialRoute: AuthWrapper.routeName,
       onUnknownRoute: (settings) {
         return MaterialPageRoute<void>(
           builder: (context) => Scaffold(

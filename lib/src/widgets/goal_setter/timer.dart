@@ -41,13 +41,12 @@ class GoalCategory {
 }
 
 class TimerSetter extends StatefulWidget {
-  double initialValue;
   final GoalType goalType;
   final Duration recommendedTime;
   final Function(int) onChanged;
 
-  TimerSetter({
-    required this.initialValue,
+  const TimerSetter({
+    super.key,
     required this.goalType,
     required this.onChanged,
     this.recommendedTime = const Duration(hours: 0),
@@ -64,6 +63,7 @@ class _TimerSetterState extends State<TimerSetter>
     vsync: this,
   );
   List<double> initialValue = [1, 1, 1, 1];
+  double selectedValue = 1;
   Key sliderKey = UniqueKey();
 
   String printDuration(Duration duration) {
@@ -141,7 +141,7 @@ class _TimerSetterState extends State<TimerSetter>
                   ),
                   onTap: (int index) {
                     // firstSet = true;
-                    widget.initialValue = initialValue[index];
+                    selectedValue = initialValue[index];
                     widget.onChanged(initialValue[index].toInt());
                     _tabController.index = index;
                     debugPrint('Start Switching');
@@ -225,7 +225,7 @@ class _TimerSetterState extends State<TimerSetter>
                     size: 270.0),
                 min: GoalCategory.goalCategories[_tabController.index].min,
                 max: GoalCategory.goalCategories[_tabController.index].max,
-                initialValue: widget.initialValue,
+                initialValue: selectedValue,
               ),
               ...(widget.recommendedTime.inHours > 0
                   ? [
@@ -252,21 +252,21 @@ class _TimerSetterState extends State<TimerSetter>
                           OutlinedButton(
                             onPressed: () {
                               if (widget.recommendedTime.inDays > 30) {
-                                widget.initialValue =
+                                selectedValue =
                                     widget.recommendedTime.inDays / 30;
                                 _tabController.index = 2;
                               } else if (widget.recommendedTime.inDays > 0) {
-                                widget.initialValue =
+                                selectedValue =
                                     widget.recommendedTime.inDays.toDouble();
                                 _tabController.index = 1;
                               } else {
-                                widget.initialValue =
+                                selectedValue =
                                     widget.recommendedTime.inHours.toDouble();
                                 _tabController.index = 0;
                               }
                               initialValue[_tabController.index] =
-                                  widget.initialValue;
-                              widget.onChanged(widget.initialValue.toInt());
+                                  selectedValue;
+                              widget.onChanged(selectedValue.toInt());
                               // sliderKey = UniqueKey();
                               setState(() {});
                             },
