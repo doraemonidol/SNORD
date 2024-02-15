@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/usage_analysis.dart';
 import 'package:rehabox/src/screens/settings/devices/controllers/devices_provider.dart';
 import 'package:rehabox/src/screens/settings/widgets/device_options_box.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
@@ -45,9 +46,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ChooseGoalScreen(
-                              title: "Set your first milestone",
-                              recommendedTime: Duration(hours: 1),
+                            builder: (context) => const UsageAnalysisScreen(
+                              timeLeft: Duration(seconds: 10),
                             ),
                           ),
                         );

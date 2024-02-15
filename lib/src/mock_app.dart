@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
@@ -9,17 +8,16 @@ import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/grant_access_screen.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/usage_analysis.dart';
 import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
-import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 
 import 'models/models.dart';
 
@@ -85,7 +83,9 @@ class MockApp extends StatelessWidget {
         CongratulationScreen.routeName: (context) =>
             const CongratulationScreen(),
         TimerScreen.routeName: (context) => const TimerScreen(),
-        SetTimerScreen.routeName: (context) => const SetTimerScreen(),
+        UsageAnalysisScreen.routeName: (context) => const UsageAnalysisScreen(
+              timeLeft: Duration(seconds: 10),
+            ),
       },
       home: const AuthWrapper(),
       onUnknownRoute: (settings) {
