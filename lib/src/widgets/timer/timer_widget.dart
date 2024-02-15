@@ -16,6 +16,9 @@ class CountdownClock extends StatefulWidget {
     this.pointsReceived,
     this.textStyle,
     this.size = const SizedBox(width: 350, height: 350),
+    this.rewardScreenRoute = null,
+    this.setup = false,
+    this.onFinished,
     super.key,
   });
 
@@ -24,6 +27,9 @@ class CountdownClock extends StatefulWidget {
   final SizedBox size;
   final TextStyle? textStyle;
   final int? pointsReceived;
+  final bool setup;
+  final Function? onFinished;
+  final String? rewardScreenRoute;
 
   @override
   State<CountdownClock> createState() => _CountdownClockState();
@@ -41,7 +47,7 @@ class _CountdownClockState extends State<CountdownClock>
       parent: controller,
       curve: Curves.linear,
     ),
-  );
+  );  
   late bool done = widget.elapsed.inSeconds > widget.duration.inSeconds;
 
   @override
@@ -49,7 +55,14 @@ class _CountdownClockState extends State<CountdownClock>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: (widget.duration - widget.elapsed).abs(),
+      duration: (widget.duration -
+              widget.elapsed +
+              (widget.setup
+                  ? Duration(
+                      milliseconds: 500,
+                    )
+                  : Duration.zero))
+          .abs(),
     )
       ..forward()
       ..addListener(() {
@@ -58,31 +71,38 @@ class _CountdownClockState extends State<CountdownClock>
 
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        setState(() {
-          done = true;
-          controller.duration = const Duration(days: 1);
-          controller.reset();
-          controller.forward();
-          tween = Tween<double>(
-            begin: const Duration(days: 1).inSeconds.toDouble(),
-            end: 0,
-          ).animate(
-            CurvedAnimation(
-              parent: controller,
-              curve: Curves.linear,
-            ),
-          );
-        });
-        await Navigator.of(context)
-            .pushNamed(
-          CongratulationScreen.routeName,
-        )
-            .then((value) {
-          context.read<TimerControllers>().updateExceedExpectedDuration(true);
-          if (value == true) {
-            // await context.read<TimerControllers>().claimAndCloseTimer();
-          }
-        });
+        if (!widget.setup) {
+          setState(() {
+            done = true;
+            controller.duration = const Duration(days: 1);
+            controller.reset();
+            controller.forward();
+            tween = Tween<double>(
+              begin: const Duration(days: 1).inSeconds.toDouble(),
+              end: 0,
+            ).animate(
+              CurvedAnimation(
+                parent: controller,
+                curve: Curves.linear,
+              ),
+            );
+          });
+        }
+        if (widget.onFinished != null) {
+          widget.onFinished!();
+        }
+        if (widget.rewardScreenRoute != null) {
+          await Navigator.of(context)
+              .pushNamed(
+            widget.rewardScreenRoute!,
+          )
+              .then((value) {
+            context.read<TimerControllers>().updateExceedExpectedDuration(true);
+            if (value == true) {
+              // await context.read<TimerControllers>().claimAndCloseTimer();
+            }
+          });
+        }
       }
     });
   }
@@ -105,6 +125,7 @@ class _CountdownClockState extends State<CountdownClock>
       painter: CountdownPainter(
         duration: done ? const Duration(days: 1) : widget.duration,
         animation: tween,
+        setup: widget.setup,
       ),
       child: SizedBox(
         width: widget.size.width,
@@ -114,7 +135,7 @@ class _CountdownClockState extends State<CountdownClock>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (!done)
+              if (!done && !widget.setup)
                 const SvgIcon(
                   iconString: lockSvgString,
                   size: 70,
@@ -126,12 +147,18 @@ class _CountdownClockState extends State<CountdownClock>
                 ),
               SizedBox(height: widget.size.height! * 0.03),
               Text(
-                done ? 'Exceeded time' : 'Locked for',
+                widget.setup
+                    ? 'Time left'
+                    : done
+                        ? 'Exceeded time'
+                        : 'Locked for',
                 style: widget.textStyle ?? context.textTheme.titleSmall,
               ),
               SizedBox(height: widget.size.height! * 0.02),
               Text(
-                "${done ? "-" : ""}${formatSeconds(seconds)}",
+                done
+                    ? "-${formatSeconds(seconds)}"
+                    : "${formatSeconds(widget.duration.inSeconds - seconds)}",
                 style: widget.textStyle ?? context.textTheme.displayLarge,
               ),
               if (done) ...[
@@ -155,10 +182,12 @@ class _CountdownClockState extends State<CountdownClock>
                     )),
               ],
               SizedBox(height: widget.size.height! * 0.08),
-              Text(
-                done ? 'Keep up the good work!' : 'Try your best!',
-                style: widget.textStyle ?? context.textTheme.titleSmall,
-              )
+              !widget.setup
+                  ? Text(
+                      done ? 'Keep up the good work!' : 'Try your best!',
+                      style: widget.textStyle ?? context.textTheme.titleSmall,
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),
@@ -172,11 +201,13 @@ class CountdownPainter extends CustomPainter {
     required this.animation,
     required this.duration,
     this.textStyle,
+    this.setup = false,
   });
 
   final Animation<num> animation;
   final Duration duration;
   final TextStyle? textStyle;
+  final bool setup;
 
   static const Color remainingColor = Color(0XFFFEA800);
   static const Color borderColor = Color(0XFFFFE6B6);
@@ -210,11 +241,11 @@ class CountdownPainter extends CustomPainter {
     double sweepAngle = 360 * sweepPercentage;
 
     Color borderColor = CountdownPainter.borderColor;
-    if (sweepPercentage >= 0.99) {
+    if (sweepPercentage >= 0.99 || setup) {
       borderColor = const Color(0XFF4AC443);
     }
     Color remainingColor = CountdownPainter.remainingColor;
-    if (sweepPercentage >= 0.99) {
+    if (sweepPercentage >= 0.99 || setup) {
       remainingColor = const Color(0XFF4AC443);
     }
     Paint paint = Paint()
@@ -240,7 +271,7 @@ class CountdownPainter extends CustomPainter {
 
     // Draw the remaining time in the middle of the two circles
     paint
-      ..color = remainingColor
+      ..color = Color(0xFFF6F9FF)
       ..strokeWidth = 5.0
       ..style = PaintingStyle.stroke;
 
@@ -250,7 +281,7 @@ class CountdownPainter extends CustomPainter {
       Offset(centerX, centerY),
       innerRadius + 5,
       startAngle: -90 * (pi / 180),
-      sweepAngle: -sweepAngle * (pi / 180),
+      sweepAngle: 2 * pi - sweepAngle * (pi / 180),
     );
   }
 

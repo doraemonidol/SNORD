@@ -5,13 +5,14 @@ import 'package:rehabox/src/repositories/repositories.dart';
 import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
 import 'package:rehabox/src/screens/timer/config.dart';
 import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
-import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
+import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/timer_shimmer_screen.dart';
 import 'package:rehabox/src/screens/timer/widgets/set_new_goal_button.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
+import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/custom_nav_bar.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
 import 'package:rehabox/src/widgets/timer/timer_widget.dart';
@@ -63,6 +64,7 @@ class TimerScreen extends StatelessWidget {
                   return CountdownClock(
                     duration: value.expectedDuration,
                     elapsed: DateTime.now().difference(value.startAt),
+                    rewardScreenRoute: CongratulationScreen.routeName,
                   );
                 },
               ),
@@ -85,9 +87,17 @@ class TimerScreen extends StatelessWidget {
                               .claimAndCloseTimer()
                               .then(
                             (value) {
-                              Navigator.pushReplacementNamed(
+                              Navigator.push(
                                 context,
-                                SetTimerScreen.routeName,
+                                MaterialPageRoute(
+                                  builder: (context) => const ChooseGoalScreen(
+                                    title: "Change Timer",
+                                    canBack: true,
+                                    recommendedTime: Duration(hours: 1),
+                                    description:
+                                        'You are restricted from consuming nicotine until the timer expires.',
+                                  ),
+                                ),
                               );
                             },
                           );

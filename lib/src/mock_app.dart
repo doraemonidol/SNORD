@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
 import 'package:rehabox/src/screens/challenges/challenges_screen.dart';
 import 'package:rehabox/src/screens/coupons/coupons_screen.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/grant_access_screen.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/usage_analysis.dart';
 import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
-import 'package:rehabox/src/screens/timer/screens/set_timer_screen.dart';
 import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
@@ -76,13 +77,20 @@ class MockApp extends StatelessWidget {
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
+        GrantAccessScreen.routeName: (context) => const GrantAccessScreen(),
+        DeviceScreen.routeName: (context) => const DeviceScreen(),
         AuthWrapper.routeName: (context) => const AuthWrapper(),
         CongratulationScreen.routeName: (context) =>
             const CongratulationScreen(),
         TimerScreen.routeName: (context) => const TimerScreen(),
-        SetTimerScreen.routeName: (context) => const SetTimerScreen(),
+        UsageAnalysisScreen.routeName: (context) => const UsageAnalysisScreen(
+              timeLeft: Duration(seconds: 10),
+            ),
       },
-      home: const AuthWrapper(),
+      // home: const AuthWrapper(),
+      // phatalways-sleeping: I commented this out to use initialRoute instead,
+      // avoiding the need to use a const AuthWrapper() as the home route since we have a named route for it.
+      initialRoute: AuthWrapper.routeName,
       onUnknownRoute: (settings) {
         return MaterialPageRoute<void>(
           builder: (context) => Scaffold(
@@ -115,7 +123,7 @@ class AuthWrapper extends StatelessWidget {
           if (user == null) {
             return const OnboardingScreen();
           }
-          return const HomeScreen();
+          return const GrantAccessScreen();
         }
         return const Scaffold(
           body: Center(
