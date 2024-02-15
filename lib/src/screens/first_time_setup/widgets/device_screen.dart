@@ -5,7 +5,6 @@ import 'package:rehabox/src/screens/settings/devices/controllers/devices_provide
 import 'package:rehabox/src/screens/settings/widgets/device_options_box.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
-import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 
 class DeviceScreen extends StatefulWidget {

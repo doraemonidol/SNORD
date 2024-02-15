@@ -1,12 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rehabox/src/models/models.dart';
-import 'package:rehabox/src/repositories/repositories.dart';
-import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
-import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
-import 'package:rehabox/src/screens/timer/screens/timer_shimmer_screen.dart';
-import 'package:rehabox/src/utils/conditional_render_manager.dart';
-import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 import 'package:rehabox/src/widgets/timer/timer_widget.dart';
 

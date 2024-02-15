@@ -105,13 +105,13 @@ class _TimerSetterState extends State<TimerSetter>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
             colors: [Colors.white, Colors.white],
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
             tileMode: TileMode.clamp),
         borderRadius: BorderRadius.circular(25),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color(0x0F222C5C),
             blurRadius: 68,
@@ -204,13 +204,13 @@ class _TimerSetterState extends State<TimerSetter>
                         shadowColor: Color(0xFF3843FF),
                         shadowMaxOpacity: 0.2),
                     infoProperties: InfoProperties(
-                        bottomLabelStyle: TextStyle(
+                        bottomLabelStyle: const TextStyle(
                             color: Color(0xFF040415),
                             fontSize: 24,
                             fontWeight: FontWeight.w600),
                         bottomLabelText: GoalCategory
                             .goalCategories[_tabController.index].time,
-                        mainLabelStyle: TextStyle(
+                        mainLabelStyle: const TextStyle(
                           color: Color(0xFF040415),
                           fontSize: 96.0,
                           fontWeight: FontWeight.w600,
@@ -232,7 +232,7 @@ class _TimerSetterState extends State<TimerSetter>
                       const SizedBox(height: 32),
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             'Recommend:  ',
                             style: TextStyle(
                               color: Color(0xFF040415),
@@ -242,13 +242,13 @@ class _TimerSetterState extends State<TimerSetter>
                           ),
                           Text(
                             printDuration(widget.recommendedTime),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFF040415),
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           OutlinedButton(
                             onPressed: () {
                               if (widget.recommendedTime.inDays > 30) {
@@ -278,12 +278,12 @@ class _TimerSetterState extends State<TimerSetter>
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(64),
                               ),
-                              minimumSize: Size(
+                              minimumSize: const Size(
                                 100,
                                 50,
                               ),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Set',
                               style: TextStyle(
                                 color: Color(0xFF040415),
