@@ -25,28 +25,17 @@ const searchSvgStringChosen = '''
 ''';
 
 const mainSvgString = '''
-<svg width="45" height="48" viewBox="0 0 45 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M20.5 4C9.45431 4 0.5 12.9543 0.5 24C0.5 35.0457 9.45431 44 20.5 44C31.5457 44 40.5 35.0457 40.5 24C40.5 12.9543 31.5457 4 20.5 4Z" fill="url(#paint0_linear_311_23230)"/>
-<g filter="url(#filter0_d_311_23230)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M21.6665 16.6665C21.6665 15.5619 22.5619 14.6665 23.6665 14.6665H27.8332C28.9377 14.6665 29.8332 15.5619 29.8332 16.6665V20.8332C29.8332 21.9377 28.9377 22.8332 27.8332 22.8332H23.6665C22.5619 22.8332 21.6665 21.9377 21.6665 20.8332V16.6665ZM11.1665 27.1665C11.1665 26.0619 12.0619 25.1665 13.1665 25.1665H17.3332C18.4377 25.1665 19.3332 26.0619 19.3332 27.1665V31.3332C19.3332 32.4377 18.4377 33.3332 17.3332 33.3332H13.1665C12.0619 33.3332 11.1665 32.4377 11.1665 31.3332V27.1665ZM23.6665 25.1665C22.5619 25.1665 21.6665 26.0619 21.6665 27.1665V31.3332C21.6665 32.4377 22.5619 33.3332 23.6665 33.3332H27.8332C28.9377 33.3332 29.8332 32.4377 29.8332 31.3332V27.1665C29.8332 26.0619 28.9377 25.1665 27.8332 25.1665H23.6665Z" fill="#EAECF0"/>
-<rect x="11.1665" y="14.6665" width="8.16667" height="8.16667" rx="2" fill="#AFB4FF"/>
-</g>
-<defs>
-<filter id="filter0_d_311_23230" x="-3.5" y="-32" width="164" height="164" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dx="58" dy="26"/>
-<feGaussianBlur stdDeviation="34"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.135417 0 0 0 0 0.173611 0 0 0 0 0.364583 0 0 0 0.06 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_311_23230"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_311_23230" result="shape"/>
-</filter>
-<linearGradient id="paint0_linear_311_23230" x1="0.5" y1="4" x2="40.5" y2="44" gradientUnits="userSpaceOnUse">
-<stop stop-color="#6B73FF"/>
-<stop offset="1" stop-color="#000DFF"/>
-</linearGradient>
-</defs>
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="438.9378 32.7343 40 40" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paint0_linear_640_3612" x1="10" y1="12" x2="50" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6B73FF"/>
+      <stop offset="1" stop-color="#000DFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M30 12C18.9543 12 10 20.9543 10 32C10 43.0457 18.9543 52 30 52C41.0457 52 50 43.0457 50 32C50 20.9543 41.0457 12 30 12Z" fill="url(#paint0_linear_640_3612)" transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 428.9378356933594, 20.734287261962887)"/>
+  <circle cx="30" cy="32" r="12" stroke="#AFB4FF" stroke-width="4" style="fill: rgba(0, 0, 0, 0);" transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 428.9378356933594, 20.734287261962887)"/>
+  <path d="M30 20C23.3726 20 18 25.3726 18 32C18 38.6274 23.3726 44 30 44C34.518 44 38.4529 41.5031 40.5 37.814" stroke="#EAECF0" stroke-width="4" style="fill: rgba(214, 24, 24, 0);" transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 428.9378356933594, 20.734287261962887)"/>
 </svg>
 ''';
 
