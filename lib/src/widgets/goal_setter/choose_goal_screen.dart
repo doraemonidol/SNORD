@@ -36,7 +36,7 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: const Icon(Icons.abc),
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
               )
             : null,
         automaticallyImplyLeading: false,
@@ -87,7 +87,70 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, HomeScreen.routeName);
+                  // debugPrint('goalValue: $goalValue');
+                  // debugPrint(
+                  //     'widget.currentTime.inHours: ${widget.currentTime.inHours}');
+                  if (goalValue != widget.currentTime.inHours ||
+                      !widget.canBack) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Are you sure?'),
+                          content: const Text(
+                            'You are about to set a new goal. Are you sure you want to proceed?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                ),
+                              ),
+                              child: const Text('Cancel',
+                                  style: TextStyle(
+                                    color: Color(0xFF3843FF),
+                                  )),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(
+                                    context, HomeScreen.routeName);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith(
+                                  (states) {
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return const Color(0xFF3843FF)
+                                          .withOpacity(0.9);
+                                    } else {
+                                      return const Color(0xFF3843FF);
+                                    }
+                                  },
+                                ),
+                                shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                ),
+                              ),
+                              child: const Text('Yes'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else if (goalValue == widget.currentTime.inHours) {
+                    Navigator.pop(context);
+                  }
                 },
                 style: ButtonStyle(
                   padding: MaterialStatePropertyAll(
