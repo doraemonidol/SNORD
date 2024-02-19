@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/mock_app.dart';
-import 'package:rehabox/src/screens/onboard/onboarding_screen.dart';
 import 'package:rehabox/src/screens/settings/config.dart';
 import 'package:rehabox/src/screens/settings/widgets/options_group.dart';
 import 'package:rehabox/src/service/firebase_auth_methods.dart';
@@ -77,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
                 Hero(
                   tag: 'devices',
                   child: OptionItem(
-                    onTap: (context) => Navigator.pushNamed(  
+                    onTap: (context) => Navigator.pushNamed(
                       context,
                       DevicesSettingScreen.routeName,
                     ),

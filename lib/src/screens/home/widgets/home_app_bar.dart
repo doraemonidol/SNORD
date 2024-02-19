@@ -63,15 +63,15 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     'Weekly',
                     'Monthly',
                   ],
-                  onTabChange: (context, index) {
-                    context.read<HomeControllers>().changeTabState(
+                  onTabChange: (context, index) async {
+                    await context.read<HomeControllers>().changeTabState(
                           index == 0
                               ? TabState.daily
                               : index == 1
                                   ? TabState.weekly
                                   : TabState.monthly,
                         );
-                    context.read<HomeControllers>().fetchData();
+                    // context.read<HomeControllers>().fetchData();
                   },
                 ),
               ),

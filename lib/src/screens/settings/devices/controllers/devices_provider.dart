@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:rehabox/src/screens/settings/config.dart';
 import 'package:rehabox/src/utils/controllers_status.dart';
 
 part 'devices_provider_state.dart';
@@ -51,10 +52,38 @@ class DevicesProvider extends ChangeNotifier
 
   DevicesProviderState _state = DevicesProviderState.initial();
 
-  void init() {
+  Future<void> init() async {
     debugPrint('DevicesProvider.init');
-    _streamSubscription.resume();
-    FlutterBluePlus.startScan();
+    // _streamSubscription.resume();
+    // FlutterBluePlus.startScan();
+
+    _state = _state.copyWith(
+      status: ControllersStatus.loading,
+    );
+
+    notifyListeners();
+
+    await Future.delayed(const Duration(seconds: 3));
+    _state = _state.copyWith(
+      status: ControllersStatus.loaded,
+      devices: devicesMock,
+    );
+
+    notifyListeners();
+  }
+
+  Future<void> connectToDevice(String deviceId) async {
+    debugPrint('DevicesProvider.connectToDevice');
+    _state = _state.copyWith(
+      status: ControllersStatus.loading,
+    );
+    notifyListeners();
+    await Future.delayed(const Duration(seconds: 3));
+    _state = _state.copyWith(
+      connectedDeviceId: deviceId,
+      status: ControllersStatus.loaded,
+    );
+    notifyListeners();
   }
 
   void reset() {

@@ -20,6 +20,10 @@ class ChooseGoalScreen extends StatefulWidget {
     this.canBack = false,
   }) : super(key: key);
 
+  // phatalways-sleeping: I added this route to unify the route names approach
+  // for the app.
+  static const String routeName = '/choose-goal';
+
   @override
   State<ChooseGoalScreen> createState() => _ChooseGoalScreenState();
 }

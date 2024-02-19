@@ -33,8 +33,8 @@ class TimerControllers extends ChangeNotifier
       final timerActivity = TimerActivity(
         id: "1",
         userId: "1",
-        startAt: DateTime.now(),
-        expectedDuration: const Duration(seconds: 10),
+        startAt: DateTime.now().subtract(const Duration(minutes: 50)),
+        expectedDuration: const Duration(hours: 1),
         actualDuration: null,
       );
       _state = _state.copyWith(

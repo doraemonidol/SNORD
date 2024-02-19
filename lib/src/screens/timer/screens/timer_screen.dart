@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/src/models/models.dart';
@@ -87,17 +89,16 @@ class TimerScreen extends StatelessWidget {
                               .claimAndCloseTimer()
                               .then(
                             (value) {
-                              Navigator.push(
+                              Navigator.pushNamed(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ChooseGoalScreen(
-                                    title: "Change Timer",
-                                    canBack: true,
-                                    recommendedTime: Duration(hours: 1),
-                                    description:
-                                        'You are restricted from consuming nicotine until the timer expires.',
-                                  ),
-                                ),
+                                ChooseGoalScreen.routeName,
+                                arguments: {
+                                  "title": "Change Timer",
+                                  "canBack": true,
+                                  "recommendedTime": const Duration(hours: 1),
+                                  "description":
+                                      'You are restricted from consuming nicotine until the timer expires.',
+                                },
                               );
                             },
                           );
@@ -117,26 +118,54 @@ class TimerScreen extends StatelessWidget {
   }
 }
 
-class ChangeTimerButton extends StatelessWidget {
+class ChangeTimerButton extends StatefulWidget {
   const ChangeTimerButton({
     super.key,
   });
 
   @override
+  State<ChangeTimerButton> createState() => _ChangeTimerButtonState();
+}
+
+class _ChangeTimerButtonState extends State<ChangeTimerButton> {
+  // mantains the state, only display for 10 seconds
+  bool _showButton = true;
+  // create a timer to hide the button after 10 seconds
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer(const Duration(seconds: 10), () {
+      setState(() {
+        _showButton = false;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (!_showButton) {
+      return const SizedBox.shrink();
+    }
     return ElevatedButton(
       onPressed: () {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const ChooseGoalScreen(
-              title: "Change Timer",
-              canBack: true,
-              recommendedTime: Duration(hours: 1),
-              description:
-                  'You are restricted from consuming nicotine until the timer expires.',
-            ),
-          ),
+          ChooseGoalScreen.routeName,
+          arguments: {
+            "title": "Change Timer",
+            "canBack": true,
+            "recommendedTime": const Duration(hours: 1),
+            "description":
+                'You are restricted from consuming nicotine until the timer expires.',
+          },
         );
       },
       style: ButtonStyle(

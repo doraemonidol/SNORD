@@ -22,9 +22,15 @@ class HomeControllers extends ChangeNotifier
     try {
       // final data = await Computation().fetchData();
       await Future.delayed(const Duration(seconds: 2));
+      final data = state.tabState == TabState.daily
+          ? [...mockData]
+          : state.tabState == TabState.weekly
+              ? [...mockDataWeekly]
+              : [...mockDataMonth];
+      await Future.delayed(const Duration(seconds: 2));
       _state = _state.copyWith(
         status: ControllersStatus.loaded,
-        data: mockData,
+        data: data,
       );
     } catch (e) {
       _state = _state.copyWith(
@@ -35,9 +41,12 @@ class HomeControllers extends ChangeNotifier
     notifyListeners();
   }
 
-  void changeTabState(TabState tabState) {
-    _state = _state.copyWith(tabState: tabState);
+  Future<void> changeTabState(TabState tabState) async {
+    _state = _state.copyWith(
+      tabState: tabState,
+    );
     notifyListeners();
+    await fetchData();
   }
 
   void previousWeek() {
@@ -88,6 +97,7 @@ class HomeControllers extends ChangeNotifier
       );
     }
     notifyListeners();
+    await fetchData();
   }
 
   void changeIndicatedValue(double? value) {

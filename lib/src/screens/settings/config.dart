@@ -1,3 +1,5 @@
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+
 const backSvgString = '''
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M14.9315 15.9596C15.1647 16.1969 15.1655 16.5824 14.9333 16.8207C14.7221 17.0374 14.391 17.0577 14.1573 16.8814L14.0904 16.8226L9.28241 11.9319C9.06972 11.7155 9.05037 11.3761 9.22438 11.1373L9.28238 11.069L14.0903 6.17745C14.3236 5.94015 14.701 5.94095 14.9332 6.17924C15.1444 6.39586 15.1629 6.73417 14.9893 6.97218L14.9315 7.04035L10.5479 11.5006L14.9315 15.9596Z" fill="#040415"/>
@@ -71,3 +73,66 @@ const logoutSvgString = '''
 <path fill-rule="evenodd" clip-rule="evenodd" d="M21.5849 11.455L18.7645 8.54604C18.473 8.24604 18.0039 8.24604 17.7134 8.54804C17.4238 8.85004 17.4247 9.33704 17.7153 9.63704L19.2606 11.23H17.779H9.46345C9.05322 11.23 8.72021 11.575 8.72021 12C8.72021 12.426 9.05322 12.77 9.46345 12.77H19.2606L17.7153 14.363C17.4247 14.663 17.4238 15.15 17.7134 15.452C17.8591 15.603 18.0493 15.679 18.2404 15.679C18.4296 15.679 18.6197 15.603 18.7645 15.454L21.5849 12.546C21.7249 12.401 21.804 12.205 21.804 12C21.804 11.796 21.7249 11.6 21.5849 11.455" fill="#040415"/>
 </svg>
 ''';
+
+final devicesMock = [
+  ScanResult(
+    device: BluetoothDevice(
+      remoteId: const DeviceIdentifier("1"),
+    ),
+    advertisementData: AdvertisementData(
+      serviceUuids: [],
+      advName: 'Iphone 13',
+      txPowerLevel: null,
+      connectable: true,
+      manufacturerData: {},
+      serviceData: {},
+    ),
+    rssi: 12,
+    timeStamp: DateTime.now(),
+  ),
+  ScanResult(
+    device: BluetoothDevice(
+      remoteId: const DeviceIdentifier("2"),
+    ),
+    advertisementData: AdvertisementData(
+      serviceUuids: [],
+      advName: 'Iphone 11',
+      txPowerLevel: null,
+      connectable: true,
+      manufacturerData: {},
+      serviceData: {},
+    ),
+    rssi: 13,
+    timeStamp: DateTime.now(),
+  ),
+  ScanResult(
+    device: BluetoothDevice(
+      remoteId: const DeviceIdentifier("3"),
+    ),
+    advertisementData: AdvertisementData(
+      serviceUuids: [],
+      advName: 'Samsung Galaxy S24',
+      txPowerLevel: null,
+      connectable: true,
+      manufacturerData: {},
+      serviceData: {},
+    ),
+    rssi: 9,
+    timeStamp: DateTime.now(),
+  ),
+  ScanResult(
+    device: BluetoothDevice(
+      remoteId: const DeviceIdentifier("5"),
+    ),
+    advertisementData: AdvertisementData(
+      serviceUuids: [],
+      advName: 'Google Pixel 6',
+      txPowerLevel: null,
+      connectable: true,
+      manufacturerData: {},
+      serviceData: {},
+    ),
+    rssi: 10,
+    timeStamp: DateTime.now(),
+  ),
+];

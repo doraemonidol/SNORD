@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/settings/devices/controllers/devices_provider.dart';
+import 'package:rehabox/src/utils/conditional_render_manager.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 
 class DeviceOption extends StatelessWidget {
@@ -26,7 +27,7 @@ class DeviceOption extends StatelessWidget {
         padding: MaterialStatePropertyAll(
           EdgeInsets.symmetric(
             horizontal: context.widthPercent(0.03),
-            vertical: context.heightPercent(0.02),
+            vertical: 20,
           ),
         ),
         backgroundColor: MaterialStatePropertyAll(
@@ -78,50 +79,70 @@ class DeviceOptionsBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<DevicesProvider, List<ScanResult>>(
-      selector: (BuildContext context, DevicesProvider controller) =>
-          controller.devices,
-      builder: (BuildContext context, List<ScanResult> value, Widget? child) {
-        if (value.isEmpty) {
-          return child!;
-        }
-        return Container(
-          padding: EdgeInsets.all(
-            context.widthPercent(0.03),
+    return Consumer<DevicesProvider>(
+      builder: conditionalRenderManager<DevicesProvider>(
+        onInitial: (context) => const Center(
+          child: CircularProgressIndicator(
+            color: Color(0XFF3BA935),
           ),
-          clipBehavior: Clip.antiAlias,
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ),
-          child: Column(
-            children: value
-                .map(
-                  (device) => Selector<DevicesProvider, String?>(
-                    builder:
-                        (BuildContext context, String? value, Widget? child) =>
-                            DeviceOption(
-                      device: device.device.platformName,
-                      isSelected: device.device.remoteId.str == value,
+        ),
+        onLoaded: (context) => Selector<DevicesProvider, List<ScanResult>>(
+          selector: (BuildContext context, DevicesProvider controller) =>
+              controller.devices,
+          builder:
+              (BuildContext context, List<ScanResult> value, Widget? child) {
+            if (value.isEmpty) {
+              return child!;
+            }
+            return Container(
+              padding: EdgeInsets.all(
+                context.widthPercent(0.03),
+              ),
+              clipBehavior: Clip.antiAlias,
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+              child: Column(
+                children: [
+                  ...value.map(
+                    (device) => Selector<DevicesProvider, String?>(
+                      builder: (BuildContext context, String? value,
+                              Widget? child) =>
+                          Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8,
+                        ),
+                        child: DeviceOption(
+                          device: device.advertisementData.advName,
+                          isSelected: device.device.remoteId.str == value,
+                          onPressed: (context) async => await context
+                              .read<DevicesProvider>()
+                              .connectToDevice(
+                                device.device.remoteId.str,
+                              ),
+                        ),
+                      ),
+                      selector:
+                          (BuildContext context, DevicesProvider controller) =>
+                              controller.connectedDeviceId,
                     ),
-                    selector:
-                        (BuildContext context, DevicesProvider controller) =>
-                            controller.connectedDeviceId,
                   ),
-                )
-                .toList(),
-          ),
-        );
-      },
-      child: Center(
-        child: Text(
-          'No devices found',
-          style: TextStyle(
-            color: const Color(0xFF040415),
-            fontSize: context.textScaleFactor(16),
-            fontWeight: FontWeight.w600,
+                ],
+              ),
+            );
+          },
+          child: Center(
+            child: Text(
+              'No devices found',
+              style: TextStyle(
+                color: const Color(0xFF040415),
+                fontSize: context.textScaleFactor(16),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ),
