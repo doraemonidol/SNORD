@@ -148,6 +148,8 @@ class _ChooseGoalScreenState extends State<ChooseGoalScreen> {
                         );
                       },
                     );
+                  } else if (goalValue == widget.currentTime.inHours) {
+                    Navigator.pop(context);
                   }
                 },
                 style: ButtonStyle(
