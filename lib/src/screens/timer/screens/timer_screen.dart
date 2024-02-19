@@ -126,11 +126,18 @@ class ChangeTimerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Show warning before changing timer
-
-        // Delete current timer activity
-
-        // Navigate to change timer screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ChooseGoalScreen(
+              title: "Change Timer",
+              canBack: true,
+              recommendedTime: Duration(hours: 1),
+              description:
+                  'You are restricted from consuming nicotine until the timer expires.',
+            ),
+          ),
+        );
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
