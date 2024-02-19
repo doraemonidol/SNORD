@@ -66,6 +66,16 @@ class _TimerSetterState extends State<TimerSetter>
   double selectedValue = 1;
   Key sliderKey = UniqueKey();
 
+  int getTime(double value, int index) {
+    if (index == 0) {
+      return value.toInt();
+    } else if (index == 1) {
+      return (value * 24).toInt();
+    } else {
+      return (value * 24 * 30).toInt();
+    }
+  }
+
   String printDuration(Duration duration) {
     String ans = '';
     if (duration.inDays > 30) {
@@ -182,7 +192,7 @@ class _TimerSetterState extends State<TimerSetter>
                 onChange: (double value) {
                   debugPrint('Onchanged Value: $value');
                   initialValue[_tabController.index] = value;
-                  widget.onChanged(value.toInt());
+                  widget.onChanged(getTime(value, _tabController.index));
                 },
                 appearance: CircularSliderAppearance(
                     customWidths: CustomSliderWidths(
