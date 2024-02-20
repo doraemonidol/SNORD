@@ -86,11 +86,20 @@ class DevicesProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  void reset() {
+  Future<void> reset() async {
     debugPrint('DevicesProvider.reset');
-    _state = DevicesProviderState.initial();
+    _state = DevicesProviderState.initial().copyWith(
+      bluetoothState: _state.bluetoothState,
+      status: ControllersStatus.loading,
+    );
     _devicesScanner.resume();
     FlutterBluePlus.startScan();
+    notifyListeners();
+    await Future.delayed(const Duration(seconds: 3));
+    _state = _state.copyWith(
+      status: ControllersStatus.loaded,
+      devices: devicesMock,
+    );
     notifyListeners();
   }
 

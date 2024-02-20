@@ -89,11 +89,13 @@ class MockApp extends StatelessWidget {
             ),
         ChooseGoalScreen.routeName: (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Map;
+          final recommendedTime = args['recommendedTime'] as Duration?;
+          final canBack = args['canBack'] as bool?;
           return ChooseGoalScreen(
             title: args['title'],
             description: args['description'],
-            recommendedTime: args['recommendedTime'],
-            canBack: args['canBack'],
+            recommendedTime: recommendedTime ?? const Duration(hours: 0),
+            canBack: canBack ?? false,
           );
         },
       },

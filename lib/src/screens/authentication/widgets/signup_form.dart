@@ -6,6 +6,7 @@ import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
+import 'package:rehabox/src/widgets/debounce_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 
 class SignupForm extends StatefulWidget {
@@ -119,10 +120,10 @@ class _SignupFormState extends State<SignupForm> {
                   }
                   return null;
                 },
-                style: const TextStyle(
+                style: context.textTheme.bodySmall?.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF040415),
+                  color: const Color(0xFF040415),
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
@@ -145,20 +146,20 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                   hintText: 'Enter your email',
                   labelText: 'Email',
-                  hintStyle: const TextStyle(
+                  hintStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFFCDCDD0),
+                    color: const Color(0xFFCDCDD0),
                   ),
-                  labelStyle: const TextStyle(
+                  labelStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF040415),
+                    color: const Color(0xFF040415),
                   ),
-                  floatingLabelStyle: const TextStyle(
+                  floatingLabelStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF040415),
+                    color: const Color(0xFF040415),
                   ),
                 ),
               ),
@@ -172,10 +173,10 @@ class _SignupFormState extends State<SignupForm> {
                   return null;
                 },
                 obscureText: !showingPassword,
-                style: const TextStyle(
+                style: context.textTheme.bodySmall?.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF040415),
+                  color: const Color(0xFF040415),
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
@@ -202,20 +203,20 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                   hintText: 'Enter your password',
                   labelText: 'Password',
-                  hintStyle: const TextStyle(
+                  hintStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFFCDCDD0),
+                    color: const Color(0xFFCDCDD0),
                   ),
-                  labelStyle: const TextStyle(
+                  labelStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF040415),
+                    color: const Color(0xFF040415),
                   ),
-                  floatingLabelStyle: const TextStyle(
+                  floatingLabelStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF040415),
+                    color: const Color(0xFF040415),
                   ),
                 ),
               ),
@@ -232,10 +233,10 @@ class _SignupFormState extends State<SignupForm> {
                   return null;
                 },
                 obscureText: !showingPassword,
-                style: const TextStyle(
+                style: context.textTheme.bodySmall?.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF040415),
+                  color: const Color(0xFF040415),
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
@@ -262,20 +263,20 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                   hintText: 'Confirm your password',
                   labelText: 'Confirm Password',
-                  hintStyle: const TextStyle(
+                  hintStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFFCDCDD0),
+                    color: const Color(0xFFCDCDD0),
                   ),
-                  labelStyle: const TextStyle(
+                  labelStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF040415),
+                    color: const Color(0xFF040415),
                   ),
-                  floatingLabelStyle: const TextStyle(
+                  floatingLabelStyle: context.textTheme.bodySmall?.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF040415),
+                    color: const Color(0xFF040415),
                   ),
                 ),
               ),
@@ -305,8 +306,8 @@ class _SignupFormState extends State<SignupForm> {
                   SizedBox(
                     width: double.infinity,
                     height: context.heightPercent(0.075),
-                    child: ElevatedButton(
-                      onPressed: () {
+                    child: DebounceButton(
+                      onPressed: (context) {
                         _loginFormKey.currentState?.save();
                         if (_loginFormKey.currentState != null &&
                             _loginFormKey.currentState!.validate()) {
@@ -323,7 +324,7 @@ class _SignupFormState extends State<SignupForm> {
                           const Color(0xFF3843FF),
                         ),
                       ),
-                      child: const Text(
+                      title: const Text(
                         'Next',
                         style: TextStyle(
                           fontSize: 14,
