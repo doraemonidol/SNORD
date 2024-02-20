@@ -4,10 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
 import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
-import 'package:rehabox/src/widgets/custom_app_bar.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
-import 'package:rehabox/src/widgets/svg_icon.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 
 class LoginForm extends StatefulWidget {
