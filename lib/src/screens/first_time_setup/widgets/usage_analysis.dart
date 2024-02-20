@@ -50,18 +50,18 @@ class UsageAnalysisScreen extends StatelessWidget {
               ),
               Center(
                 child: CountdownClock(
-                  duration: Duration(days: 1),
-                  elapsed: Duration(days: 1) - timeLeft,
+                  duration: const Duration(days: 1),
+                  elapsed: const Duration(days: 1) - timeLeft,
                   setup: true,
-                  onFinished: () {
-                    Navigator.push(
+                  onFinished: () async {
+                    await Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const ChooseGoalScreen(
-                          title: "Set your first milestone",
-                          recommendedTime: Duration(hours: 1),
-                        ),
-                      ),
+                      ChooseGoalScreen.routeName,
+                      arguments: {
+                        "title": "Set your first milestone",
+                        "description": "You are restricted from consuming nicotine until the timer expires.",
+                        "recommendedTime": const Duration(hours: 1),
+                      },
                     );
                   },
                 ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/screens/first_time_setup/widgets/usage_analysis.dart';
 import 'package:rehabox/src/screens/settings/devices/controllers/devices_provider.dart';
 import 'package:rehabox/src/screens/settings/widgets/device_options_box.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
+import 'package:rehabox/src/widgets/debounce_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:rehabox/src/widgets/navigation_bar/config.dart';
 
@@ -24,40 +24,44 @@ class _DeviceScreenState extends State<DeviceScreen> {
       child: Scaffold(
         body: Consumer<DevicesProvider>(
           builder: conditionalRenderManager<DevicesProvider>(
-            onInitial: (BuildContext context) => SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.only(
-                left: context.widthPercent(0.03) + 8,
-                right: context.widthPercent(0.03) + 8,
-                top: context.heightPercent(0.02),
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xFF3843FF),
+            onInitial: (BuildContext context) => SafeArea(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.only(
+                  left: context.widthPercent(0.03) + 8,
+                  right: context.widthPercent(0.03) + 8,
+                  top: context.heightPercent(0.02),
+                ),
+                child: const Center(
+                  child: Column(
+                    children: [
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF3843FF),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const UsageAnalysisScreen(
-                              timeLeft: Duration(seconds: 10),
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text('Grant Access'),
-                    ),
-                  ],
+                      // const SizedBox(height: 20),
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const UsageAnalysisScreen(
+                      //           timeLeft: Duration(seconds: 10),
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: const Text('Grant Access'),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            onLoaded: (BuildContext context) => const DeviceOptionsBox(),
+            onLoaded: (BuildContext context) => const SafeArea(
+              child: DeviceOptionsBox(),
+            ),
             onError: (BuildContext context) => Center(
               child: Text(
                 'Error\n${context.read<DevicesProvider>().errorMessage}',
@@ -101,8 +105,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  builder: (context, value, child) => TextButton(
-                    onPressed: () => context.read<DevicesProvider>().reset(),
+                  builder: (context, value, child) => DebounceButton(
+                    onPressed: (context) =>
+                        context.read<DevicesProvider>().reset(),
                     style: ButtonStyle(
                       padding: MaterialStatePropertyAll(
                         EdgeInsets.symmetric(
@@ -122,7 +127,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       minimumSize: const MaterialStatePropertyAll(
                         Size(
                           double.infinity,
-                          50,
+                          70,
                         ),
                       ),
                       shape: MaterialStatePropertyAll(
@@ -131,7 +136,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                         ),
                       ),
                     ),
-                    child: child!,
+                    title: child!,
                   ),
                 ),
               ],

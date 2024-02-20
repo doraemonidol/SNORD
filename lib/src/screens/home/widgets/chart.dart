@@ -11,6 +11,8 @@ class Chart extends StatelessWidget {
     required this.minY,
     required this.onTouchCallback,
     required this.onTouchEndCallback,
+    this.checkToShowBelowBar,
+    this.checkToShowDot,
     this.curveColor,
     this.gradientColors,
     this.maxX = 23,
@@ -32,6 +34,8 @@ class Chart extends StatelessWidget {
 
   final void Function(BuildContext context, double value) onTouchCallback;
   final void Function(BuildContext context) onTouchEndCallback;
+  final bool Function(FlSpot spot, LineChartBarData data)? checkToShowDot;
+  final bool Function(FlSpot spot)? checkToShowBelowBar;
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +173,8 @@ class Chart extends StatelessWidget {
                           strokeColor: context.colorScheme.surface,
                         );
                       },
-                      checkToShowDot: (spot, barData) =>
-                          spot.x == DateTime.now().hour,
+                      checkToShowDot: checkToShowDot ??
+                          (spot, data) => spot.x == DateTime.now().hour,
                     ),
                     belowBarData: BarAreaData(
                       show: true,
@@ -178,8 +182,8 @@ class Chart extends StatelessWidget {
                           .withOpacity(0.25),
                       spotsLine: BarAreaSpotsLine(
                         show: true,
-                        checkToShowSpotLine: (spot) =>
-                            spot.x == DateTime.now().hour,
+                        checkToShowSpotLine: checkToShowBelowBar ??
+                            (spot) => spot.x == DateTime.now().hour,
                         flLineStyle: FlLine(
                           color: context.colorScheme.primaryContainer
                               .withOpacity(0.5),

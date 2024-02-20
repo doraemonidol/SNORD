@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
-import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
 import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
@@ -16,7 +15,7 @@ class CountdownClock extends StatefulWidget {
     this.pointsReceived,
     this.textStyle,
     this.size = const SizedBox(width: 350, height: 350),
-    this.rewardScreenRoute = null,
+    this.rewardScreenRoute,
     this.setup = false,
     this.onFinished,
     super.key,
@@ -47,7 +46,7 @@ class _CountdownClockState extends State<CountdownClock>
       parent: controller,
       curve: Curves.linear,
     ),
-  );  
+  );
   late bool done = widget.elapsed.inSeconds > widget.duration.inSeconds;
 
   @override
@@ -58,7 +57,7 @@ class _CountdownClockState extends State<CountdownClock>
       duration: (widget.duration -
               widget.elapsed +
               (widget.setup
-                  ? Duration(
+                  ? const Duration(
                       milliseconds: 500,
                     )
                   : Duration.zero))
@@ -89,7 +88,9 @@ class _CountdownClockState extends State<CountdownClock>
           });
         }
         if (widget.onFinished != null) {
-          widget.onFinished!();
+          setState(() {
+            widget.onFinished!();
+          });
         }
         if (widget.rewardScreenRoute != null) {
           await Navigator.of(context)

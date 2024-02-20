@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/utils/showSnackbar.dart';
@@ -48,7 +45,9 @@ class FirebaseAuthMethods {
         debugPrint('The account already exists for that email.');
       }
       showSnackBar(
-          context, e.message!); // Displaying the usual firebase error message
+        context,
+        e.message!,
+      ); // Displaying the usual firebase error message
     }
   }
 

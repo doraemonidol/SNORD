@@ -18,6 +18,7 @@ import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 
 import 'models/models.dart';
 
@@ -86,6 +87,17 @@ class MockApp extends StatelessWidget {
         UsageAnalysisScreen.routeName: (context) => const UsageAnalysisScreen(
               timeLeft: Duration(seconds: 10),
             ),
+        ChooseGoalScreen.routeName: (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map;
+          final recommendedTime = args['recommendedTime'] as Duration?;
+          final canBack = args['canBack'] as bool?;
+          return ChooseGoalScreen(
+            title: args['title'],
+            description: args['description'],
+            recommendedTime: recommendedTime ?? const Duration(hours: 0),
+            canBack: canBack ?? false,
+          );
+        },
       },
       // home: const AuthWrapper(),
       // phatalways-sleeping: I commented this out to use initialRoute instead,
