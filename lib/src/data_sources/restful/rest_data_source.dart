@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehabox/src/models/models.dart' show Model;
 
@@ -15,9 +16,15 @@ abstract class RESTDataSource<T extends Model> {
   /// For example: if [baseUrl] is "https://example.com/api/v1",
   /// then the domain is "https://example.com"
   /// [endpoint] is the path to the resource
-  Future<http.Response> get(String endpoint, {Map<String, String>? headers}) =>
-      _httpClient.get(Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
-          headers: headers);
+  Future<http.Response> get(String endpoint,
+      {Map<String, String>? headers}) async {
+    final res = await _httpClient.get(
+      Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
+      headers: headers,
+    );
+    debugPrint('Response: ${res.body}');
+    return res;
+  }
 
   Future<http.Response> post(String endpoint,
           {Map<String, String>? headers, dynamic body}) =>

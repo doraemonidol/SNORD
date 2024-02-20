@@ -1,6 +1,7 @@
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/models/Challenge/challenge.dart';
 import 'package:rehabox/src/models/Coupon/coupon.dart';
+import 'package:rehabox/src/models/User/user.dart';
 import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 
 class LocalUserRepository implements UserRepositoryInterface {
@@ -74,6 +75,12 @@ class LocalUserRepository implements UserRepositoryInterface {
 
   @override
   Future<bool> joinChallenge(String challengeId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User?> read(String id) {
+    // TODO: implement read
     throw UnimplementedError();
   }
 }

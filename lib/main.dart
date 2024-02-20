@@ -9,6 +9,7 @@ import 'package:rehabox/firebase_options.dart';
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
+import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
 import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/repositories/timer_activity_repository/local_timer_activity_repository.dart';
 import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
@@ -62,7 +63,7 @@ void main() async {
           create: (context) => context.read<FirebaseAuthMethods>().authState,
           initialData: null,
         ),
-        Provider<UserRepositoryInterface>(create: (_) => userRepository),
+        Provider<UserRepositoryInterface>(create: (_) => RestUserRepository()),
         Provider<TimerActivityRepositoryInterface>(
           create: (_) => LocalTimerActivityRepository(),
         ),

@@ -1,9 +1,9 @@
-import 'package:rehabox/src/models/models.dart' show Challenge, Coupon;
+import 'package:rehabox/src/models/models.dart' show Challenge, Coupon, User;
 
 abstract interface class UserRepositoryInterface {
   // Future<User> create(User user);
 
-  // Future<User?> read(String id);
+  Future<User?> read(String id);
 
   // Future<List<User>> readAll();
 

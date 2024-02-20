@@ -14,10 +14,11 @@ User _$UserFromJson(Map<String, dynamic> json) {
       'name',
       'point',
       'activities',
-      'challenges',
-      'goal',
+      // 'challenges',
+      // 'goal',
       'achievements',
-      'coupons'
+      // 'coupons',
+      // 'imageUrl'
     ],
   );
   return User(
@@ -32,8 +33,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
             ?.map((e) => UserChallenge.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [],
-    goal:
-        json['goal'] == null ? Duration(microseconds: 0) : Duration(microseconds: json['goal'] as int),
+    goal: json['goal'] == null
+        ? Duration(microseconds: 0)
+        : Duration(microseconds: json['goal'] as int),
     achievements: (json['achievements'] as List<dynamic>?)
             ?.map((e) => UserAchievement.fromJson(e as Map<String, dynamic>))
             .toList() ??
@@ -41,6 +43,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     coupons:
         (json['coupons'] as List<dynamic>?)?.map((e) => e as String).toList() ??
             [],
+    imageUrl: json['imageUrl'] as String? ?? '',
   );
 }
 
@@ -53,4 +56,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'goal': instance.goal.inMicroseconds,
       'achievements': instance.achievements,
       'coupons': instance.coupons,
+      'imageUrl': instance.imageUrl,
     };
