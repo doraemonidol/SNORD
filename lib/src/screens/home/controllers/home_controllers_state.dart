@@ -10,6 +10,7 @@ class HomeControllersState {
     this.selectedDate,
     this.errorMessage,
     this.indicatedValue,
+    this.selectedMonth,
     this.data,
   }) : startDate = endDate.subtract(
           const Duration(
@@ -24,6 +25,7 @@ class HomeControllersState {
   final ControllersStatus status;
   final String? errorMessage;
   final double? indicatedValue;
+  final int? selectedMonth;
   final List<double>? data;
 
   HomeControllersState copyWith({
@@ -33,6 +35,7 @@ class HomeControllersState {
     String? errorMessage,
     DateTime? endDate,
     double? indicatedValue,
+    int? selectedMonth,
     List<double>? data,
   }) {
     return HomeControllersState(
@@ -41,8 +44,9 @@ class HomeControllersState {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       endDate: endDate ?? this.endDate,
-      indicatedValue: indicatedValue?? this.data?.last,
+      indicatedValue: indicatedValue ?? this.data?.last,
       data: data ?? this.data,
+      selectedMonth: selectedMonth ?? this.selectedMonth,
     );
   }
 }

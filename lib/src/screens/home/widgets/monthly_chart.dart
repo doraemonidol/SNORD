@@ -4,13 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/home/controllers/home_controllers.dart';
 import 'package:rehabox/src/screens/home/widgets/chart.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
-import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:shimmer/shimmer.dart';
 
-class DailyChart extends StatelessWidget {
-  const DailyChart({super.key});
+class MonthlyChart extends StatelessWidget {
+  const MonthlyChart({super.key});
 
   Widget bottomTitleWidgets(
     BuildContext context,
@@ -38,7 +37,6 @@ class DailyChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Selector<HomeControllers, List<double>?>(
       builder: (BuildContext context, List<double>? value, Widget? child) {
-        debugPrint('value: $value');
         if (value == null) {
           return Shimmer.fromColors(
             baseColor: baseColor,
@@ -55,24 +53,19 @@ class DailyChart extends StatelessWidget {
             ),
           );
         }
-        final selectedDate = context.read<HomeControllers>().state.selectedDate;
-        final spotLength =
-            matchDate(selectedDate!, DateTime.now()) ? DateTime.now().hour + 1 : 24;
+        final selectedMonth =
+            context.read<HomeControllers>().state.selectedMonth;
+        final maxX = selectedMonth == 2
+            ? 28
+            : selectedMonth! % 2 == 0
+                ? 30
+                : 31;
+        final spotsLength =
+            selectedMonth == DateTime.now().month ? DateTime.now().day : maxX;
         final spots = List<FlSpot>.empty(growable: true);
-        for (var i = 0; i < spotLength; i++) {
+        for (var i = 0; i <= spotsLength; i++) {
           spots.add(FlSpot(i.toDouble(), value[i]));
         }
-        final stops = spots.map((e) {
-          if (e.y <= 100) {
-            return context.colorScheme.errorContainer.withOpacity(1);
-          } else if (e.y <= 300) {
-            return const Color(0XFFFFCA00);
-          } else if (e.y <= 450) {
-            return const Color(0XFFE3524F).withOpacity(0.7);
-          } else {
-            return const Color(0XFFE3524F);
-          }
-        }).toList();
         final max = spots
             .reduce((value, element) => value.y > element.y ? value : element)
             .y;
@@ -81,20 +74,19 @@ class DailyChart extends StatelessWidget {
             .y;
         return Chart(
           data: spots,
-          gradientColors: (points) => LinearGradient(
-            colors: stops,
-          ),
-          checkToShowBelowBar: (spot) {
-            if (!matchDate(selectedDate, DateTime.now())) {
-              return false;
-            }
-            return spot.x == DateTime.now().hour;
-          },
+          minX: 1,
+          maxX: maxX.toDouble(),
           checkToShowDot: (spot, data) {
-            if (!matchDate(selectedDate, DateTime.now())) {
+            if (selectedMonth != DateTime.now().month) {
               return false;
             }
-            return spot.x == DateTime.now().hour;
+            return spot.x == DateTime.now().day;
+          },
+          checkToShowBelowBar: (spot) {
+            if (selectedMonth != DateTime.now().month) {
+              return false;
+            }
+            return spot.x == DateTime.now().day;
           },
           onTouchCallback: (context, value) =>
               context.read<HomeControllers>().changeIndicatedValue(
@@ -124,7 +116,7 @@ class DailyChart extends StatelessWidget {
                       style: context.textTheme.titleSmall,
                     ),
                     Text(
-                      'Comparison by hour',
+                      'Comparison by day',
                       style: context.textTheme.bodySmall,
                     ),
                   ],

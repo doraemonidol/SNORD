@@ -78,50 +78,82 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 height: 8,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'This Week',
-                          style: context.textTheme.titleMedium,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Selector<HomeControllers, DateTime>(
-                            selector: (context, controller) =>
-                                controller.state.endDate,
-                            builder: (context, endDate, child) {
-                              final endDateString =
-                                  "${endDate.day} ${mapMonth(endDate.month).substring(0, 3)}";
-                              final startDateString =
-                                  "${endDate.subtract(const Duration(days: 6)).day} ${mapMonth(endDate.subtract(const Duration(days: 6)).month).substring(0, 3)}";
-                              return Text(
-                                '$startDateString - $endDateString',
-                                style: context.textTheme.bodyMedium,
-                              );
-                            }),
-                      ],
+              Selector<HomeControllers, TabState>(
+                selector: (context, controller) => controller.state.tabState,
+                builder: (context, value, child) => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (value == TabState.monthly)
+                            Text(
+                              'Month',
+                              style: context.textTheme.titleMedium,
+                            )
+                          else
+                            Text(
+                              'This Week',
+                              style: context.textTheme.titleMedium,
+                            ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          if (value != TabState.monthly)
+                            Selector<HomeControllers, DateTime>(
+                              selector: (context, controller) =>
+                                  controller.state.endDate,
+                              builder: (context, endDate, child) {
+                                final endDateString =
+                                    "${endDate.day} ${mapMonth(endDate.month).substring(0, 3)}";
+                                final startDateString =
+                                    "${endDate.subtract(const Duration(days: 6)).day} ${mapMonth(endDate.subtract(const Duration(days: 6)).month).substring(0, 3)}";
+                                return Text(
+                                  '$startDateString - $endDateString',
+                                  style: context.textTheme.bodyMedium,
+                                );
+                              },
+                            )
+                          else
+                            Selector<HomeControllers, int?>(
+                              selector: (context, controller) =>
+                                  controller.state.selectedMonth,
+                              builder: (context, endDate, child) {
+                                return Text(
+                                  mapMonth(endDate!),
+                                  style: context.textTheme.bodyMedium,
+                                );
+                              },
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                  CustomIconButton(
-                    onPressed: (context) =>
-                        context.read<HomeControllers>().previousWeek(),
-                    icon: const Icon(Icons.navigate_before_rounded),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  CustomIconButton(
-                    onPressed: (context) =>
-                        context.read<HomeControllers>().nextWeek(),
-                    icon: const Icon(Icons.navigate_next_rounded),
-                  ),
-                ],
+                    CustomIconButton(
+                      onPressed: (context) {
+                        if (TabState.monthly == value) {
+                          context.read<HomeControllers>().previousMonth();
+                        } else {
+                          context.read<HomeControllers>().previousWeek();
+                        }
+                      },
+                      icon: const Icon(Icons.navigate_before_rounded),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    CustomIconButton(
+                      onPressed: (context) {
+                        if (TabState.monthly == value) {
+                          context.read<HomeControllers>().nextMonth();
+                        } else {
+                          context.read<HomeControllers>().nextWeek();
+                        }
+                      },
+                      icon: const Icon(Icons.navigate_next_rounded),
+                    ),
+                  ],
+                ),
               )
             ],
           ),

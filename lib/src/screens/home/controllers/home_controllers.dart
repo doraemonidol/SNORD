@@ -14,9 +14,12 @@ class HomeControllers extends ChangeNotifier
   HomeControllersState get state => _state;
 
   Future<void> fetchData() async {
-    _state = _state.copyWith(
+    _state = HomeControllersState(
+      endDate: _state.endDate,
+      tabState: _state.tabState,
       status: ControllersStatus.loading,
-      data: null,
+      selectedDate: _state.selectedDate,
+      selectedMonth: _state.selectedMonth,
     );
     notifyListeners();
     try {
@@ -27,7 +30,6 @@ class HomeControllers extends ChangeNotifier
           : state.tabState == TabState.weekly
               ? [...mockDataWeekly]
               : [...mockDataMonth];
-      await Future.delayed(const Duration(seconds: 2));
       _state = _state.copyWith(
         status: ControllersStatus.loaded,
         data: data,
@@ -42,14 +44,40 @@ class HomeControllers extends ChangeNotifier
   }
 
   Future<void> changeTabState(TabState tabState) async {
-    _state = _state.copyWith(
+    _state = HomeControllersState(
+      endDate: _state.endDate,
       tabState: tabState,
+      status: _state.status,
     );
-    notifyListeners();
+    if (tabState == TabState.monthly) {
+      _state = _state.copyWith(
+        selectedMonth: DateTime.now().month,
+      );
+    }
     await fetchData();
   }
 
-  void previousWeek() {
+  Future<void> previousMonth() async {
+    if (_state.selectedMonth == 1) {
+      return;
+    }
+    _state = _state.copyWith(
+      selectedMonth: _state.selectedMonth! - 1,
+    );
+    await fetchData();
+  }
+
+  Future<void> nextMonth() async {
+    if (_state.selectedMonth == DateTime.now().month) {
+      return;
+    }
+    _state = _state.copyWith(
+      selectedMonth: _state.selectedMonth! + 1,
+    );
+    await fetchData();
+  }
+
+  Future<void> previousWeek() async {
     _state = _state.copyWith(
       endDate: _state.endDate.subtract(
         const Duration(
@@ -57,10 +85,15 @@ class HomeControllers extends ChangeNotifier
         ),
       ),
     );
-    notifyListeners();
+
+    if (_state.tabState != TabState.daily) {
+      await fetchData();
+    } else {
+      notifyListeners();
+    }
   }
 
-  void nextWeek() {
+  Future<void> nextWeek() async {
     if (_state.endDate.add(const Duration(days: 7)).isAfter(DateTime.now())) {
       return;
     }
@@ -71,7 +104,11 @@ class HomeControllers extends ChangeNotifier
         ),
       ),
     );
-    notifyListeners();
+    if (_state.tabState != TabState.daily) {
+      await fetchData();
+    } else {
+      notifyListeners();
+    }
   }
 
   Future<void> selectDate(DateTime date) async {
@@ -96,7 +133,6 @@ class HomeControllers extends ChangeNotifier
         errorMessage: e.toString(),
       );
     }
-    notifyListeners();
     await fetchData();
   }
 

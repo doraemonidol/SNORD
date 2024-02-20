@@ -4,12 +4,34 @@ import 'package:provider/provider.dart';
 import 'package:rehabox/src/screens/home/controllers/home_controllers.dart';
 import 'package:rehabox/src/screens/home/widgets/chart.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
+import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class WeeklyChart extends StatelessWidget {
   const WeeklyChart({super.key});
+
+  String getDayOfWeek(int day) {
+    switch (day) {
+      case 0:
+        return 'Mon';
+      case 1:
+        return 'Tue';
+      case 2:
+        return 'Wed';
+      case 3:
+        return 'Thu';
+      case 4:
+        return 'Fri';
+      case 5:
+        return 'Sat';
+      case 6:
+        return 'Sun';
+      default:
+        return '';
+    }
+  }
 
   Widget bottomTitleWidgets(
     BuildContext context,
@@ -19,13 +41,11 @@ class WeeklyChart extends StatelessWidget {
     final style = context.textTheme.titleSmall?.copyWith(
       color: const Color(0XFF9B9BA1),
     );
-    Widget text = value.toInt() % 2 != 0
-        ? Text(
-            '${value.toInt()}',
-            style: style,
-            textAlign: TextAlign.center,
-          )
-        : Container();
+    Widget text = Text(
+      getDayOfWeek(value.toInt()),
+      style: style,
+      textAlign: TextAlign.center,
+    );
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -54,7 +74,10 @@ class WeeklyChart extends StatelessWidget {
           );
         }
         final spots = List<FlSpot>.empty(growable: true);
-        for (var i = 0; i <= DateTime.now().hour; i++) {
+        final endDate = context.read<HomeControllers>().state.endDate;
+        int maxX =
+            !matchDate(endDate, DateTime.now()) ? 7 : DateTime.now().weekday;
+        for (var i = 0; i < maxX; i++) {
           spots.add(FlSpot(i.toDouble(), value[i]));
         }
         final max = spots
@@ -65,6 +88,20 @@ class WeeklyChart extends StatelessWidget {
             .y;
         return Chart(
           data: spots,
+          maxX: 6,
+          minX: 0,
+          checkToShowDot: (spot, data) {
+            if (!matchDate(endDate, DateTime.now())) {
+              return false;
+            }
+            return spot.x == DateTime.now().weekday - 1;
+          },
+          checkToShowBelowBar: (spot) {
+            if (!matchDate(endDate, DateTime.now())) {
+              return false;
+            }
+            return spot.x == DateTime.now().weekday - 1;
+          },
           onTouchCallback: (context, value) =>
               context.read<HomeControllers>().changeIndicatedValue(
                     value,
@@ -93,7 +130,7 @@ class WeeklyChart extends StatelessWidget {
                       style: context.textTheme.titleSmall,
                     ),
                     Text(
-                      'Comparison by hour',
+                      'Comparison by day',
                       style: context.textTheme.bodySmall,
                     ),
                   ],

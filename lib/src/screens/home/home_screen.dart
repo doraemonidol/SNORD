@@ -6,6 +6,7 @@ import 'package:rehabox/src/screens/home/controllers/home_controllers.dart';
 import 'package:rehabox/src/screens/home/widgets/daily_chart.dart';
 import 'package:rehabox/src/screens/home/widgets/date_button.dart';
 import 'package:rehabox/src/screens/home/widgets/home_app_bar.dart';
+import 'package:rehabox/src/screens/home/widgets/monthly_chart.dart';
 import 'package:rehabox/src/screens/home/widgets/weekly_chart.dart';
 import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
@@ -64,9 +65,6 @@ class HomeScreen extends StatelessWidget {
                                           await context
                                               .read<HomeControllers>()
                                               .selectDate(date);
-                                          // context
-                                          //     .read<HomeControllers>()
-                                          //     .fetchData();
                                         },
                                         isSelected: isSelected,
                                       );
@@ -93,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                                 case TabState.weekly:
                                   return const WeeklyChart();
                                 case TabState.monthly:
-                                  return const WeeklyChart();
+                                  return const MonthlyChart();
                               }
                             },
                             selector: (BuildContext context,
