@@ -11,7 +11,7 @@ class UserRESTDataSource extends RESTDataSource<User> {
     super.token = '',
   });
 
-  Future<User?> read(String id) async {
+  Future<User?> read() async {
     try {
       final response = await get('/user');
       if (response.statusCode == 200) {

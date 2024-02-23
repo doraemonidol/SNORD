@@ -1,6 +1,8 @@
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/models/Challenge/challenge.dart';
 import 'package:rehabox/src/models/Coupon/coupon.dart';
+import 'package:rehabox/src/models/NicontineConsumption/nicotine_consumption.dart';
+import 'package:rehabox/src/models/TimerActivity/timer_activity.dart';
 import 'package:rehabox/src/models/User/user.dart';
 import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 
@@ -79,8 +81,50 @@ class LocalUserRepository implements UserRepositoryInterface {
   }
 
   @override
-  Future<User?> read(String id) {
+  Future<User?> read() {
     // TODO: implement read
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> addNicotineConsumption(NicotineConsumption nicotineConsumption) {
+    // TODO: implement addNicotineConsumption
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> closeCurrentTimer() {
+    // TODO: implement closeCurrentTimer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<TimerActivity?> getCurrentTimerActivity() {
+    // TODO: implement getCurrentTimerActivity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<NicotineConsumption>?> nicotineConsumptionDaily(DateTime date) {
+    // TODO: implement nicotineConsumptionDaily
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<NicotineConsumption>?> nicotineConsumptionMonthly(DateTime date) {
+    // TODO: implement nicotineConsumptionMonthly
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<NicotineConsumption>?> nicotineConsumptionWeekly(DateTime endDate) {
+    // TODO: implement nicotineConsumptionWeekly
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<TimerActivity?> startNewTimer(Duration duration) {
+    // TODO: implement startNewTimer
     throw UnimplementedError();
   }
 }

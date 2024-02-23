@@ -20,7 +20,7 @@ class UserProfileProvider extends ChangeNotifier
     _state = UserProfileProviderState.loading(_state);
     notifyListeners();
     try {
-      final user = await _userRepository.read("");
+      final user = await _userRepository.read();
       debugPrint("User: $user");
       if (user == null) {
         _state = const UserProfileProviderState(

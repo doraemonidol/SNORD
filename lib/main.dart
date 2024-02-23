@@ -11,8 +11,6 @@ import 'package:rehabox/src/mock_app.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
 import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
 import 'package:rehabox/src/service/firebase_auth_methods.dart';
-import 'package:rehabox/src/repositories/timer_activity_repository/local_timer_activity_repository.dart';
-import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
 import 'package:rehabox/src/utils/mock_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,12 +61,35 @@ void main() async {
           create: (context) => context.read<FirebaseAuthMethods>().authState,
           initialData: null,
         ),
-        Provider<UserRepositoryInterface>(create: (_) => RestUserRepository()),
-        Provider<TimerActivityRepositoryInterface>(
-          create: (_) => LocalTimerActivityRepository(),
-        ),
+        // Provider<UserRepositoryInterface>(
+        //   create: (_) => RestUserRepository(),
+        // ),
+        // Provider<TimerActivityRepositoryInterface>(
+        //   create: (_) => LocalTimerActivityRepository(),
+        // ),
       ],
-      child: const MockApp(),
+      // When authenticated, RESTUserRepository will be created with the token
+      // from AuthenticationRepository.
+      // The call looks like this:
+      // child: Consumer<AuthenticationRepository>(
+      //  builder: (context, authRepo, child) {
+      //    final token = authRepo.token; // you can define the token getter in the AuthenticationRepository interface
+      //    return Provider(
+      //      create: (_) => RESTUserRepository(token: token),
+      //      child: Provider(
+      //     create: (_) => RESTUserRepository(token: ""),
+      //     child: const MockApp(),
+      //   );
+      // }
+      //
+      // ),
+      // For now we are using a mock token.
+      child: Provider(
+        create: (_) => RESTUserRepository(
+          token: "this-is-a-mock-token",
+        ),
+        child: const MockApp(),
+      ),
     ),
   );
 }
