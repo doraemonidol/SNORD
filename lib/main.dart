@@ -9,8 +9,8 @@ import 'package:rehabox/firebase_options.dart';
 import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
+import 'package:rehabox/src/repositories/authentication_repository.dart';
 import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
-import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/utils/mock_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,11 +54,12 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider<FirebaseAuthMethods>(
-          create: (_) => FirebaseAuthMethods(FirebaseAuth.instance),
+        Provider<AuthenticationRepository>(
+          create: (_) => AuthenticationRepository(FirebaseAuth.instance),
         ),
         StreamProvider(
-          create: (context) => context.read<FirebaseAuthMethods>().authState,
+          create: (context) =>
+              context.read<AuthenticationRepository>().authState,
           initialData: null,
         ),
         // Provider<UserRepositoryInterface>(
@@ -71,25 +72,36 @@ void main() async {
       // When authenticated, RESTUserRepository will be created with the token
       // from AuthenticationRepository.
       // The call looks like this:
-      // child: Consumer<AuthenticationRepository>(
-      //  builder: (context, authRepo, child) {
-      //    final token = authRepo.token; // you can define the token getter in the AuthenticationRepository interface
-      //    return Provider(
-      //      create: (_) => RESTUserRepository(token: token),
-      //      child: Provider(
-      //     create: (_) => RESTUserRepository(token: ""),
-      //     child: const MockApp(),
-      //   );
-      // }
+      child: Consumer<AuthenticationRepository>(
+        builder: (context, authRepo, child) {
+          return FutureBuilder(
+            future: authRepo.token,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              final token = snapshot.data as String;
+              debugPrint('Token: $token');
+              return Provider(
+                create: (_) => RESTUserRepository(token: token),
+                child: Provider(
+                  create: (_) => RESTUserRepository(token: ""),
+                  child: const MockApp(),
+                ),
+              );
+            },
+          );
+        },
+      ),
       //
       // ),
       // For now we are using a mock token.
-      child: Provider(
-        create: (_) => RESTUserRepository(
-          token: "this-is-a-mock-token",
-        ),
-        child: const MockApp(),
-      ),
+      // child: Provider(
+      //   create: (_) => RESTUserRepository(
+      //     token: "this-is-a-mock-token",
+      //   ),
+      //   child: const MockApp(),
+      // ),
     ),
   );
 }

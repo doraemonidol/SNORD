@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/repositories/authentication_repository.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
@@ -102,7 +104,7 @@ class MockApp extends StatelessWidget {
       // home: const AuthWrapper(),
       // phatalways-sleeping: I commented this out to use initialRoute instead,
       // avoiding the need to use a const AuthWrapper() as the home route since we have a named route for it.
-      initialRoute: ProfileScreen.routeName,
+      initialRoute: AuthWrapper.routeName,
       onUnknownRoute: (settings) {
         return MaterialPageRoute<void>(
           builder: (context) => Scaffold(
@@ -132,6 +134,7 @@ class AuthWrapper extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data;
+          print('user: $user');
           if (user == null) {
             return const OnboardingScreen();
           }
