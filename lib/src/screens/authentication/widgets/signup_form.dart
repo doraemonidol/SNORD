@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/repositories/authentication_repository.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
-import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/debounce_button.dart';
@@ -42,7 +42,7 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void signUpUser() async {
-    context.read<FirebaseAuthMethods>().signUpWithEmail(
+    context.read<AuthenticationRepository>().signUpWithEmail(
           email: _emailController.text,
           password: _passwordController.text,
           context: context,

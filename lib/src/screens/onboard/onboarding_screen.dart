@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/service/firebase_auth_methods.dart';
+import 'package:rehabox/src/repositories/authentication_repository.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -152,7 +152,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       context
-                          .read<FirebaseAuthMethods>()
+                          .read<AuthenticationRepository>()
                           .signInWithGoogle(context);
                     },
                     icon: const SvgIcon(
