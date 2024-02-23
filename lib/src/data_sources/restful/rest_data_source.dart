@@ -1,13 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehabox/src/models/models.dart' show Model;
 
 /// Abstract class for RESTful data sources
 /// [T] is the model type to ensure type safety
 abstract class RESTDataSource<T extends Model> {
-  RESTDataSource();
+  RESTDataSource({
+    required this.token,
+    required this.baseUrl,
+  });
 
   final _httpClient = http.Client();
+
+  final String token;
+  final String baseUrl;
 
   /// Wrapper for all http methods
   /// In subclasses, use this method to make http requests
@@ -16,50 +21,58 @@ abstract class RESTDataSource<T extends Model> {
   /// For example: if [baseUrl] is "https://example.com/api/v1",
   /// then the domain is "https://example.com"
   /// [endpoint] is the path to the resource
-  Future<http.Response> get(String endpoint,
-      {Map<String, String>? headers}) async {
-    final res = await _httpClient.get(
-      Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
-      headers: headers,
-    );
-    debugPrint('Response: ${res.body}');
-    return res;
-  }
+  Future<http.Response> get(
+    String endpoint, {
+    Map<String, String>? headers,
+  }) =>
+      _httpClient.get(
+        Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
+        headers: wrapWithBearerToken(headers),
+      );
 
   Future<http.Response> post(String endpoint,
           {Map<String, String>? headers, dynamic body}) =>
-      _httpClient.post(Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
-          headers: headers, body: body);
+      _httpClient.post(
+        Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
+        headers: wrapWithBearerToken(headers),
+        body: body,
+      );
 
   Future<http.Response> put(String endpoint,
           {Map<String, String>? headers, dynamic body}) =>
-      _httpClient.put(Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
-          headers: headers, body: body);
+      _httpClient.put(
+        Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
+        headers: wrapWithBearerToken(headers),
+        body: body,
+      );
 
   Future<http.Response> patch(String endpoint,
           {Map<String, String>? headers, dynamic body}) =>
-      _httpClient.patch(Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
-          headers: headers, body: body);
+      _httpClient.patch(
+        Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
+        headers: wrapWithBearerToken(headers),
+        body: body,
+      );
 
-  Future<http.Response> delete(String endpoint,
-          {Map<String, String>? headers}) =>
-      _httpClient.delete(Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
-          headers: headers);
+  Future<http.Response> delete(
+    String endpoint, {
+    Map<String, String>? headers,
+  }) =>
+      _httpClient.delete(
+        Uri.parse("${_extractDomain(baseUrl)}$endpoint"),
+        headers: wrapWithBearerToken(headers),
+      );
 
   String _extractDomain(String url) {
     final uri = Uri.parse(url);
     return '${uri.scheme}://${uri.host}:${uri.port}';
   }
 
-  String get baseUrl;
-
-  Future<T> create(T model);
-
-  Future<T?> read(String id);
-
-  Future<List<T>> readAll();
-
-  Future<T> update(T model);
-
-  Future<T> remove(String id);
+  Map<String, String> wrapWithBearerToken(Map<String, String>? headers) {
+    headers = headers ?? {};
+    headers.addEntries([
+      MapEntry('Authorization', 'Bearer $token'),
+    ]);
+    return headers;
+  }
 }
