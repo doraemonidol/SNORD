@@ -14,11 +14,11 @@ User _$UserFromJson(Map<String, dynamic> json) {
       'name',
       'point',
       'activities',
-      // 'challenges',
-      // 'goal',
+      'challenges',
+      'goal',
       'achievements',
-      // 'coupons',
-      // 'imageUrl'
+      'coupons',
+      'imageUrl'
     ],
   );
   return User(
@@ -34,7 +34,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
             .toList() ??
         [],
     goal: json['goal'] == null
-        ? Duration(microseconds: 0)
+        ? Duration.zero
         : Duration(microseconds: json['goal'] as int),
     achievements: (json['achievements'] as List<dynamic>?)
             ?.map((e) => UserAchievement.fromJson(e as Map<String, dynamic>))
