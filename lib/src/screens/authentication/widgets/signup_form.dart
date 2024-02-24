@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/repositories/authentication_repository.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/theme/themedata.dart';
@@ -24,6 +24,7 @@ class _SignupFormState extends State<SignupForm> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -308,6 +309,10 @@ class _SignupFormState extends State<SignupForm> {
                     height: context.heightPercent(0.075),
                     child: DebounceButton(
                       onPressed: (context) {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        setState(() {
+                          _isLoading = true;
+                        });
                         _loginFormKey.currentState?.save();
                         if (_loginFormKey.currentState != null &&
                             _loginFormKey.currentState!.validate()) {
@@ -324,14 +329,19 @@ class _SignupFormState extends State<SignupForm> {
                           const Color(0xFF3843FF),
                         ),
                       ),
-                      title: const Text(
-                        'Next',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFFFFFFF),
-                        ),
-                      ),
+                      title: _isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            )
+                          : const Text(
+                              'Next',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFFFFFFF),
+                              ),
+                            ),
                     ),
                   ),
                 ],

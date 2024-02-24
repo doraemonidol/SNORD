@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/repositories/authentication_repository.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
@@ -23,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   final _loginFormKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  bool _isLoading = false;
 
   void loginUser() {
     context.read<AuthenticationRepository>().loginWithEmail(
@@ -260,6 +261,10 @@ class _LoginFormState extends State<LoginForm> {
                     height: context.heightPercent(0.075),
                     child: DebounceButton(
                       onPressed: (context) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        FocusScope.of(context).requestFocus(new FocusNode());
                         _loginFormKey.currentState?.save();
                         if (_loginFormKey.currentState != null &&
                             _loginFormKey.currentState!.validate()) {
@@ -276,7 +281,11 @@ class _LoginFormState extends State<LoginForm> {
                           const Color(0xFF3843FF),
                         ),
                       ),
-                      title: const Text(
+                      title: _isLoading ?
+                      const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ) :
+                       const Text(
                         'Next',
                         style: TextStyle(
                           fontSize: 14,
