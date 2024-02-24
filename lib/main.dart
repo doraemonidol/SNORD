@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/firebase_options.dart';
-import 'package:rehabox/src/data_sources/data_sources.dart';
 import 'package:rehabox/src/mock_app.dart';
-import 'package:rehabox/src/repositories/repositories.dart';
 import 'package:rehabox/src/repositories/authentication_repository.dart';
 import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
-import 'package:rehabox/src/utils/mock_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
@@ -30,20 +26,20 @@ void main() async {
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
 
-  final SharedPreferences sharedPreferences =
-      await SharedPreferences.getInstance();
+  // final SharedPreferences sharedPreferences =
+  //     await SharedPreferences.getInstance();
 
-  // Mock coupons
-  sharedPreferences.setStringList(
-      "coupons", coupons.map((e) => jsonEncode(e.toJson())).toList());
+  // // Mock coupons
+  // sharedPreferences.setStringList(
+  //     "coupons", coupons.map((e) => jsonEncode(e.toJson())).toList());
 
-  final localDataSource = LocalDataSource(
-    sharedPreferences,
-  );
+  // final localDataSource = LocalDataSource(
+  //   sharedPreferences,
+  // );
 
-  final userRepository = LocalUserRepository(
-    localDataSource: localDataSource,
-  );
+  // final userRepository = LocalUserRepository(
+  //   localDataSource: localDataSource,
+  // );
 
   FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
@@ -82,12 +78,9 @@ void main() async {
               }
               final String token = snapshot.data ?? "";
               debugPrint('Token: $token');
-              return Provider(
+              return Provider<UserRepositoryInterface>(
                 create: (_) => RESTUserRepository(token: token),
-                child: Provider(
-                  create: (_) => RESTUserRepository(token: ""),
-                  child: const MockApp(),
-                ),
+                child: const MockApp(),
               );
             },
           );

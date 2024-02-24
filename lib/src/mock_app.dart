@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:rehabox/src/repositories/authentication_repository.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
