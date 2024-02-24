@@ -51,11 +51,9 @@ class AuthenticationRepository {
             return;
           }
           await context.read<UserRepositoryInterface>().isFirstTime().then((value) {
-            debugPrint('isFirstTime: $value');
             isFirstTime = value;
           });
-          debugPrint('isFirstTime: ${isFirstTime ?? 'null'}');
-          if (user != null && isFirstTime != null) {
+          if (isFirstTime != null) {
             controller.add(AuthenticationInfo(
               user: user,
               isFirstTime: isFirstTime!,

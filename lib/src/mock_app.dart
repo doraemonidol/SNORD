@@ -138,7 +138,6 @@ class AuthWrapper extends StatelessWidget {
     return StreamBuilder<AuthenticationInfo?>(
       stream: context.read<AuthenticationRepository>().authState(context),
       builder: (context, snapshot) {
-        debugPrint(snapshot.connectionState.toString());
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data == null ? null : snapshot.data!.user;
           final bool isFirstTime =
@@ -156,7 +155,9 @@ class AuthWrapper extends StatelessWidget {
             return FutureBuilder(
               future: Future.wait([
                 checkPermission(Permission.bluetooth),
-                context.read<UserRepositoryInterface>().getCurrentTimerActivity(),
+                context
+                    .read<UserRepositoryInterface>()
+                    .getCurrentTimerActivity(),
               ]),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting ||
