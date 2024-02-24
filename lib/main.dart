@@ -6,7 +6,8 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/firebase_options.dart';
 import 'package:rehabox/src/mock_app.dart';
-import 'package:rehabox/src/repositories/authentication_repository.dart';
+import 'package:rehabox/src/repositories/repositories.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
 import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 
@@ -55,7 +56,7 @@ void main() async {
         ),
         StreamProvider(
           create: (context) =>
-              context.read<AuthenticationRepository>().authState,
+              context.read<AuthenticationRepository>().authState(context),
           initialData: null,
         ),
         // Provider<UserRepositoryInterface>(

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
+import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
+import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 import 'package:rehabox/src/screens/authentication/widgets/login_form.dart';
 import 'package:rehabox/src/screens/authentication/widgets/signup_form.dart';
 import 'package:rehabox/src/screens/challenges/challenge_view_screen.dart';
@@ -16,6 +21,7 @@ import 'package:rehabox/src/screens/timer/screens/timer_screen.dart';
 import 'package:rehabox/src/screens/profile/widgets/profile_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
+import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
@@ -27,6 +33,7 @@ class MockApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('MockApp.build');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // Providing a restorationScopeId allows the Navigator built by the
@@ -80,7 +87,7 @@ class MockApp extends StatelessWidget {
         SignupForm.routeName: (context) => const SignupForm(),
         GrantAccessScreen.routeName: (context) => const GrantAccessScreen(),
         DeviceScreen.routeName: (context) => const DeviceScreen(),
-        AuthWrapper.routeName: (context) => const AuthWrapper(),
+        AuthWrapper.routeName: (context) => AuthWrapper(),
         CongratulationScreen.routeName: (context) =>
             const CongratulationScreen(),
         TimerScreen.routeName: (context) => const TimerScreen(),
@@ -120,27 +127,76 @@ class MockApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+  bool reauthenticate = false;
+  AuthWrapper({Key? key}) : super(key: key);
   static const routeName = '/auth-wrapper';
 
   @override
   Widget build(BuildContext context) {
     debugPrint('AuthWrapper.build');
 
-    return StreamBuilder<auth.User?>(
-      stream: auth.FirebaseAuth.instance.authStateChanges(),
+    return StreamBuilder<AuthenticationInfo?>(
+      stream: context.read<AuthenticationRepository>().authState(context),
       builder: (context, snapshot) {
+        debugPrint(snapshot.connectionState.toString());
         if (snapshot.connectionState == ConnectionState.active) {
-          final user = snapshot.data;
-          print('user: $user');
+          final user = snapshot.data == null ? null : snapshot.data!.user;
+          final bool isFirstTime =
+              snapshot.data == null ? true : snapshot.data!.isFirstTime;
+          debugPrint('user: $user');
+          debugPrint('isFirstTime: $isFirstTime');
           if (user == null) {
+            reauthenticate = true;
             return const OnboardingScreen();
           }
-          return const GrantAccessScreen();
+          if (reauthenticate) {
+            Navigator.pop(context);
+          }
+          if (isFirstTime) {
+            return FutureBuilder(
+              future: Future.wait([
+                checkPermission(Permission.bluetooth),
+                context.read<UserRepositoryInterface>().getCurrentTimerActivity(),
+              ]),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    !snapshot.hasData) {
+                  return const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(0xFF0A0A0A)),
+                      ),
+                    ),
+                  );
+                }
+                final bool checkPermissionResult =
+                    snapshot.data?[0] == PermissionStatus.granted;
+                final TimerActivity? currentTimerActivity =
+                    snapshot.data?[1] as TimerActivity?;
+
+                if (checkPermissionResult) {
+                  if (currentTimerActivity == null) {
+                    context
+                        .read<RESTUserRepository>()
+                        .startNewTimer(Duration(hours: 24));
+                    return const UsageAnalysisScreen(
+                        timeLeft: Duration(hours: 24));
+                  }
+                  return UsageAnalysisScreen(
+                      timeLeft: currentTimerActivity.timeLeft);
+                }
+                return const GrantAccessScreen();
+              },
+            );
+          }
+          return const HomeScreen();
         }
         return const Scaffold(
           body: Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0A0A0A)),
+            ),
           ),
         );
       },

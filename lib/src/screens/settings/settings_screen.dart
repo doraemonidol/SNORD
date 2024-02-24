@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/repositories/authentication_repository.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/screens/settings/config.dart';
 import 'package:rehabox/src/screens/settings/widgets/options_group.dart';
 import 'package:rehabox/src/widgets/custom_app_bar.dart';

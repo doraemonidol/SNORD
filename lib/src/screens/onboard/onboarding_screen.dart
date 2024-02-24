@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/repositories/authentication_repository.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';

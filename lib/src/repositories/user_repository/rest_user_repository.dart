@@ -70,7 +70,7 @@ class RESTUserRepository implements UserRepositoryInterface {
   @override
   Future<TimerActivity?> getCurrentTimerActivity() =>
       timerRESTDataSource.getCurrentTimer();
-
+  
   @override
   Future<List<NicotineConsumption>?> nicotineConsumptionDaily(DateTime date) =>
       userRESTDataSource.nicotineConsumptionDaily(date);
@@ -88,4 +88,7 @@ class RESTUserRepository implements UserRepositoryInterface {
   @override
   Future<TimerActivity?> startNewTimer(Duration duration) =>
       timerRESTDataSource.startNewTimer(duration);
+
+  @override
+  Future<bool?> isFirstTime() => timerRESTDataSource.isFirstTime();
 }

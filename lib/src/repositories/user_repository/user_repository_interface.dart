@@ -15,6 +15,7 @@ abstract interface class UserRepositoryInterface {
   Future<TimerActivity?> getCurrentTimerActivity();
   Future<bool> closeCurrentTimer();
   Future<TimerActivity?> startNewTimer(Duration duration);
+  Future<bool?> isFirstTime();
 
   Future<List<NicotineConsumption>?> nicotineConsumptionDaily(DateTime date);
   Future<List<NicotineConsumption>?> nicotineConsumptionWeekly(

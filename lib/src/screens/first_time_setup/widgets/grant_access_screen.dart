@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/screens/first_time_setup/config.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
 import 'package:rehabox/src/service/bluetooth_methods.dart';

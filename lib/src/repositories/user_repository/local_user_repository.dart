@@ -117,7 +117,8 @@ class LocalUserRepository implements UserRepositoryInterface {
   }
 
   @override
-  Future<List<NicotineConsumption>?> nicotineConsumptionWeekly(DateTime endDate) {
+  Future<List<NicotineConsumption>?> nicotineConsumptionWeekly(
+      DateTime endDate) {
     // TODO: implement nicotineConsumptionWeekly
     throw UnimplementedError();
   }
@@ -125,6 +126,12 @@ class LocalUserRepository implements UserRepositoryInterface {
   @override
   Future<TimerActivity?> startNewTimer(Duration duration) {
     // TODO: implement startNewTimer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isFirstTime() {
+    // TODO: implement isFistTime
     throw UnimplementedError();
   }
 }

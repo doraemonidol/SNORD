@@ -60,4 +60,20 @@ class TimerRESTDataSource extends RESTDataSource<TimerActivity> {
     }
     return null;
   }
+
+  Future<bool?> isFirstTime() async {
+    debugPrint('Checking isFirstTime');
+    try {
+      final response = await get('/timer/first-time');
+      debugPrint('Status code: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body) as Map<String, dynamic>;
+        return body['data'] as bool;
+      }
+      await Future.delayed(const Duration(seconds: 3), () {});
+      return true;
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
 }

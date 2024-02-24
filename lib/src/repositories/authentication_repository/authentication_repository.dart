@@ -1,9 +1,26 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/data_sources/restful/timer_rest_data_source.dart';
+import 'package:rehabox/src/data_sources/restful/user_rest_data_source.dart';
+import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
+import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/utils/showSnackbar.dart';
+
+class AuthenticationInfo {
+  final User? user;
+  final bool isFirstTime;
+
+  AuthenticationInfo({
+    required this.user,
+    required this.isFirstTime,
+  });
+}
 
 class AuthenticationRepository {
   final FirebaseAuth _auth;
@@ -22,7 +39,42 @@ class AuthenticationRepository {
   }
 
   // STATE PERSISTENCE STREAM
-  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+  Stream<AuthenticationInfo?> authState(BuildContext context) {
+    late final StreamController<AuthenticationInfo?> controller;
+
+    controller = StreamController<AuthenticationInfo?>(
+      onListen: () async {
+        _auth.authStateChanges().listen((user) async {
+          bool? isFirstTime = null;
+          if (user == null) {
+            controller.add(null);
+            return;
+          }
+          await context.read<UserRepositoryInterface>().isFirstTime().then((value) {
+            debugPrint('isFirstTime: $value');
+            isFirstTime = value;
+          });
+          debugPrint('isFirstTime: ${isFirstTime ?? 'null'}');
+          if (user != null && isFirstTime != null) {
+            controller.add(AuthenticationInfo(
+              user: user,
+              isFirstTime: isFirstTime!,
+            ));
+          } else {
+            controller.add(AuthenticationInfo(
+              user: user,
+              isFirstTime: false,
+            ));
+          }
+        });
+      },
+      onCancel: () {
+        controller.close();
+      },
+    );
+
+    return controller.stream;
+  }
   // OTHER WAYS (depends on use case):
   // Stream get authState => FirebaseAuth.instance.userChanges();
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
@@ -40,7 +92,6 @@ class AuthenticationRepository {
         password: password,
       );
 
-      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
@@ -71,7 +122,6 @@ class AuthenticationRepository {
         // restrict access to certain things using provider
         // transition to another page instead of home screen
       }
-      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }

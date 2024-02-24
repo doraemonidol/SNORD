@@ -11,12 +11,13 @@ Future<int> getAndroidSdk() async {
   return androidInfo.version.sdkInt ?? 30;
 }
 
-Future<bool> _requestAccess(Permission permission) async {
+Future<bool> checkPermission(Permission permission) async {
   var status = await permission.status;
-  if (status.isDenied) {
-    // We didn't ask for permission yet.
-    status = await permission.request();
-  }
+  return status.isGranted;
+}
+
+Future<bool> _requestAccess(Permission permission) async {
+  var status = await permission.request();
   return status.isGranted;
 }
 
