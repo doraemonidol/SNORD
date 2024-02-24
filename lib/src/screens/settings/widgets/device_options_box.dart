@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/usage_analysis.dart';
 import 'package:rehabox/src/screens/settings/devices/controllers/devices_provider.dart';
 import 'package:rehabox/src/utils/conditional_render_manager.dart';
@@ -113,7 +114,10 @@ class DeviceOptionsBox extends StatelessWidget {
                       (device) => Selector<DevicesProvider, String?>(
                         builder: (BuildContext context, String? value,
                             Widget? child) {
-                          if (value != null) {
+                          if (value != null &&
+                              context.findAncestorWidgetOfExactType<
+                                      DeviceScreen>() !=
+                                  null) {
                             WidgetsBinding.instance
                                 .addPostFrameCallback((timeStamp) async {
                               await Navigator.pushNamed(
