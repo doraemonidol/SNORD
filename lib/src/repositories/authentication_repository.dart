@@ -17,8 +17,8 @@ class AuthenticationRepository {
   // when the user is logged in
   User get user => _auth.currentUser!;
 
-  Future<String> get token async {
-    return await _auth.currentUser!.getIdToken() ?? '';
+  Future<String?> get token async {
+    return await _auth.currentUser!.getIdToken();
   }
 
   // STATE PERSISTENCE STREAM

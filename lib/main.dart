@@ -80,7 +80,7 @@ void main() async {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               }
-              final token = snapshot.data as String;
+              final String token = snapshot.data ?? "";
               debugPrint('Token: $token');
               return Provider(
                 create: (_) => RESTUserRepository(token: token),
