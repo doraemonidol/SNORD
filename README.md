@@ -2,7 +2,7 @@
 
 SNORD is an intelligent electronic cigarette product designed to assist users in monitoring and modifying their smoking habits. With its primary features being monitoring and locking, this device provides personalized pathways for smoking habit changes. It consists of hardware in the form of smart electronic cigarettes and a mobile application.
 
-## Back-end server:
+## Back-end server
 
 In the back-end side, SNORD use Golang with Fiber as the main framework. [SNORD Back-end Repository](https://github.com/YangTuanAnh/solution_challenge_golang_server)
 
