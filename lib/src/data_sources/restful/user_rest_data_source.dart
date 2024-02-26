@@ -7,9 +7,22 @@ import 'package:rehabox/src/models/models.dart' show User;
 
 class UserRESTDataSource extends RESTDataSource<User> {
   UserRESTDataSource({
-    super.baseUrl = 'https://5ba7-115-73-213-165.ngrok-free.app',
+    super.baseUrl = 'https://cbe2-113-22-113-75.ngrok-free.app',
     super.token = '',
   });
+
+  Future<User?> add() async {
+    try {
+      final response = await get('/');
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body) as Map<String, dynamic>;
+        return User.fromJson(body['data'] as Map<String, dynamic>);
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+    return null;
+  }
 
   Future<User?> read() async {
     try {

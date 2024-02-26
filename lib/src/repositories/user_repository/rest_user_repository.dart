@@ -60,6 +60,9 @@ class RESTUserRepository implements UserRepositoryInterface {
   Future<User?> read() => userRESTDataSource.read();
 
   @override
+  Future<User?> add() => userRESTDataSource.add();
+
+  @override
   Future<bool> addNicotineConsumption(
           NicotineConsumption nicotineConsumption) =>
       userRESTDataSource.addNicotineConsumption(nicotineConsumption);

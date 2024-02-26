@@ -151,6 +151,10 @@ class AuthWrapper extends StatelessWidget {
           if (reauthenticate) {
             Navigator.pop(context);
           }
+          context.read<UserRepositoryInterface>().add().then((value) {
+            debugPrint('User added: $value');
+          });
+          
           if (isFirstTime) {
             return FutureBuilder(
               future: Future.wait([

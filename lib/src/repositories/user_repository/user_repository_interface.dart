@@ -4,6 +4,7 @@ import 'package:rehabox/src/models/models.dart'
 
 abstract interface class UserRepositoryInterface {
   Future<User?> read();
+  Future<User?> add();
 
   Future<List<Coupon>?> getAvailableCoupons();
   Future<bool> collectCoupon(String couponId);

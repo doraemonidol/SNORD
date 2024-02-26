@@ -87,6 +87,11 @@ class LocalUserRepository implements UserRepositoryInterface {
   }
 
   @override
+  Future<User?> add() {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<bool> addNicotineConsumption(NicotineConsumption nicotineConsumption) {
     // TODO: implement addNicotineConsumption
     throw UnimplementedError();
