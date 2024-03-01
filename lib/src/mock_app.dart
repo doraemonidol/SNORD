@@ -23,7 +23,6 @@ import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart
 import 'package:rehabox/src/screens/settings/settings_screen.dart';
 import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:rehabox/src/widgets/goal_setter/choose_goal_screen.dart';
 
 import 'models/models.dart';
@@ -154,7 +153,7 @@ class AuthWrapper extends StatelessWidget {
           context.read<UserRepositoryInterface>().add().then((value) {
             debugPrint('User added: $value');
           });
-          
+
           if (isFirstTime) {
             return FutureBuilder(
               future: Future.wait([
@@ -184,7 +183,7 @@ class AuthWrapper extends StatelessWidget {
                   if (currentTimerActivity == null) {
                     context
                         .read<RESTUserRepository>()
-                        .startNewTimer(Duration(hours: 24));
+                        .startNewTimer(const Duration(hours: 24));
                     return const UsageAnalysisScreen(
                         timeLeft: Duration(hours: 24));
                   }

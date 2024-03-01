@@ -83,10 +83,12 @@ class _LoginFormState extends State<LoginForm> {
                       color: Colors.transparent,
                       child: Text(
                         'Continue with E-mail',
-                        style: TextStyle(
-                          color: Colors.black,
+                        style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: context.textScaleFactor(28),
+                          fontSize: 28,
+                        ),
+                        textScaler: TextScaler.linear(
+                          context.width / 400,
                         ),
                       ),
                     ),
@@ -281,18 +283,19 @@ class _LoginFormState extends State<LoginForm> {
                           const Color(0xFF3843FF),
                         ),
                       ),
-                      title: _isLoading ?
-                      const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ) :
-                       const Text(
-                        'Next',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFFFFFFF),
-                        ),
-                      ),
+                      title: _isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            )
+                          : const Text(
+                              'Next',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFFFFFFF),
+                              ),
+                            ),
                     ),
                   ),
                 ],
