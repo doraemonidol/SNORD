@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/first_time_setup/widgets/usage_analysis.dart';
 import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/widgets/ui/device_interactor_screen.dart';
 import 'package:rehabox/src/screens/settings/widgets/device_options_box.dart';
@@ -83,7 +84,7 @@ class __DeviceListState extends State<_DeviceList> {
                 isSelected: false,
                 onPressed: (context) async {
                   if (device.name.isNotEmpty) {
-                    await Navigator.pushNamed(context, HomeScreen.routeName);
+                    await Navigator.pushNamed(context, UsageAnalysisScreen.routeName);
                     return;
                   }
                   widget.stopScan();

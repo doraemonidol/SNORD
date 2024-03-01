@@ -22,23 +22,25 @@ class TimerControllers extends ChangeNotifier
     try {
       _state = _state.copyWith(status: ControllersStatus.loading);
       // final userId = await _userRepository.getUser();
-      final timerActivity = await _userRepository.getCurrentTimerActivity();
+      TimerActivity? timerActivity =
+          await _userRepository.getCurrentTimerActivity();
       if (timerActivity == null) {
-        _state = _state.copyWith(
-          status: ControllersStatus.error,
-          errorMessage: 'No timer activity found',
+        // _state = _state.copyWith(
+        //   status: ControllersStatus.error,
+        //   errorMessage: 'No timer activity found',
+        // );
+        // notifyListeners();
+        // return;
+        await Future.delayed(
+            const Duration(seconds: 3), () {}); // Simulate delay
+        timerActivity = TimerActivity(
+          id: "1",
+          userId: "1",
+          startAt: DateTime.now().subtract(const Duration(minutes: 1)),
+          expectedDuration: const Duration(hours: 1),
+          actualDuration: null,
         );
-        notifyListeners();
-        return;
       }
-      // await Future.delayed(const Duration(seconds: 3), () {}); // Simulate delay
-      // final timerActivity = TimerActivity(
-      //   id: "1",
-      //   userId: "1",
-      //   startAt: DateTime.now().subtract(const Duration(minutes: 50)),
-      //   expectedDuration: const Duration(hours: 1),
-      //   actualDuration: null,
-      // );
       _state = _state.copyWith(
         timerActivity: timerActivity,
         exceedExpectedDuration: DateTime.now().isAfter(
