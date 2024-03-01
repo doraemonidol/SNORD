@@ -66,11 +66,11 @@ class DailyChart extends StatelessWidget {
           spots.add(FlSpot(i.toDouble(), value[i].value));
         }
         final stops = spots.map((e) {
-          if (e.y <= 100) {
+          if (e.y <= 0.2) {
             return context.colorScheme.errorContainer.withOpacity(1);
-          } else if (e.y <= 300) {
+          } else if (e.y <= 0.5) {
             return const Color(0XFFFFCA00);
-          } else if (e.y <= 450) {
+          } else if (e.y <= 1.0) {
             return const Color(0XFFE3524F).withOpacity(0.7);
           } else {
             return const Color(0XFFE3524F);
@@ -148,7 +148,7 @@ class DailyChart extends StatelessWidget {
                       builder: (BuildContext context, double? value,
                               Widget? child) =>
                           Text(
-                        '${value?.toStringAsFixed(0) ?? '0'} ml',
+                        '${value?.toStringAsFixed(2) ?? '0'} mg',
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onPrimaryContainer,
                         ),

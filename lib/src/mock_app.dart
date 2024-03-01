@@ -91,7 +91,7 @@ class MockApp extends StatelessWidget {
             const CongratulationScreen(),
         TimerScreen.routeName: (context) => const TimerScreen(),
         UsageAnalysisScreen.routeName: (context) => const UsageAnalysisScreen(
-              timeLeft: Duration(seconds: 10),
+              timeLeft: Duration(seconds: 60),
             ),
         ChooseGoalScreen.routeName: (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Map;
