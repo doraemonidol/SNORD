@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/models/NicontineConsumption/nicotine_consumption.dart';
 import 'package:rehabox/src/screens/home/controllers/home_controllers.dart';
 import 'package:rehabox/src/screens/home/widgets/chart.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
@@ -35,8 +36,9 @@ class MonthlyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<HomeControllers, List<double>?>(
-      builder: (BuildContext context, List<double>? value, Widget? child) {
+    return Selector<HomeControllers, List<NicotineConsumption>?>(
+      builder: (BuildContext context, List<NicotineConsumption>? value,
+          Widget? child) {
         if (value == null) {
           return Shimmer.fromColors(
             baseColor: baseColor,
@@ -64,7 +66,7 @@ class MonthlyChart extends StatelessWidget {
             selectedMonth == DateTime.now().month ? DateTime.now().day : maxX;
         final spots = List<FlSpot>.empty(growable: true);
         for (var i = 0; i <= spotsLength; i++) {
-          spots.add(FlSpot(i.toDouble(), value[i]));
+          spots.add(FlSpot(i.toDouble(), value[i].value));
         }
         final max = spots
             .reduce((value, element) => value.y > element.y ? value : element)

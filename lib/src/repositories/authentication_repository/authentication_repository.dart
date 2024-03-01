@@ -1,13 +1,26 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:rehabox/src/service/bluetooth_methods.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
 import 'package:rehabox/src/utils/showSnackbar.dart';
 
-class FirebaseAuthMethods {
+class AuthenticationInfo {
+  final User? user;
+  final bool isFirstTime;
+
+  AuthenticationInfo({
+    required this.user,
+    required this.isFirstTime,
+  });
+}
+
+class AuthenticationRepository {
   final FirebaseAuth _auth;
-  FirebaseAuthMethods(this._auth);
+  AuthenticationRepository(this._auth);
 
   // FOR EVERY FUNCTION HERE
   // POP THE ROUTE USING: Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
@@ -17,8 +30,45 @@ class FirebaseAuthMethods {
   // when the user is logged in
   User get user => _auth.currentUser!;
 
+  Future<String?> get token async {
+    return await _auth.currentUser!.getIdToken();
+  }
+
   // STATE PERSISTENCE STREAM
-  Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+  Stream<AuthenticationInfo?> authState(BuildContext context) {
+    late final StreamController<AuthenticationInfo?> controller;
+
+    controller = StreamController<AuthenticationInfo?>(
+      onListen: () async {
+        _auth.authStateChanges().listen((user) async {
+          bool? isFirstTime = null;
+          if (user == null) {
+            controller.add(null);
+            return;
+          }
+          await context.read<UserRepositoryInterface>().isFirstTime().then((value) {
+            isFirstTime = value;
+          });
+          if (isFirstTime != null) {
+            controller.add(AuthenticationInfo(
+              user: user,
+              isFirstTime: isFirstTime!,
+            ));
+          } else {
+            controller.add(AuthenticationInfo(
+              user: user,
+              isFirstTime: false,
+            ));
+          }
+        });
+      },
+      onCancel: () {
+        controller.close();
+      },
+    );
+
+    return controller.stream;
+  }
   // OTHER WAYS (depends on use case):
   // Stream get authState => FirebaseAuth.instance.userChanges();
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
@@ -35,8 +85,7 @@ class FirebaseAuthMethods {
         email: email,
         password: password,
       );
-      // await sendEmailVerification(context);
-      Navigator.pop(context);
+
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
@@ -67,7 +116,6 @@ class FirebaseAuthMethods {
         // restrict access to certain things using provider
         // transition to another page instead of home screen
       }
-      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
@@ -85,7 +133,6 @@ class FirebaseAuthMethods {
 
   // GOOGLE SIGN IN
   Future<void> signInWithGoogle(BuildContext context) async {
-    initializeBluetooth();
     try {
       if (kIsWeb) {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();

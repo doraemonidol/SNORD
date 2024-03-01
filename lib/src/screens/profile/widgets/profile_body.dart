@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rehabox/src/models/User/userAchievement.dart';
+import 'package:rehabox/src/models/models.dart';
+import 'package:rehabox/src/screens/profile/controllers/user_profile_provider.dart';
 import 'package:rehabox/src/widgets/custom_item_widget.dart';
 import 'package:rehabox/src/screens/profile/widgets/achieve_item_list.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
@@ -97,38 +101,20 @@ class ActivityBody extends StatelessWidget {
       actions: const [
         ActivityFilterButton(),
       ],
-      body: const AchieveItemList(data: [
-        {
-          'title': '113 points earned',
-          'subtitle': 'Today, 10:00 AM',
-          'trailing': PointsEarnedButton()
-        },
-        {
-          'title': '63 points earned',
-          'subtitle': 'Yesterday, 10:00 AM',
-          'trailing': PointsEarnedButton()
-        },
-        {
-          'title': "Challenge 'Walk 10 minutes'",
-          'subtitle': 'Yesterday, 10:00 AM',
-          'trailing': ChallengeCompletedButton()
-        },
-        {
-          'title': '113 points earned',
-          'subtitle': 'Today, 10:00 AM',
-          'trailing': PointsEarnedButton()
-        },
-        {
-          'title': '63 points earned',
-          'subtitle': 'Yesterday, 10:00 AM',
-          'trailing': PointsEarnedButton()
-        },
-        {
-          'title': "Challenge 'Walk 10 minutes'",
-          'subtitle': 'Yesterday, 10:00 AM',
-          'trailing': ChallengeCompletedButton()
-        }
-      ]),
+      body: Selector<UserProfileProvider, List<Activity>>(
+        builder: (BuildContext context, List<Activity> value, Widget? child) =>
+            AchieveItemList(
+          data: value
+              .map((e) => {
+                    'title': e.name,
+                    'subtitle': e.date.toIso8601String(),
+                    'trailing': const PointsEarnedButton(),
+                  })
+              .toList(),
+        ),
+        selector: (BuildContext context, UserProfileProvider controller) =>
+            controller.state.user?.activities ?? [],
+      ),
     );
   }
 }
@@ -139,29 +125,30 @@ class AchievementsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('AchievementsBody.build');
-    return _BodyTemplate(
-      title: Text(
-        '2 Achievements',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: context.textScaleFactor(14),
+    return Selector<UserProfileProvider, List<UserAchievement>>(
+      builder:
+          (BuildContext context, List<UserAchievement> value, Widget? child) =>
+              _BodyTemplate(
+        title: Text(
+          '${value.length} Achievements',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: context.textScaleFactor(14),
+          ),
+        ),
+        body: AchieveItemList(
+          data: value
+              .map((e) => {
+                    'title': e.name,
+                    'subtitle': e.date.toIso8601String(),
+                    'leading': const RunningAchievementButton(),
+                  })
+              .toList(),
         ),
       ),
-      body: const AchieveItemList(
-        data: [
-          {
-            'title': '18 hours SLAYYY!',
-            'subtitle': '1 month ago',
-            'leading': RunningAchievementButton()
-          },
-          {
-            'title': 'Best of the month',
-            'subtitle': '2 days ago',
-            'leading': GoldMedalAchievementButton()
-          },
-        ],
-      ),
+      selector: (BuildContext context, UserProfileProvider controller) =>
+          controller.state.user?.achievements ?? [],
     );
   }
 }

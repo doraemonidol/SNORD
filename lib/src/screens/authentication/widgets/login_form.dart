@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
 import 'package:rehabox/src/screens/authentication/widgets/config.dart';
-import 'package:rehabox/src/service/firebase_auth_methods.dart';
 import 'package:rehabox/src/theme/themedata.dart';
 import 'package:rehabox/src/widgets/custom_icon_button.dart';
 import 'package:rehabox/src/widgets/debounce_button.dart';
@@ -23,9 +23,10 @@ class _LoginFormState extends State<LoginForm> {
   final _loginFormKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  bool _isLoading = false;
 
   void loginUser() {
-    context.read<FirebaseAuthMethods>().loginWithEmail(
+    context.read<AuthenticationRepository>().loginWithEmail(
           email: _emailController.text,
           password: _passwordController.text,
           context: context,
@@ -82,10 +83,12 @@ class _LoginFormState extends State<LoginForm> {
                       color: Colors.transparent,
                       child: Text(
                         'Continue with E-mail',
-                        style: TextStyle(
-                          color: Colors.black,
+                        style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: context.textScaleFactor(28),
+                          fontSize: 28,
+                        ),
+                        textScaler: TextScaler.linear(
+                          context.width / 400,
                         ),
                       ),
                     ),
@@ -260,6 +263,10 @@ class _LoginFormState extends State<LoginForm> {
                     height: context.heightPercent(0.075),
                     child: DebounceButton(
                       onPressed: (context) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        FocusScope.of(context).requestFocus(new FocusNode());
                         _loginFormKey.currentState?.save();
                         if (_loginFormKey.currentState != null &&
                             _loginFormKey.currentState!.validate()) {
@@ -276,14 +283,19 @@ class _LoginFormState extends State<LoginForm> {
                           const Color(0xFF3843FF),
                         ),
                       ),
-                      title: const Text(
-                        'Next',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFFFFFFF),
-                        ),
-                      ),
+                      title: _isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            )
+                          : const Text(
+                              'Next',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFFFFFFF),
+                              ),
+                            ),
                     ),
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/models/NicontineConsumption/nicotine_consumption.dart';
 import 'package:rehabox/src/screens/home/controllers/home_controllers.dart';
 import 'package:rehabox/src/screens/home/widgets/chart.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
@@ -36,8 +37,9 @@ class DailyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<HomeControllers, List<double>?>(
-      builder: (BuildContext context, List<double>? value, Widget? child) {
+    return Selector<HomeControllers, List<NicotineConsumption>?>(
+      builder: (BuildContext context, List<NicotineConsumption>? value,
+          Widget? child) {
         debugPrint('value: $value');
         if (value == null) {
           return Shimmer.fromColors(
@@ -56,18 +58,19 @@ class DailyChart extends StatelessWidget {
           );
         }
         final selectedDate = context.read<HomeControllers>().state.selectedDate;
-        final spotLength =
-            matchDate(selectedDate!, DateTime.now()) ? DateTime.now().hour + 1 : 24;
+        final spotLength = matchDate(selectedDate!, DateTime.now())
+            ? DateTime.now().hour + 1
+            : 24;
         final spots = List<FlSpot>.empty(growable: true);
         for (var i = 0; i < spotLength; i++) {
-          spots.add(FlSpot(i.toDouble(), value[i]));
+          spots.add(FlSpot(i.toDouble(), value[i].value));
         }
         final stops = spots.map((e) {
-          if (e.y <= 100) {
+          if (e.y <= 0.2) {
             return context.colorScheme.errorContainer.withOpacity(1);
-          } else if (e.y <= 300) {
+          } else if (e.y <= 0.5) {
             return const Color(0XFFFFCA00);
-          } else if (e.y <= 450) {
+          } else if (e.y <= 1.0) {
             return const Color(0XFFE3524F).withOpacity(0.7);
           } else {
             return const Color(0XFFE3524F);
@@ -145,7 +148,7 @@ class DailyChart extends StatelessWidget {
                       builder: (BuildContext context, double? value,
                               Widget? child) =>
                           Text(
-                        '${value?.toStringAsFixed(0) ?? '0'} ml',
+                        '${value?.toStringAsFixed(2) ?? '0'} mg',
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onPrimaryContainer,
                         ),

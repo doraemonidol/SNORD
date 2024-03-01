@@ -11,7 +11,7 @@ final class UserProfileProviderState {
     this.status = ControllersStatus.initial,
     this.profileBodyType = ProfileBodyType.activity,
     this.errorMessage,
-    // this.user,
+    this.user,
   });
 
   const UserProfileProviderState.initial() : this();
@@ -37,20 +37,20 @@ final class UserProfileProviderState {
 
   final ControllersStatus status;
   final String? errorMessage;
-  // final User? user;
+  final User? user;
   final ProfileBodyType profileBodyType;
 
   UserProfileProviderState copyWith({
     ControllersStatus? status,
     String? errorMessage,
     ProfileBodyType? profileBodyType,
-    // User? user,
+    User? user,
   }) {
     return UserProfileProviderState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       profileBodyType: profileBodyType ?? this.profileBodyType,
-      // user: user ?? this.user,
+      user: user ?? this.user,
     );
   }
 }

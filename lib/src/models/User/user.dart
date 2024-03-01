@@ -17,6 +17,7 @@ class User implements Model {
     required this.goal,
     required this.achievements,
     required this.coupons,
+    this.imageUrl = '',
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -41,6 +42,8 @@ class User implements Model {
   final List<UserAchievement> achievements;
   @JsonKey(required: true, defaultValue: [])
   final List<String> coupons;
+  @JsonKey(required: true, defaultValue: '')
+  final String imageUrl;
 
   @override
   String toString() {

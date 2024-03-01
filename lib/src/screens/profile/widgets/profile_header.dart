@@ -35,7 +35,7 @@ class ProfileHeader extends StatelessWidget {
           ),
         ),
         selector: (BuildContext context, UserProfileProvider controller) =>
-            'John Doe',
+            controller.state.user?.name ?? "",
       ),
       subtitle: Container(
         padding: EdgeInsets.symmetric(
@@ -65,7 +65,7 @@ class ProfileHeader extends StatelessWidget {
               ),
               selector:
                   (BuildContext context, UserProfileProvider controller) =>
-                      '1452 Points',
+                      '${controller.state.user?.point ?? 0} Points',
             ),
           ],
         ),

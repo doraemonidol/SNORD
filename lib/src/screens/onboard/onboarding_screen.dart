@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/service/firebase_auth_methods.dart';
+import 'package:rehabox/src/repositories/authentication_repository/authentication_repository.dart';
+import 'package:rehabox/src/screens/onboard/widgets/sliding_container.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -17,8 +18,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  int _currentPage = 0;
-
   @override
   Widget build(BuildContext context) {
     debugPrint('OnboardingScreen.build');
@@ -35,74 +34,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Column(
+        body: Stack(
           children: [
-            CarouselSlider(
-              items: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.red,
-                  ),
-                  child: const Center(
-                    child: Text('Text 1'),
-                  ),
-                ),
-                Container(
-                  child: const Center(
-                    child: Text('Text 2'),
-                  ),
-                ),
-                Container(
-                  child: const Center(
-                    child: Text('Text 3'),
-                  ),
-                ),
-              ],
-              options: CarouselOptions(
-                height: context.heightPercent(
-                        1 - kCustomBottomNavigationBarHeightPercent) -
-                    50,
-                aspectRatio: 16 / 9,
-                viewportFraction: 1,
-                initialPage: 0,
-                enableInfiniteScroll: true,
-                reverse: false,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-              ),
+            Image.asset(
+              "assets/images/circles.png",
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 24,
-                left: 24,
-                right: 24,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  AnimatedSmoothIndicator(
-                    activeIndex: _currentPage,
-                    count: 3,
-                    effect: const ExpandingDotsEffect(
-                      dotWidth: 8,
-                      dotHeight: 8,
-                      spacing: 16,
-                      dotColor: Color(0xFF888EFF),
-                      activeDotColor: Color(0xFFFFFFFF),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const Wrapped(),
           ],
         ),
         extendBody: true,
@@ -152,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       context
-                          .read<FirebaseAuthMethods>()
+                          .read<AuthenticationRepository>()
                           .signInWithGoogle(context);
                     },
                     icon: const SvgIcon(
@@ -189,6 +129,95 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Wrapped extends StatefulWidget {
+  const Wrapped({super.key});
+
+  @override
+  State<Wrapped> createState() => _WrappedState();
+}
+
+class _WrappedState extends State<Wrapped> {
+  int _currentPage = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CarouselSlider(
+          items: [
+            SlidingContainer(
+              image: Image.asset(
+                "assets/images/first.png",
+              ),
+              header: "Breath Free",
+              footer:
+                  "Change your life by slowly quitting smoking, and adding new habit",
+            ),
+            SlidingContainer(
+              image: Image.asset(
+                "assets/images/second.png",
+              ),
+              header: "Track Your Progress",
+              footer:
+                  "Everyday you become one step closer to your goal, so don't give up",
+            ),
+            SlidingContainer(
+              image: Image.asset(
+                "assets/images/third.png",
+              ),
+              header: "Stay Together and Strong",
+              footer:
+                  "Find friends to discuss common topic, and challenges others",
+            ),
+          ],
+          options: CarouselOptions(
+            height: context.heightPercent(
+                    1 - kCustomBottomNavigationBarHeightPercent) -
+                50,
+            aspectRatio: 16 / 9,
+            viewportFraction: 1,
+            initialPage: 0,
+            enableInfiniteScroll: true,
+            reverse: false,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            scrollDirection: Axis.horizontal,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 24,
+            left: 24,
+            right: 24,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AnimatedSmoothIndicator(
+                activeIndex: _currentPage,
+                count: 3,
+                effect: const ExpandingDotsEffect(
+                  dotWidth: 8,
+                  dotHeight: 8,
+                  spacing: 16,
+                  dotColor: Color(0xFF888EFF),
+                  activeDotColor: Color(0xFFFFFFFF),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

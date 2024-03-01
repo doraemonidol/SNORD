@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rehabox/src/models/models.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
-import 'package:rehabox/src/repositories/timer_activity_repository/timer_activity_repository_interface.dart';
 import 'package:rehabox/src/screens/timer/config.dart';
 import 'package:rehabox/src/screens/timer/controllers/timer_controllers.dart';
 import 'package:rehabox/src/screens/timer/screens/congratulation_screen.dart';
@@ -30,8 +29,6 @@ class TimerScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => TimerControllers(
         userRepository: context.read<UserRepositoryInterface>(),
-        timerActivityRepository:
-            context.read<TimerActivityRepositoryInterface>(),
       )..fetchLatestTimerActivity(),
       child: Consumer<TimerControllers>(
         builder: conditionalRenderManager<TimerControllers>(

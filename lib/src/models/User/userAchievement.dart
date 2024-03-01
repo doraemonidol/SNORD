@@ -8,6 +8,7 @@ class UserAchievement implements Model {
   UserAchievement({
     required this.id,
     required this.date,
+    required this.name,
   });
 
   factory UserAchievement.fromJson(Map<String, dynamic> json) =>
@@ -21,6 +22,8 @@ class UserAchievement implements Model {
   final String id;
   @JsonKey(required: true)
   final DateTime date;
+  @JsonKey(required: true)
+  final String name;
 
   @override
   String toString() {
@@ -31,10 +34,12 @@ class UserAchievement implements Model {
   UserAchievement copyWith({
     String? id,
     DateTime? date,
+    String? name,
   }) {
     return UserAchievement(
       id: id ?? this.id,
       date: date ?? this.date,
+      name: name ?? this.name,
     );
   }
 }

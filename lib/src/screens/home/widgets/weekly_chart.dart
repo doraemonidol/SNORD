@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/models/NicontineConsumption/nicotine_consumption.dart';
 import 'package:rehabox/src/screens/home/controllers/home_controllers.dart';
 import 'package:rehabox/src/screens/home/widgets/chart.dart';
 import 'package:rehabox/src/screens/profile/widgets/config.dart';
@@ -55,8 +56,9 @@ class WeeklyChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<HomeControllers, List<double>?>(
-      builder: (BuildContext context, List<double>? value, Widget? child) {
+    return Selector<HomeControllers, List<NicotineConsumption>?>(
+      builder: (BuildContext context, List<NicotineConsumption>? value,
+          Widget? child) {
         if (value == null) {
           return Shimmer.fromColors(
             baseColor: baseColor,
@@ -78,7 +80,7 @@ class WeeklyChart extends StatelessWidget {
         int maxX =
             !matchDate(endDate, DateTime.now()) ? 7 : DateTime.now().weekday;
         for (var i = 0; i < maxX; i++) {
-          spots.add(FlSpot(i.toDouble(), value[i]));
+          spots.add(FlSpot(i.toDouble(), value[i].value));
         }
         final max = spots
             .reduce((value, element) => value.y > element.y ? value : element)

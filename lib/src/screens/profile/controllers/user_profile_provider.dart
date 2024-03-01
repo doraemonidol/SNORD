@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehabox/src/models/User/user.dart';
 import 'package:rehabox/src/repositories/repositories.dart';
 import 'package:rehabox/src/utils/controllers_status.dart';
 
@@ -19,11 +20,16 @@ class UserProfileProvider extends ChangeNotifier
     _state = UserProfileProviderState.loading(_state);
     notifyListeners();
     try {
-      // final user = await _userRepository.read();
-      // _state = UserProfileProviderState.loaded(_state, user);
-      await Future<void>.delayed(const Duration(seconds: 3), () {
-        throw Exception('Error');
-      });
+      final user = await _userRepository.read();
+      debugPrint("User: $user");
+      if (user == null) {
+        _state = const UserProfileProviderState(
+          status: ControllersStatus.error,
+          errorMessage: 'User not found',
+        );
+      } else {
+        _state = _state.copyWith(user: user, status: ControllersStatus.loaded);
+      }
     } catch (e) {
       // _state = UserProfileProviderState.error(_state, e.toString());
       _state = const UserProfileProviderState(

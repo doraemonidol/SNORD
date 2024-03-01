@@ -96,11 +96,11 @@ class _SleekCircularSliderState extends State<SleekCircularSlider>
       return;
     }
     _animationManager ??= ValueChangedAnimationManager(
-        tickerProvider: this,
-        minValue: widget.min,
-        maxValue: widget.max,
-        durationMultiplier: widget.appearance.animDurationMultiplier,
-      );
+      tickerProvider: this,
+      minValue: widget.min,
+      maxValue: widget.max,
+      durationMultiplier: widget.appearance.animDurationMultiplier,
+    );
 
     _animationManager!.animate(
         initialValue: widget.initialValue,
@@ -138,15 +138,15 @@ class _SleekCircularSliderState extends State<SleekCircularSlider>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('SleekCircularSlider build');
-    debugPrint('Initial Value: ${widget.initialValue}');
-    debugPrint('Old Widget Angle: $_oldWidgetAngle');
-    debugPrint('Old Widget Value: $_oldWidgetValue');
-    debugPrint('Current Angle: $_currentAngle');
-    debugPrint('Start Angle: $_startAngle');
-    debugPrint('Angle Range: $_angleRange');
-    debugPrint('Selected Angle: $_selectedAngle');
-    debugPrint('Rotation: $_rotation');
+    // debugPrint('SleekCircularSlider build');
+    // debugPrint('Initial Value: ${widget.initialValue}');
+    // debugPrint('Old Widget Angle: $_oldWidgetAngle');
+    // debugPrint('Old Widget Value: $_oldWidgetValue');
+    // debugPrint('Current Angle: $_currentAngle');
+    // debugPrint('Start Angle: $_startAngle');
+    // debugPrint('Angle Range: $_angleRange');
+    // debugPrint('Selected Angle: $_selectedAngle');
+    // debugPrint('Rotation: $_rotation');
 
     /// _setupPainter excution when _painter is null or appearance has changed.
     if (_painter == null || _appearanceHashCode != widget.appearance.hashCode) {

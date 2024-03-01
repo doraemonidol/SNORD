@@ -47,6 +47,12 @@ class TimerActivity implements Model {
     return 'TimerActivity(id: $id, userId: $userId, startAt: $startAt, expectedDuration: $expectedDuration, actualDuration: $actualDuration, couponAppliedId: $couponAppliedId)';
   }
 
+  Duration get timeLeft {
+    final now = DateTime.now();
+    final endAt = startAt.add(expectedDuration);
+    return endAt.isAfter(now) ? endAt.difference(now) : Duration.zero;
+  }
+
   @override
   TimerActivity copyWith({
     String? id,

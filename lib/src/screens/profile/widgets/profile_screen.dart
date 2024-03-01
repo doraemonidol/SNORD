@@ -16,9 +16,11 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dataSource = context.read<UserRepositoryInterface>();
+    debugPrint(dataSource.toString());
     return ChangeNotifierProvider(
       create: (_) => UserProfileProvider(
-        context.read<UserRepositoryInterface>(),
+        dataSource,
       )..read(),
       child: Consumer<UserProfileProvider>(
         builder: conditionalRenderManager<UserProfileProvider>(

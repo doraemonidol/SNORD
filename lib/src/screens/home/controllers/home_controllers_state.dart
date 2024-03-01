@@ -26,7 +26,7 @@ class HomeControllersState {
   final String? errorMessage;
   final double? indicatedValue;
   final int? selectedMonth;
-  final List<double>? data;
+  final List<NicotineConsumption>? data;
 
   HomeControllersState copyWith({
     TabState? tabState,
@@ -36,7 +36,7 @@ class HomeControllersState {
     DateTime? endDate,
     double? indicatedValue,
     int? selectedMonth,
-    List<double>? data,
+    List<NicotineConsumption>? data,
   }) {
     return HomeControllersState(
       tabState: tabState ?? this.tabState,
@@ -44,7 +44,7 @@ class HomeControllersState {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       endDate: endDate ?? this.endDate,
-      indicatedValue: indicatedValue ?? this.data?.last,
+      indicatedValue: indicatedValue ?? this.data?.last.value,
       data: data ?? this.data,
       selectedMonth: selectedMonth ?? this.selectedMonth,
     );

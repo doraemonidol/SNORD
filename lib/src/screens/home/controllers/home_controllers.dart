@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehabox/src/models/NicontineConsumption/nicotine_consumption.dart';
 import 'package:rehabox/src/screens/home/widgets/config.dart';
 import 'package:rehabox/src/utils/computation.dart';
 import 'package:rehabox/src/utils/controllers_status.dart';
