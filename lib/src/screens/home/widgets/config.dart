@@ -1,10 +1,12 @@
+import 'package:rehabox/src/models/NicontineConsumption/nicotine_consumption.dart';
+
 const chartSvgString = '''
 <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 18.26H18V0.26H0V18.26Z" fill="#040415"/>
 </svg>
 ''';
 
-const mockData = [
+final mockData = [
   100.0,
   300.0,
   200.0,
@@ -29,9 +31,9 @@ const mockData = [
   300.0,
   200.0,
   500.0,
-];
+].map((e) => NicotineConsumption(metric: "ml", value: e)).toList();
 
-const mockDataWeekly = [
+final mockDataWeekly = [
   300.0,
   200.0,
   500.0,
@@ -39,9 +41,9 @@ const mockDataWeekly = [
   300.0,
   200.0,
   500.0,
-];
+].map((e) => NicotineConsumption(metric: "ml", value: e)).toList();
 
-const mockDataMonth = [
+final mockDataMonth = [
   100.0,
   300.0,
   200.0,
@@ -126,4 +128,4 @@ const mockDataMonth = [
   300.0,
   200.0,
   500.0,
-];
+].map((e) => NicotineConsumption(metric: "ml", value: e)).toList();

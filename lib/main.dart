@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +14,9 @@ import 'package:rehabox/src/widgets/ble/ble_device_interactor.dart';
 import 'package:rehabox/src/widgets/ble/ble_logger.dart';
 import 'package:rehabox/src/widgets/ble/ble_scanner.dart';
 import 'package:rehabox/src/widgets/ble/ble_status_monitor.dart';
-
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +78,7 @@ void main() async {
               context.read<AuthenticationRepository>().authState(context),
           initialData: null,
         ),
-        
+
         Provider.value(value: _scanner),
         Provider.value(value: _monitor),
         Provider.value(value: _connector),

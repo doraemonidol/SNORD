@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
+import 'package:rehabox/src/screens/home/home_screen.dart';
 import 'package:rehabox/src/screens/settings/devices/widgets/ui/device_interactor_screen.dart';
 import 'package:rehabox/src/screens/settings/widgets/device_options_box.dart';
 import 'package:rehabox/src/widgets/ble/ble_device_connector.dart';
@@ -60,14 +63,29 @@ class __DeviceListState extends State<_DeviceList> {
         // shrinkWrap: true,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: widget.scannerState.discoveredDevices
-              .where((element) => element.name.isNotEmpty) // !element.name.contains(':'))
+          children: [
+            ...widget.scannerState.discoveredDevices,
+            DiscoveredDevice(
+              id: "mock-device",
+              name: "SNORD Module",
+              serviceData: const {},
+              manufacturerData: Uint8List(12),
+              rssi: 12,
+              serviceUuids: const [],
+            ),
+          ]
+              .where((element) =>
+                  element.name.isNotEmpty) // !element.name.contains(':'))
               .map(
             (device) {
               return DeviceOption(
                 device: device.name,
                 isSelected: false,
                 onPressed: (context) async {
+                  if (device.name.isNotEmpty) {
+                    await Navigator.pushNamed(context, HomeScreen.routeName);
+                    return;
+                  }
                   widget.stopScan();
                   widget.deviceConnector.connect(device.id);
                   await Navigator.push(
