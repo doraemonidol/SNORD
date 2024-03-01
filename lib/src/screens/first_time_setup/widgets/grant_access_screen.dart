@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rehabox/src/screens/first_time_setup/config.dart';
 import 'package:rehabox/src/screens/first_time_setup/widgets/device_screen.dart';
+import 'package:rehabox/src/screens/settings/devices/devices_setting_screen.dart';
 import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/widgets/extensions/build_context_extensions.dart';
 import 'package:rehabox/src/widgets/svg_icon.dart';
@@ -115,7 +116,7 @@ class GrantAccessScreen extends StatelessWidget {
                       requestBluetoothAccess().then((value) {
                         if (value) {
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                              DeviceScreen.routeName, (route) => false);
+                              DevicesSettingScreen.routeName, (route) => false);
                         }
                       });
                     },

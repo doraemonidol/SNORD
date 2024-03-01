@@ -1,40 +1,36 @@
-part of 'devices_provider.dart';
+// part of 'devices_provider.dart';
 
-@immutable
-final class DevicesProviderState {
-  const DevicesProviderState({
-    required this.bluetoothState,
-    required this.devices,
-    required this.status,
-    this.connectedDeviceId,
-    this.errorMessage,
-  });
+// @immutable
+// final class DevicesProviderState {
+//   const DevicesProviderState({
+//     required this.scanState,
+//     required this.status,
+//     this.connectedDeviceId,
+//     this.errorMessage,
+//   });
 
-  final BluetoothAdapterState bluetoothState;
-  final List<ScanResult> devices;
-  final ControllersStatus status;
-  final String? connectedDeviceId;
-  final String? errorMessage;
+//   final BleScannerState scanState;
+//   final ControllersStatus status;
+//   final String? connectedDeviceId;
+//   final String? errorMessage;
 
-  factory DevicesProviderState.initial() => const DevicesProviderState(
-        bluetoothState: BluetoothAdapterState.unknown,
-        devices: [],
-        status: ControllersStatus.initial,
-      );
+//   factory DevicesProviderState.initial() => const DevicesProviderState(
+//         scanState:
+//             BleScannerState(discoveredDevices: [], scanIsInProgress: false),
+//         status: ControllersStatus.initial,
+//       );
 
-  DevicesProviderState copyWith({
-    BluetoothAdapterState? bluetoothState,
-    List<ScanResult>? devices,
-    ControllersStatus? status,
-    String? errorMessage,
-    String? connectedDeviceId,
-  }) {
-    return DevicesProviderState(
-      bluetoothState: bluetoothState ?? this.bluetoothState,
-      devices: devices ?? this.devices,
-      status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
-      connectedDeviceId: connectedDeviceId ?? this.connectedDeviceId,
-    );
-  }
-}
+//   DevicesProviderState copyWith({
+//     BleScannerState? scanState,
+//     ControllersStatus? status,
+//     String? errorMessage,
+//     String? connectedDeviceId,
+//   }) {
+//     return DevicesProviderState(
+//       scanState: scanState ?? this.scanState,
+//       status: status ?? this.status,
+//       errorMessage: errorMessage ?? this.errorMessage,
+//       connectedDeviceId: connectedDeviceId ?? this.connectedDeviceId,
+//     );
+//   }
+// }

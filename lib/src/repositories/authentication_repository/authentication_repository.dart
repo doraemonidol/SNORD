@@ -5,11 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:rehabox/src/data_sources/restful/timer_rest_data_source.dart';
-import 'package:rehabox/src/data_sources/restful/user_rest_data_source.dart';
-import 'package:rehabox/src/repositories/user_repository/rest_user_repository.dart';
 import 'package:rehabox/src/repositories/user_repository/user_repository_interface.dart';
-import 'package:rehabox/src/service/bluetooth_methods.dart';
 import 'package:rehabox/src/utils/showSnackbar.dart';
 
 class AuthenticationInfo {
@@ -137,7 +133,6 @@ class AuthenticationRepository {
 
   // GOOGLE SIGN IN
   Future<void> signInWithGoogle(BuildContext context) async {
-    initializeBluetooth();
     try {
       if (kIsWeb) {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();

@@ -85,7 +85,7 @@ class MockApp extends StatelessWidget {
         LoginForm.routeName: (context) => const LoginForm(),
         SignupForm.routeName: (context) => const SignupForm(),
         GrantAccessScreen.routeName: (context) => const GrantAccessScreen(),
-        DeviceScreen.routeName: (context) => const DeviceScreen(),
+        // DeviceScreen.routeName: (context) => const DeviceScreen(),
         AuthWrapper.routeName: (context) => AuthWrapper(),
         CongratulationScreen.routeName: (context) =>
             const CongratulationScreen(),
